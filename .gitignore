@@ -1,2 +1,8 @@
 server/venv
 static/node_modules
+.vscode
+__pycache__
+server/__pycache__
+server/migrations
+server/instance
+server/app/__pycache__
