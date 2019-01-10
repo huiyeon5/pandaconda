@@ -1,0 +1,98 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+.login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "dhl-half form-half";
+}
+
+.dhl-half {
+  grid-area: dhl-half;
+  background: url("../images/DHL logo.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+.form-half {
+  grid-area: form-half;
+  background: white;
+  height: 100vh;
+}
+
+.form-side {
+  display: grid;
+  grid-template-rows: 2fr 3fr;
+  grid-template-areas:
+    "welcome-msg"
+    "form-input";
+}
+.welcome-msg {
+  grid-area: welcome-msg;
+  text-align: center;
+  justify-self: center;
+  font-family: "Roboto", sans-serif;
+  font-size: 30px;
+}
+.form-input {
+  grid-area: form-input;
+}
+
+.form-input2 {
+  display: grid;
+  grid-template-rows: 2fr 1fr;
+  grid-template-areas:
+    "fields"
+    "footer";
+}
+
+form {
+  grid-area: fields;
+}
+
+footer {
+  grid-area: footer;
+  padding: 30px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-username-input[type="text"] {
+  width: 100%;
+
+  margin: 8px 0;
+  box-sizing: border-box;
+  background-color: #fcfcfc;
+  border: solid 1px #eeeeee;
+  border-radius: 4px;
+}
+
+.login-password-input[type="password"] {
+  width: 100%;
+  padding: 8px 138px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  background-color: #fcfcfc;
+  border: solid 1px #eeeeee;
+  border-radius: 4px;
+}
+
+label {
+  font-family: "Roboto", sans-serif;
+  color: #a3a3a3;
+}
+
+button {
+  background-color: #5baad8;
+  padding: 8px 230px;
+  font-size: 20px;
+  color: white;
+  border: none;
+  font-family: "Roboto", sans-serif;
+  border-radius: 4px;
+}
