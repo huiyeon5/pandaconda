@@ -152,10 +152,11 @@ button {
 
 .form-side {
   display: grid;
-  grid-template-rows: 2fr 3fr;
+  grid-template-rows: 250px 1fr;
   grid-template-areas:
     "welcome-msg"
     "form-input";
+  height: 100%;
 }
 .welcome-msg {
   grid-area: welcome-msg;
@@ -166,14 +167,17 @@ button {
 }
 .form-input {
   grid-area: form-input;
+  height: 100%;
 }
 
 .form-input2 {
+  padding-top: 50px;
   display: grid;
   grid-template-rows: 2fr 1fr;
   grid-template-areas:
     "fields"
     "footer";
+  height: 100%;
 }
 
 form {
@@ -181,14 +185,21 @@ form {
 }
 
 footer {
-  grid-area: footer;
   padding: 30px;
+}
+
+label {
+  max-width: 500px;
 }
 
 .center {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.center-footer {
+  grid-area: footer;
 }
 
 .login-username-input[type="text"] {
@@ -255,9 +266,9 @@ button {
   z-index: 3;
 }
 
-li.horizontal {
+.horizontal {
   display: block;
-  color: white;
+  color: black;
   text-align: right;
   padding: 14px 16px;
   text-decoration: none;
@@ -271,7 +282,7 @@ li.vertical {
   text-align: center;
 }
 
-a.nav {
+.nav {
   color: white;
   text-decoration: none;
 }

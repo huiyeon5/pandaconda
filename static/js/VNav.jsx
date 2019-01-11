@@ -27,11 +27,6 @@ export default class VNav extends React.Component {
             </li>
           </ul>
         </div>
-        <div className="horizontal-background">
-          <li className="horizontal">
-            <a>Long</a>
-          </li>
-        </div>
       </div>
     );
   }

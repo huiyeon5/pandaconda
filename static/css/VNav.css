@@ -28,9 +28,9 @@
   z-index: 3;
 }
 
-li.horizontal {
+.horizontal {
   display: block;
-  color: white;
+  color: black;
   text-align: right;
   padding: 14px 16px;
   text-decoration: none;
@@ -44,7 +44,7 @@ li.vertical {
   text-align: center;
 }
 
-a.nav {
+.nav {
   color: white;
   text-decoration: none;
 }

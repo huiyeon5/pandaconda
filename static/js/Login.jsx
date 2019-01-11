@@ -11,31 +11,29 @@ export default class Login extends React.Component {
             <div className="welcome-msg">Welcome to DHL portal!</div>
             <div className="form-input">
               <div className="form-input2">
-                <div className="center-container">
-                  <form>
-                    <div className="center">
-                      <label>
-                        Email
-                        <input type="text" id="email" name="email" />
-                      </label>
-                    </div>
-
-                    <div className="center">
-                      <label>
-                        Password
-                        <input type="password" id="password" name="password" />
-                      </label>
-                    </div>
-
-                    <div className="center">
-                      <button type="submit">Login</button>
-                    </div>
-                  </form>
+                <form>
                   <div className="center">
-                    <footer>
-                      Do not have an account? Sign up <a href="#">here</a>
-                    </footer>
+                    <label>
+                      Email
+                      <input type="text" id="email" name="email" />
+                    </label>
                   </div>
+
+                  <div className="center">
+                    <label>
+                      Password
+                      <input type="password" id="password" name="password" />
+                    </label>
+                  </div>
+
+                  <div className="center">
+                    <button type="submit">Login</button>
+                  </div>
+                </form>
+                <div className="center center-footer">
+                  <footer>
+                    Do not have an account? Sign up <a href="#">here</a>
+                  </footer>
                 </div>
               </div>
             </div>
