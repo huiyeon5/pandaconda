@@ -1,12 +1,14 @@
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash,check_password_hash
+from flask_login import UserMixin
 from app import db
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    password_hash = db.Column(db.String(128))
-    username = db.Column(db.String(80), unique=True, nullable=False)
+class User(UserMixin,db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    company = db.Column(db.String(80), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+    fullname = db.Column(db.String(80), nullable=False)
+    company = db.Column(db.String(80), nullable=False)
+    # group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
 
     @property
     def password(self):
@@ -20,4 +22,19 @@ class User(db.Model):
         return check_password_hash(self.password_hash, password)
     
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.id
+
+
+# class Group(db.Model):
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     user_ids = db.relationship('User', backref='group', lazy=True)
+#     manager_id = db.Column(db.Integer, db.ForeignKey('manager.id'))
+
+#     def __repr__(self):
+#         return '<Group %d, Manager %d>' % self.id, self.manager_id
+
+
+# class UserData(db.Model):
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     data_name = db.Column(db.String(120), nullable=False)
+#     user_id = db.Column(db.Integer, nullable=False)
