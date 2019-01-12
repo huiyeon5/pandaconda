@@ -7,7 +7,7 @@ export default class Upload extends React.Component {
   render() {
     return (
       <div>
-        <VNav >
+        <VNav />
         hello testing
         <input type="file" />
       </div>

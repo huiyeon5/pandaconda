@@ -11,7 +11,7 @@ export default class Login extends React.Component {
             <div className="welcome-msg">Welcome to DHL portal!</div>
             <div className="form-input">
               <div className="form-input2">
-                <form>
+                <form action="./VNav" method="post">
                   <div className="center">
                     <label>
                       Email
