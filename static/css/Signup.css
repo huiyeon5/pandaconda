@@ -96,7 +96,7 @@ label {
   color: #a3a3a3;
 }
 
-button {
+.signup-button {
   background-color: #5baad8;
   padding: 8px 230px;
   font-size: 20px;

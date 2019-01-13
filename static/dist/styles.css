@@ -84,6 +84,9 @@ li a:active {
   background-color: #555;
   color: white;
 }
+.upload--contentpc {
+  grid-area: main;
+}
 @import url(https://fonts.googleapis.com/css?family=Roboto);.login {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -180,7 +183,7 @@ label {
   color: #a3a3a3;
 }
 
-button {
+.signup-button {
   background-color: #5baad8;
   padding: 8px 230px;
   font-size: 20px;
@@ -287,7 +290,7 @@ label {
   color: #a3a3a3;
 }
 
-button {
+.login_button {
   background-color: #5baad8;
   padding: 8px 230px;
   font-size: 20px;

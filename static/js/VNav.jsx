@@ -27,6 +27,7 @@ export default class VNav extends React.Component {
             </li>
           </ul>
         </div>
+        {this.props.children}
       </div>
     );
   }
