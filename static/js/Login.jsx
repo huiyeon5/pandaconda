@@ -2,6 +2,53 @@ import React from "react";
 import "../css/Login";
 
 export default class Login extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.callBackendAPI = this.callBackendAPI.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+    this.postData = this.postData.bind(this);
+  }
+
+  //GET
+  async callBackendAPI(url) {
+    const response = await fetch(url);
+    const body = await response.json();
+    if (response.status !== 200) {
+      throw Error(body.message);
+    }
+    return body;
+  }
+
+  //POST
+  async postData(url, bodyObj) {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(bodyObj)
+    });
+    const body = await response.json();
+    return body;
+  }
+
+  handleLogin(e) {
+    var obj = {
+      email: "bryan@gmail.com",
+      password: "hello"
+    };
+    this.postData("/login_api", obj) //set object to take in the email and password
+      .then(res => {
+        console.log(res);
+        window.open("http://www.google.com"); //set the location to VNav using location.url="" or windows.location
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   render() {
     return (
       <div className="login">
@@ -11,7 +58,7 @@ export default class Login extends React.Component {
             <div className="welcome-msg">Welcome to DHL portal!</div>
             <div className="form-input">
               <div className="form-input2">
-                <form action="./VNav" method="post">
+                <form>
                   <div className="center">
                     <label>
                       Email
@@ -27,9 +74,9 @@ export default class Login extends React.Component {
                   </div>
 
                   <div className="center">
-                    <button className="login-button" type="submit">
+                    <div className="login-button" onClick={this.handleLogin}>
                       Login
-                    </button>
+                    </div>
                   </div>
                 </form>
                 <div className="center center-footer">

@@ -98,7 +98,7 @@ label {
   color: #a3a3a3;
 }
 
-.login_button {
+.login-button {
   background-color: #5baad8;
   padding: 8px 230px;
   font-size: 20px;
@@ -106,4 +106,5 @@ label {
   border: none;
   font-family: "Roboto", sans-serif;
   border-radius: 4px;
+  cursor: pointer;
 }
