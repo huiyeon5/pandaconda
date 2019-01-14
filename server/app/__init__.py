@@ -42,6 +42,11 @@ def create_app(config_name):
     from app import models
     from app.models import User
 
+    # Render Homepage
+    @app.route("/home/")
+    def home():
+        return render_template('home.html')
+
 
 # ========================================================= API START HERE ================================================
 

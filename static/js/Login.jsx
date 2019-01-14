@@ -42,7 +42,7 @@ export default class Login extends React.Component {
     this.postData("/login_api", obj) //set object to take in the email and password
       .then(res => {
         console.log(res);
-        window.open("http://www.google.com"); //set the location to VNav using location.url="" or windows.location
+        window.location = "/home/"; 
       })
       .catch(err => {
         console.log(err);
