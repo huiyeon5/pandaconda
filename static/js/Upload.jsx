@@ -1,5 +1,5 @@
 import React from "react";
-import "../css/VNav";
+import "../css/Layout";
 import VNav from "./VNav";
 import HNav from "./HNav";
 import "../css/Upload";

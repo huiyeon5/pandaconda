@@ -1,5 +1,5 @@
 import React from "react";
-import "../css/VNav";
+import "../css/Layout";
 
 import logo from "../images/pandaconda_logo.png";
 

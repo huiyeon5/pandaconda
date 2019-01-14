@@ -34,7 +34,7 @@ def create_app(config_name):
     # Default Render
     @app.route('/')
     def index():
-        return render_template('layout.html')
+        return render_template('index.html')
 
     # Migrating the db.Models from the Models.py file to MySQL
     migrate = Migrate(app, db)

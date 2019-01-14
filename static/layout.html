@@ -1,38 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>DHL Visualisation</title>
-    <link rel="stylesheet" type='text/css' href="styles.css">
-  </head>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>DHL Visualisation</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Layout.css') }}" />
+  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,700,800" rel="stylesheet">
+</head>
 
-  <body>
-    <div class="VNav">
-      <div class="vertical-background">
-        <ul>
-          <li class="vertical">
-            <a class="nav" href="#">
-              Test
-            </a>
-          </li>
-          <li class="vertical">
-            <a class="nav" href="#">
-              Data
-            </a>
-          </li>
-          <li class="vertical">
-            <a class="nav" href="#">
-              Visualization
-            </a>
-          </li>
-        </ul>
-      </div>
-      {% block content %}{% endblock %}
+<body class="body-layout">
+  <div class="layout">
+    <div class="header-layout">
+      <li class="horizontal">Long</li>
     </div>
+    <img class=logo-layout src="{{ url_for('static', filename='images/DHL_logo.png') }}" alt="Logo">
+    <div class="sidebar-layout">
+      <a class="sidebar-item" href="#">
+        <img src="{{ url_for('static', filename='images/home.png') }}" alt="house">
+        HOME
+      </a>
+      <a class="sidebar-item" href="#">
+        <img src="{{ url_for('static', filename='images/chart.png') }}" alt="house">
+        VISUALISATION
+      </a>
+      <a class="sidebar-item" href="#">
+        <img src="{{ url_for('static', filename='images/upload.png') }}" alt="house">
+        UPLOAD DATA
+      </a>
+    </div>
+
+    {% block content %}{% endblock %}
+  </div>
 </body>
 
 </html>
-

@@ -83,8 +83,7 @@ li a:hover {
 li a:active {
   background-color: #555;
   color: white;
-}
-.upload--contentpc {
+}.upload--contentpc {
   grid-area: main;
 }
 @import url(https://fonts.googleapis.com/css?family=Roboto);.login {

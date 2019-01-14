@@ -1,5 +1,5 @@
 import React from "react";
-import "../css/VNav";
+import "../css/Layout";
 
 export default class HNav extends React.Component {
   render() {
