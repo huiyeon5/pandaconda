@@ -36,10 +36,10 @@ export default class Login extends React.Component {
 
   handleLogin(e) {
     var obj = {
-      email: "bryan@gmail.com",
-      password: "hello"
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value
     };
-    this.postData("/login_api", obj) //set object to take in the email and password
+    this.postData("/login_api", obj)
       .then(res => {
         console.log(res);
         window.location = "/home/"; 
@@ -58,7 +58,7 @@ export default class Login extends React.Component {
             <div className="welcome-msg">Welcome to DHL portal!</div>
             <div className="form-input">
               <div className="form-input2">
-                <form>
+                <form className="login-form">
                   <div className="center">
                     <label>
                       Email
