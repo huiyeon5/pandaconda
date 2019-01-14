@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
 
-.login {
+.signup {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-areas: "dhl-half form-half";
@@ -23,11 +23,10 @@
 
 .form-side {
   display: grid;
-  grid-template-rows: 2fr 3fr;
+  grid-template-rows: 250px 1fr;
   grid-template-areas:
     "welcome-msg"
     "form-input";
-  width: 100%;
   height: 100%;
 }
 .welcome-msg {
@@ -56,11 +55,11 @@
   height: 100%;
 }
 
-form {
+.signup-form {
   grid-area: fields;
 }
 
-footer {
+.signup-footer {
   grid-area: footer;
   padding: 30px;
 }
@@ -97,11 +96,26 @@ label {
 }
 
 .signup-button {
-  background-color: #5baad8;
+  background-color: #00cc72;
   padding: 8px 230px;
   font-size: 20px;
   color: white;
   border: none;
   font-family: "Roboto";
   border-radius: 4px;
+}
+
+.fullname {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "firstName lastName";
+  grid-gap: 10px;
+}
+
+.firstName {
+  grid-area: firstName;
+}
+
+.lastName {
+  grid-area: lastName;
 }

@@ -1,10 +1,10 @@
 import React from "react";
 import "../css/Signup";
 
-export default class Login extends React.Component {
+export default class Signup extends React.Component {
   render() {
     return (
-      <div className="login">
+      <div className="signup">
         <div className="dhl-half" />
         <div className="form-half">
           <div className="form-side">
@@ -12,12 +12,30 @@ export default class Login extends React.Component {
             <div className="form-input">
               <div className="form-input2">
                 <div className="center-container">
-                  <form>
+                  <form className="signup-form">
                     <div className="center">
-                      <label>
-                        Name
-                        <input type="text" id="email" name="email" />
-                      </label>
+                      <div className="fullname">
+                        <div className="firstName">
+                          <label>
+                            First Name
+                            <input
+                              type="text"
+                              id="firstName"
+                              name="firstName"
+                            />
+                          </label>
+                        </div>
+                        <div className="lastName">
+                          <label>
+                            Last Name
+                            <input
+                              type="text"
+                              id="firstName"
+                              name="firstName"
+                            />
+                          </label>
+                        </div>
+                      </div>
                     </div>
 
                     <div className="center">
@@ -36,16 +54,13 @@ export default class Login extends React.Component {
                     <br />
                     <div className="center">
                       <button className="signup-button" type="submit">
-                        Login
+                        Signup
                       </button>
                     </div>
                   </form>
                   <div className="center">
-                    <Footer text="Sing" link="login" />
-                    <Footer text="Sing" link="Sign Up" />
-                    <footer>
-                      {this.props.text}
-                      <a href="#">here</a>
+                    <footer className="signup-footer">
+                      Already an account? Login <a href="#">here</a>
                     </footer>
                   </div>
                 </div>

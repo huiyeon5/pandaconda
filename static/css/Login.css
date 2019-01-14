@@ -23,7 +23,7 @@
 
 .form-side {
   display: grid;
-  grid-template-rows: 250px 1fr;
+  grid-template-rows: 1fr 2fr;
   grid-template-areas:
     "welcome-msg"
     "form-input";
@@ -51,7 +51,7 @@
   height: 100%;
 }
 
-form {
+.login-form {
   grid-area: fields;
 }
 
@@ -106,5 +106,4 @@ label {
   border: none;
   font-family: "Roboto", sans-serif;
   border-radius: 4px;
-  cursor: pointer;
 }
