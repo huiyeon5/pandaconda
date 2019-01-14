@@ -1,7 +1,4 @@
 import React from "react";
-import "../css/Layout";
-import VNav from "./VNav";
-import HNav from "./HNav";
 import "../css/Upload";
 
 export default class Upload extends React.Component {

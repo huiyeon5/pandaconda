@@ -7,14 +7,17 @@
   background-size: cover;
   margin-top: -15px;
 }
+
 .header-contents {
   top: 50%;
   position: absolute;
 }
+
 .header-contents h1 {
   font-size: 120px;
   font-weight: 300;
 }
+
 .header-contents button {
   font-size: 35px;
   border-radius: 30px;
@@ -23,66 +26,6 @@
 
 .header-contents button:focus {
   outline: None;
-}
-.VNav {
-  width: 100vw;
-  height: 100vh;
-  display: grid;
-  grid-template-columns: 200px auto;
-  grid-template-rows: 60px auto;
-  grid-template-areas:
-    "nav header"
-    "nav main";
-  background-color: #f0f0f0;
-}
-
-.vertical-background {
-  grid-area: nav;
-  margin: 0;
-  padding: 0;
-  width: 200px;
-  background-color: #4d5762;
-  height: 100%;
-}
-
-.horizontal-background {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #ffffff;
-  grid-area: header;
-  z-index: 3;
-}
-
-.horizontal {
-  display: block;
-  color: black;
-  text-align: right;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-li.vertical {
-  display: block;
-  color: white;
-  padding: 30px 16px;
-  text-decoration: none;
-  text-align: center;
-}
-
-.nav {
-  color: white;
-  text-decoration: none;
-}
-
-li a:hover {
-  background-color: #555;
-  color: white;
-}
-
-li a:active {
-  background-color: #555;
-  color: white;
 }.upload--contentpc {
   grid-area: main;
 }
@@ -116,6 +59,7 @@ li a:active {
   width: 100%;
   height: 100%;
 }
+
 .welcome-msg {
   grid-area: welcome-msg;
   width: 100%;
@@ -125,6 +69,7 @@ li a:active {
   font-family: "Roboto", sans-serif;
   font-size: 50px;
 }
+
 .form-input {
   grid-area: form-input;
 
@@ -190,8 +135,7 @@ label {
   border: none;
   font-family: "Roboto";
   border-radius: 4px;
-}
-@import url(https://fonts.googleapis.com/css?family=Roboto);.login {
+}@import url(https://fonts.googleapis.com/css?family=Roboto);.login {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
@@ -220,6 +164,7 @@ label {
     "form-input";
   height: 100%;
 }
+
 .welcome-msg {
   grid-area: welcome-msg;
   text-align: center;
@@ -227,6 +172,7 @@ label {
   font-family: "Roboto", sans-serif;
   font-size: 30px;
 }
+
 .form-input {
   grid-area: form-input;
   height: 100%;

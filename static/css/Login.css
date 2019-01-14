@@ -9,7 +9,7 @@
 
 .dhl-half {
   grid-area: dhl-half;
-  background: url("../images/DHL logo.png");
+  background: url("../dist/images/DHL_logo.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   height: 100vh;
@@ -29,6 +29,7 @@
     "form-input";
   height: 100%;
 }
+
 .welcome-msg {
   grid-area: welcome-msg;
   text-align: center;
@@ -36,6 +37,7 @@
   font-family: "Roboto", sans-serif;
   font-size: 30px;
 }
+
 .form-input {
   grid-area: form-input;
   height: 100%;

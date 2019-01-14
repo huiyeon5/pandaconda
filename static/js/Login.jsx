@@ -42,7 +42,7 @@ export default class Login extends React.Component {
     this.postData("/login_api", obj)
       .then(res => {
         console.log(res);
-        window.location = "/home/"; 
+        window.location = "/home/";
       })
       .catch(err => {
         console.log(err);
