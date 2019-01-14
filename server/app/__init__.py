@@ -47,7 +47,13 @@ def create_app(config_name):
     def home():
         return render_template('home.html')
 
+    @app.route("/upload/")
+    def upload():
+        return render_template('upload.html')
 
+    @app.route("/visualisation/")
+    def visualisation():
+        return render_template('visualisation.html')
 # ========================================================= API START HERE ================================================
 
     @app.route('/register_api', methods=['POST'])  # API - User Registration
