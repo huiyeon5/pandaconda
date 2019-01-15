@@ -26,11 +26,12 @@
 
 .header-layout {
   grid-area: header;
-  background-color: #ffffff;
+  background-color: #fecb2f;
   margin: 0;
   padding: 0;
   overflow: hidden;
   z-index: 3;
+  box-shadow: 0 4px 2px -2px gray;
 }
 
 .sidebar-layout {
@@ -52,8 +53,8 @@
   color: white;
   padding: 1em 1em;
   text-decoration: none;
-  border-top: 0.5px solid white;
-  border-bottom: 0.5px solid white;
+  /* border-top: 0.5px solid white;
+  border-bottom: 0.5px solid white; */
   font-size: 1em;
   font-weight: 400;
   align-items: center;
@@ -62,25 +63,23 @@
 .sidebar-item>img {
   height: 2em;
   padding-right: 0.5em;
+  filter: grayscale(100%);
 }
 
 .sidebar-item:hover {
   background-color: #fecb2f;
-  color: #d00a33;
+  color: #3a3a3a;
   font-weight: 800;
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
-.sidebar-group-item {
-  display: flex;
-  flex-direction: row;
-  width: 20%;
-  height: 20%;
-  object-fit: cover;
-  justify-content: flex-start;
+.sidebar-item:hover>img {
+  filter: none;
 }
 
 .content-layout {
-  grid-area: content
+  grid-area: content;
+  padding: 3rem 2rem;
 }
 
 .horizontal {
@@ -99,8 +98,6 @@ li.vertical {
   text-align: left;
 }
 
-
-
 li a:hover {
   background-color: #555;
   color: white;
@@ -109,4 +106,8 @@ li a:hover {
 li a:active {
   background-color: #555;
   color: white;
+}
+
+.active {
+  background-color: #fecb2f;
 }
