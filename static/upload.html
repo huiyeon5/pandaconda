@@ -1,7 +1,72 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "layout.html" %} {% block content %}
 <h1>UPLOAD</h1>
 <div id="uploadPage"></div>
-<script type="text/javascript" src="{{ url_for('static', filename='js/Layout.js') }}"></script>
+<script
+  type="text/javascript"
+  src="{{ url_for('static', filename='js/Layout.js') }}"
+></script>
 <script type="text/javascript" src="../dist/bundle.js"></script>
+{% endblock content %}
+
+<head>
+  <div id="uploadPage"></div>
+  <script type="text/javascript" src="../dist/bundle.js"></script>
+  <link rel="stylesheet" href="/dist/Upload.css" />
+</head>
+
+<body>
+  <!-- <input type="file" id="button-upload"></button> -->
+  <div class="uploadtext" id="uploadedFile"></div>
+  <br />
+  <div class="dropzone" id="dropzone">Drag Files here</div>
+</body>
+
+<script>
+  (function() {
+    var dropzone = document.getElementById("dropzone");
+
+    //create a upload function, checks accept only one file and sends it to the backend "/upload/"
+    var upload = function(file) {
+      var formData = new FormData(),
+        xhr = new XMLHttpRequest();
+
+      if (file.length == 0) {
+        //upload file
+      } else if (file.length > 1) {
+        alert("Upload only one file");
+      } else {
+        document.getElementById("uploadedFile").innerHTML = file[0].name;
+      }
+
+      xhr.onload = function() {
+        var data = this.responseText;
+      };
+      xhr.open("post", "/upload_api");
+      xhr.send(FormData);
+    };
+
+    // This is for the animation of the drag n drop
+    dropzone.ondrop = function(event) {
+      event.preventDefault();
+      this.className = "dropzone";
+      upload(event.dataTransfer.files);
+    };
+
+    dropzone.ondragover = function() {
+      this.className = "dropzone dragover";
+      return false;
+    };
+
+    dropzone.ondragleave = function() {
+      this.className = "dropzone";
+      return false;
+    };
+  })();
+</script>
+
+<!-- <form action="/upload/" method="post" enctype="multipart/form-data">
+  <input type="file" name="fileToUpload" id="uploadedFile" />
+  <input type="submit" value="Upload" />
+</form> -->
+
 {% endblock content %}
