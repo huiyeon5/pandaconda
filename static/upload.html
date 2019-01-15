@@ -1,63 +1,71 @@
 {% extends "layout.html" %} {% block content %}
 <h1>UPLOAD</h1>
 <div id="uploadPage"></div>
-<script type="text/javascript" src="{{ url_for('static', filename='js/Layout.js') }}"></script>
+<script
+  type="text/javascript"
+  src="{{ url_for('static', filename='js/Layout.js') }}"
+></script>
 <script type="text/javascript" src="../dist/bundle.js"></script>
 
 <head>
-    <div id="uploadPage"></div>
-    <script type="text/javascript" src="../dist/bundle.js"></script>
-    <link rel="stylesheet" href="/dist/Upload.css" />
+  <script type="text/javascript" src="../dist/bundle.js"></script>
+  <link rel="stylesheet" href="/dist/Upload.css" />
 </head>
 
 <body>
-    <!-- <input type="file" id="button-upload"></button> -->
-    <div class="uploadtext" id="uploadedFile"></div>
-    <br />
-    <div class="dropzone" id="dropzone">Drag Files here</div>
+  <button type="submit" onclick="upload()">Upload</button>
+  <!-- <input type="file" id="button-upload"></button> -->
+  <div class="uploadtext" id="uploadedFile"></div>
+  <br />
+  <div class="dropzone" id="dropzone">Drag Files here</div>
 </body>
 
 <script>
-    (function () {
-        var dropzone = document.getElementById("dropzone");
+  var files;
 
-        //create a upload function, checks accept only one file and sends it to the backend "/upload/"
-        var upload = function (file) {
-            var formData = new FormData(),
-                xhr = new XMLHttpRequest();
+  function upload() {
+    var formData = new FormData(),
+      xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      var data = this.responseText;
+    };
+    xhr.open("post", "/upload_api/");
+    xhr.send(FormData);
+  }
 
-            if (file.length == 0) {
-                //upload file
-            } else if (file.length > 1) {
-                alert("Upload only one file");
-            } else {
-                document.getElementById("uploadedFile").innerHTML = file[0].name;
-            }
+  (function() {
+    var dropzone = document.getElementById("dropzone");
 
-            xhr.onload = function () {
-                var data = this.responseText;
-            };
-            xhr.open("post", "/upload_api");
-            xhr.send(FormData);
-        };
+    //create a upload function, checks accept only one file and sends it to the backend "/upload/"
+    var loadFile = function(file) {
+      if (file.length == 0) {
+        //upload file
+      } else if (file.length > 1) {
+        alert("Upload only one file");
+      } else {
+        document.getElementById("uploadedFile").innerHTML = file[0].name;
+      }
+    };
 
-        // This is for the animation of the drag n drop
-        dropzone.ondrop = function (event) {
-            event.preventDefault();
-            this.className = "dropzone";
-            upload(event.dataTransfer.files);
-        };
+    // This is for the animation of the drag n drop
 
-        dropzone.ondragover = function () {
-            this.className = "dropzone dragover";
-            return false;
-        };
+    dropzone.ondrop = function(event) {
+      event.preventDefault();
+      this.className = "dropzone";
+      loadFile(event.dataTransfer.files);
+      files = event.dataTransfer.files;
+    };
 
-        dropzone.ondragleave = function () {
-            this.className = "dropzone";
-            return false;
-        };
-    })();
+    dropzone.ondragover = function() {
+      this.className = "dropzone dragover";
+      return false;
+    };
+
+    dropzone.ondragleave = function() {
+      this.className = "dropzone";
+      return false;
+    };
+  })();
 </script>
 
 <!-- <form action="/upload/" method="post" enctype="multipart/form-data">
