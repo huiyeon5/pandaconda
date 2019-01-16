@@ -4,6 +4,7 @@ import App from "./App";
 import HomeContent from "./HomeContent";
 import UploadContent from "./UploadContent";
 import VisualisationContent from "./VisualisationContent";
+import Signup from "./Signup";
 
 const loginPage = document.getElementById("loginPage");
 if (loginPage) {
@@ -23,4 +24,9 @@ if (uploadPage) {
 const visualisationPage = document.getElementById("visualisationPage");
 if (visualisationPage) {
   ReactDOM.render(<VisualisationContent />, visualisationPage);
+}
+
+const signupPage = document.getElementById("signupPage");
+if (signupPage) {
+  ReactDOM.render(<Signup />, signupPage);
 }

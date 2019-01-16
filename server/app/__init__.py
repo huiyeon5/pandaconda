@@ -90,6 +90,8 @@ def create_app(config_name):
         req_body = request.get_json()
         email = req_body['email']
         password = req_body['password']
+        if email == '' or password == '':
+            return jsonify({'status': 400})
         user = User.query.filter_by(email=email).first()
         if user:
             check = user.verify_password(password)

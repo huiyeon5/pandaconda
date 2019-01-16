@@ -2,6 +2,46 @@ import React from "react";
 import "../css/Signup";
 
 export default class Signup extends React.Component {
+  checkForm() {
+    var obj = {
+      firstName: document.getElementById("firstName").value,
+      lastName: document.getElementById("lastName").value,
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value
+    };
+    var email = obj.email;
+    var password = obj.password;
+    email.includes("@");
+    password.includes();
+
+    
+    //validating all the fields
+    if(firstName == "" || lastName == "" || email=="" || password == ""){
+      alert("You have a blank field.")
+    }
+    re = /^\w+$/;
+    if(!re.test(form.username.value)) {
+      alert("Error: Username must contain only letters, numbers and underscores!");
+    
+  }
+  handleSignup(e, obj) {
+    checkForm();
+    //checking for valid email & password
+    this.postData("/register_api", obj)
+      .then(res => {
+        if (res["status"] === 400) {
+          alert("You have entered an invalid username or password");
+        } else {
+          console.log(res);
+          window.location = "/home/";
+        }
+        // }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   render() {
     return (
       <div className="signup">
@@ -16,9 +56,10 @@ export default class Signup extends React.Component {
                     <div className="center">
                       <div className="fullname">
                         <div className="firstName">
-                          <label>
+                          <label className="signup-label">
                             First Name
                             <input
+                              className="signup-input"
                               type="text"
                               id="firstName"
                               name="firstName"
@@ -26,9 +67,10 @@ export default class Signup extends React.Component {
                           </label>
                         </div>
                         <div className="lastName">
-                          <label>
+                          <label className="signup-label">
                             Last Name
                             <input
+                              className="signup-input"
                               type="text"
                               id="firstName"
                               name="firstName"
@@ -39,23 +81,31 @@ export default class Signup extends React.Component {
                     </div>
 
                     <div className="center">
-                      <label>
+                      <label className="signup-label">
                         Email
-                        <input type="text" id="email" name="email" />
+                        <input
+                          className="signup-input"
+                          type="text"
+                          id="email"
+                          name="email"
+                        />
                       </label>
                     </div>
                     <br />
                     <div className="center">
-                      <label>
+                      <label className="signup-label">
                         Password
                         <input type="password" id="password" name="password" />
                       </label>
                     </div>
                     <br />
                     <div className="center">
-                      <button className="signup-button" type="submit">
+                      <div
+                        className="signup-button"
+                        onclick={this.handleSignup}
+                      >
                         Signup
-                      </button>
+                      </div>
                     </div>
                   </form>
                   <div className="center">
