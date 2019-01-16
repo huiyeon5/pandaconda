@@ -14,7 +14,7 @@
   grid-template-areas:
     "logo header"
     "sidebar content";
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: "Nunito Sans", sans-serif;
 }
 
 .header-layout {
@@ -77,11 +77,11 @@
   margin-bottom: 7px;
 }
 
-.sidebar-item.active>img {
+.sidebar-item.active > img {
   filter: none;
 }
 
-.sidebar-item>img {
+.sidebar-item > img {
   height: 2em;
   padding-right: 0.5em;
   filter: grayscale(100%);
@@ -95,12 +95,8 @@
   transition: all ease-in-out 250ms;
 }
 
-.sidebar-item:hover>img {
+.sidebar-item:hover > img {
   filter: none;
-}
-
-.noHover {
-  pointer-events: none;
 }
 
 .content-layout {

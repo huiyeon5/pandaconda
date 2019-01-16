@@ -1,19 +1,18 @@
-console.log("In JS");
 const homePage = document.getElementById("homePage");
 if (homePage) {
-    idValue = "#home"
+  idValue = "#home";
 }
 
 const uploadPage = document.getElementById("uploadPage");
 if (uploadPage) {
-    idValue = "#upload"
+  idValue = "#upload";
 }
 
 const visualisationPage = document.getElementById("visualisationPage");
 if (visualisationPage) {
-    idValue = "#visualisation"
+  idValue = "#visualisation";
 }
 
-var $sidebarItem = $(idValue);
-$sidebarItem.addClass('noHover');
-$sidebarItem.addClass('active');
+var sidebarItem = document.querySelector(idValue);
+// $sidebarItem.addClass('noHover');
+sidebarItem.classList.add("active");
