@@ -30,3 +30,8 @@ const signupPage = document.getElementById("signupPage");
 if (signupPage) {
   ReactDOM.render(<Signup />, signupPage);
 }
+
+const tablePage = document.getElementById("tablePage");
+if (signupPage) {
+  ReactDOM.render(<Table />, signupPage);
+}

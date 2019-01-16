@@ -136,15 +136,14 @@ def create_app(config_name):
         if current_user.is_authenticated:
             if request.method == 'POST':
                 # check if the post request has the file part
-                print(request.files)
                 if 'file' not in request.files:
-                    flash('No file part')
+                    # flash('No file part')
                     return "Error"
                 file = request.files['file']
                 # if user does not select file, browser also
                 # submit an empty part without filename
                 if file.filename == '':
-                    flash('No selected file')
+                    # flash('No selected file')
                     return "Error2"
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)

@@ -134,3 +134,7 @@ input[type="password"] {
 .header-contents button:focus {
   outline: None;
 }
+.table{
+    border:2px solid black;
+    width:100%
+}

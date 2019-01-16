@@ -15,10 +15,10 @@
 </head>
 
 <body>
-  <form action="upload.php" method="post" enctype="multipart/form-data">
+  <form enctype="multipart/form-data">
     Select file to upload:
-    <input type="file" name="fileToUpload" id="fileToUpload" />
-    <input type="submit" value="Upload Image" name="submit" />
+    <input type="file" name="file" id="fileToUpload" />
+    <button type="button" onclick="upload()">UPkoad</button>
   </form>
 
   <button type="submit" onclick="upload()">Upload a file</button>
@@ -31,13 +31,15 @@
   var files;
 
   function upload() {
-    var formData = new FormData(),
-      xhr = new XMLHttpRequest();
+    var formData = new FormData();
+    formData.append('file',files[0])
+    var xhr = new XMLHttpRequest();
     xhr.onload = function() {
       var data = this.responseText;
     };
-    xhr.open("post", "/upload_api/");
-    xhr.send(FormData);
+    xhr.open("post", "/upload_api");
+    xhr.send(formData);
+    
   }
 
   (function() {
@@ -46,7 +48,7 @@
     //create a upload function, checks accept only one file and sends it to the backend "/upload/"
     var loadFile = function(file) {
       if (file.length == 0) {
-        //upload file
+        alert("Please select a file")
       } else if (file.length > 1) {
         alert("Upload only one file");
       } else {
@@ -73,5 +75,7 @@
       return false;
     };
   })();
+
+  
 </script>
 {% endblock content %}
