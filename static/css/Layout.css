@@ -1,0 +1,135 @@
+.body-layout {
+  margin: 0;
+  background-color: #f0f0f0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.layout {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 200px auto;
+  grid-template-rows: 60px auto;
+  grid-template-areas:
+    "logo header"
+    "sidebar content";
+  font-family: "Nunito Sans", sans-serif;
+}
+
+.header-layout {
+  grid-area: 1/1/1/3;
+  background-color: #fecb2f;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  z-index: 20;
+  position: relative;
+  box-shadow: 0 5px 4px -2px gray;
+}
+
+.logo-layout {
+  grid-area: logo;
+}
+
+.logo-layout img {
+  width: 100%;
+  height: 100%;
+  justify-self: center;
+  object-fit: cover;
+  z-index: 30;
+  position: relative;
+}
+
+.sidebar-layout {
+  grid-area: sidebar;
+  background-color: #4d5762;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  height: 100%;
+  font-size: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 20px;
+}
+
+.sidebar-item.active {
+  background-color: #fecb2f;
+  color: #3a3a3a;
+  font-weight: 800;
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
+  filter: none;
+}
+
+.sidebar-item {
+  display: flex;
+  color: white;
+  padding: 1em 1em;
+  text-decoration: none;
+  /* border-top: 0.5px solid white;
+  border-bottom: 0.5px solid white; */
+  font-size: 1em;
+  font-weight: 400;
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+.sidebar-item.active > img {
+  filter: none;
+}
+
+.sidebar-item > img {
+  height: 2em;
+  padding-right: 0.5em;
+  filter: grayscale(100%);
+}
+
+.sidebar-item:hover {
+  background-color: #fecb2f;
+  color: #3a3a3a;
+  font-weight: 800;
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
+  transition: all ease-in-out 250ms;
+}
+
+.sidebar-item:hover > img {
+  filter: none;
+}
+
+.content-layout {
+  grid-area: content;
+  padding: 0.6rem 2rem;
+}
+
+.horizontal {
+  display: block;
+  color: black;
+  text-align: right;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li.vertical {
+  display: block;
+  color: white;
+  padding: 30px 25px;
+  text-decoration: none;
+  text-align: left;
+}
+
+li a:hover {
+  background-color: #555;
+  color: white;
+}
+
+li a:active {
+  background-color: #555;
+  color: white;
+}
+
+.active {
+  background-color: #fecb2f;
+}
