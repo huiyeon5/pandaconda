@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, json, request, session, Bluep
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from sqlalchemy import text
 from . import check_headers
 
 # local imports
@@ -45,7 +46,7 @@ def create_app(config_name):
     migrate = Migrate(app, db)
 
     from app import models
-    from app.models import User
+    from app.models import *
 
     # Render Homepage
     @app.route("/home/")
@@ -60,11 +61,6 @@ def create_app(config_name):
     def visualisation():
         return render_template('visualisation.html')
 
-    # # Custom static data
-    # @app.route('/static/<path:filename>')
-    # def custom_static(filename):
-    #     print("test")
-    #     return send_from_directory(app.config['CUSTOM_STATIC_PATH'], filename)
 
     # upload file settings
     UPLOAD_FOLDER = 'uploads'
@@ -131,40 +127,38 @@ def create_app(config_name):
         else:
             return jsonify({'status': 400})
 
-    @app.route('/uploadData_api')
-    def uploadData():
-        # Check for Authenticated - Check for Duplicate Table name - Call Rain's Edit Distance - db.engine.execute('sql')
-        pass
-
     @app.route('/upload_api', methods=['GET', 'POST'])  # API for upload
     def upload_file():
-        if request.method == 'POST':
-            # check if the post request has the file part
-            print(request.files)
-        if 'file' not in request.files:
-            flash('No file part')
-            return "Error"
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return "Error2"
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        if current_user.is_authenticated:
+            if request.method == 'POST':
+                # check if the post request has the file part
+                print(request.files)
+                if 'file' not in request.files:
+                    flash('No file part')
+                    return "Error"
+                file = request.files['file']
+                # if user does not select file, browser also
+                # submit an empty part without filename
+                if file.filename == '':
+                    flash('No selected file')
+                    return "Error2"
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            return check_headers.suggest_headers('uploads/' + filename)
+                    value = check_headers.suggest_headers('uploads/' + filename)
+                    if value['status'] == 400:
+                        return value
+                    else:
+                        sql = f'CREATE TABLE {filename[0:len(filename)-4]}'
+                        userData = UserData(data_name=filename[0 : len(filename) - 4],user_id=current_user.id)
 
-        return '''
-        <!doctype html>
-        <title>Upload new File</title>
-        <h1>Upload new File</h1>
-        <form method=post enctype=multipart/form-data>
-        <input type=file name=file>
-        <input type=submit value=Upload>
-        </form>
-        '''
+            else:
+                return jsonify({'status':400, 'error':'Use POST request'})
+        else:
+            return jsonify({})
+        
+
 
 # ========================================================= API END HERE ================================================
 

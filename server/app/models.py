@@ -8,7 +8,7 @@ class User(UserMixin,db.Model):
     password_hash = db.Column(db.String(128), nullable=False)
     fullname = db.Column(db.String(80), nullable=False)
     company = db.Column(db.String(80), nullable=False)
-    # group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
+    group_id = db.Column(db.Integer)
 
     @property
     def password(self):
@@ -25,16 +25,19 @@ class User(UserMixin,db.Model):
         return '<User %r>' % self.id
 
 
-# class Group(db.Model):
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     user_ids = db.relationship('User', backref='group', lazy=True)
-#     manager_id = db.Column(db.Integer, db.ForeignKey('manager.id'))
+class Group(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_ids = db.Column(db.Integer)
+    manager_id = db.Column(db.Integer)
 
-#     def __repr__(self):
-#         return '<Group %d, Manager %d>' % self.id, self.manager_id
+    def __repr__(self):
+        return '<Group %d, Manager %d>' % self.id, self.manager_id
 
 
-# class UserData(db.Model):
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     data_name = db.Column(db.String(120), nullable=False)
-#     user_id = db.Column(db.Integer, nullable=False)
+class UserData(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    data_name = db.Column(db.String(120), nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return '<UserData %d %s>' % self.id, self.data_name

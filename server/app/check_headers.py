@@ -74,6 +74,7 @@ def suggest_headers(path):
                     returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'high'})                   
     #no index in the csv file
     else:
+        all_correct = True
         user_headers = [ clean_headers(header) for header in columns ]
         for i in range(len(user_headers)):
             column = user_headers[i]
@@ -86,6 +87,7 @@ def suggest_headers(path):
                 imported_as.extend(temp_headers)
                 returned_list.append({'col_header' : column, 'imported_as': imported_as, 'drop' : False, 'cosine' : 'high'})
             else:
+                all_correct = False
                 column_vec = word2vec(column)
                 ranked_headers = []
                 for valid_header in valid_headers:
@@ -104,4 +106,6 @@ def suggest_headers(path):
                     for temp in ranked_headers:
                         toReturn.append(temp[0])
                     returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'high'}) 
-    return json.dumps({'data':returned_list})
+        if not all_correct:
+            return json.dumps({"status": 200})
+    return json.dumps({'data':returned_list, "status":400})
