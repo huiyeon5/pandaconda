@@ -19,8 +19,7 @@ export default class Signup extends React.Component {
     var lastName = obj.lastName;
     var email = obj.email;
     var password = obj.password;
-    email.includes("@");
-    password.includes();
+
 
     //validating all the fields
     if (
@@ -31,14 +30,26 @@ export default class Signup extends React.Component {
     ) {
       alert("You have a blank field.");
     }
+
+    if (!email.includes("@")) {
+      alert("Please enter a valid email.")
+    }
+
+    // if (password.length < 8) {
+    //   alert("Please enter a password with at least 8 characters")
+    // }
+
+
     var re = /^\w+$/;
-    if (!re.test(firstName)) {
+    if (!re.test(firstName) || re.test(lastName)) {
       alert(
         "Error: Username must contain only letters, numbers and underscores!"
       );
     }
     return obj;
   }
+
+
   handleSignup(e) {
     var obj = this.checkForm();
     //checking for valid email & password
