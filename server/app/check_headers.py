@@ -30,6 +30,7 @@ def clean_headers(headers):
 
 def suggest_headers(path):
     valid_headers = ['Depot', 'SKU', 'Customer', 'ActivityDate', 'Inventory', 'SKUKey', 'UnitVol', 'UnitPrice']
+    header_types = {'Depot' : 'int', 'SKU' : 'int', 'Customer': 'int', 'ActivityDate' : 'date', 'Inventory' : 'int', 'SKUKey' : 'int', 'UnitVol' : 'int', 'UnitPrice' : 'int'}
 
     df = pd.read_csv(path)
     columns = list(df.columns)
@@ -40,6 +41,8 @@ def suggest_headers(path):
     if columns[0] == 'Unnamed: 0' and df[columns[0]].dtype == 'int64':
         returned_list.append({'col_header' : columns[0], 'imported_as': valid_headers.sort(), 'drop' : True, 'cosine' : 'NA'})
         user_headers = [ clean_headers(header) for header in columns ]
+        #all_correct = True
+        # return_header_types = {}
         #loop through remaining headers
         for i in range(1, len(user_headers)):
             column = user_headers[i]
@@ -51,8 +54,10 @@ def suggest_headers(path):
                 temp_headers.sort()
                 imported_as.extend(temp_headers)
                 returned_list.append({'col_header' : column, 'imported_as': imported_as, 'drop' : False, 'cosine' : 'high'})
+                # return_header_types[column] = header_types.get(column)
             #header is not part of valid list
             else:
+                #all_correct = False
                 column_vec = word2vec(column)
                 ranked_headers = []
                 for valid_header in valid_headers:
@@ -72,10 +77,17 @@ def suggest_headers(path):
                     for temp in ranked_headers:
                         toReturn.append(temp[0])
                     returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'high'})                   
+        # if not all_correct:
+        #     return json.dumps({
+        #         "status": 200,
+        #         "headers" : return_header_types,
+        #         "data" : 
+        #     })
     #no index in the csv file
     else:
         all_correct = True
         user_headers = [ clean_headers(header) for header in columns ]
+        return_header_types = {}
         for i in range(len(user_headers)):
             column = user_headers[i]
             #if header is part of the valid list
@@ -86,6 +98,7 @@ def suggest_headers(path):
                 temp_headers.sort()
                 imported_as.extend(temp_headers)
                 returned_list.append({'col_header' : column, 'imported_as': imported_as, 'drop' : False, 'cosine' : 'high'})
+                return_header_types[column] = header_types.get(column)
             else:
                 all_correct = False
                 column_vec = word2vec(column)
@@ -106,6 +119,10 @@ def suggest_headers(path):
                     for temp in ranked_headers:
                         toReturn.append(temp[0])
                     returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'high'}) 
-        if not all_correct:
-            return json.dumps({"status": 200})
+        if all_correct:
+            return json.dumps({
+                "status" : 200,
+                "headers" : return_header_types,
+                "data" : df.to_json(orient='records')
+                })
     return json.dumps({'data':returned_list, "status":400})
