@@ -1,15 +1,17 @@
 {% extends "layout.html" %} {% block content %}
 <h1>UPLOAD</h1>
 <div id="uploadPage"></div>
-<script
-  type="text/javascript"
-  src="{{ url_for('static', filename='js/Layout.js') }}"
-></script>
 <script type="text/javascript" src="../dist/bundle.js"></script>
 
 <head>
-  <script type="text/javascript" src="../dist/bundle.js"></script>
-  <link rel="stylesheet" href="/dist/Upload.css" />
+  <script
+    type="text/javascript"
+    src="{{ url_for('site.static', filename='js/Layout.js') }}"
+  ></script>
+  <link
+    rel="stylesheet"
+    href="{{ url_for('site.static', filename='css/Upload.css') }}"
+  />
 </head>
 
 <body>

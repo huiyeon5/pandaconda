@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, json, request, session
+from flask import Flask, render_template, jsonify, json, request, session, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -19,6 +19,10 @@ def create_app(config_name):
 
     # App Configurations
     app.config.from_pyfile('config.cfg', silent=True)
+    # app.config["CUSTOM_STATIC_PATH"] = "../../static"
+
+    blueprint = Blueprint('site', __name__, static_folder='../../static',template_folder='../../static')
+    app.register_blueprint(blueprint)
 
     # Database Setup
     db.init_app(app)
@@ -55,6 +59,12 @@ def create_app(config_name):
     @app.route("/visualisation/")
     def visualisation():
         return render_template('visualisation.html')
+
+    # # Custom static data
+    # @app.route('/static/<path:filename>')
+    # def custom_static(filename):
+    #     print("test")
+    #     return send_from_directory(app.config['CUSTOM_STATIC_PATH'], filename)
 
     # upload file settings
     UPLOAD_FOLDER = 'uploads'

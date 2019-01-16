@@ -11,7 +11,7 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="{{ url_for('static', filename='css/Layout.css') }}"
+      href="{{ url_for('site.static', filename='css/Layout.css') }}"
     />
     <link
       href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,700,800"
@@ -24,28 +24,28 @@
       <div class="header-layout"></div>
       <div class="logo-layout">
         <img
-          src="{{ url_for('static', filename='images/DHL_logo.png') }}"
-          alt="Logo"
+          src="{{ url_for('site.static', filename='images/DHL_Logo.png') }}"
+          alt="DHL Logo"
         />
       </div>
       <div class="sidebar-layout">
         <a id="home" class="sidebar-item" href="/home/">
           <img
-            src="{{ url_for('static', filename='images/home.png') }}"
+            src="{{ url_for('site.static', filename='images/home.png') }}"
             alt="house"
           />
           Home
         </a>
         <a id="visualisation" class="sidebar-item" href="/visualisation/">
           <img
-            src="{{ url_for('static', filename='images/chart.png') }}"
+            src="{{ url_for('site.static', filename='images/chart.png') }}"
             alt="chart"
           />
           Visualisation
         </a>
         <a id="upload" class="sidebar-item" href="/upload/">
           <img
-            src="{{ url_for('static', filename='images/upload.png') }}"
+            src="{{ url_for('site.static', filename='images/upload.png') }}"
             alt="upload"
           />
           Upload Data
