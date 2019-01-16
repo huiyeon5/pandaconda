@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, json, request, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+import check_headers
 
 # local imports
 from config import app_config
@@ -54,6 +55,14 @@ def create_app(config_name):
     @app.route("/visualisation/")
     def visualisation():
         return render_template('visualisation.html')
+
+    #upload file settings
+    UPLOAD_FOLDER = 'uploads'
+    ALLOWED_EXTENSIONS = set(['txt', 'csv'])
+    
+    def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 # ========================================================= API START HERE ================================================
 
     @app.route('/register_api', methods=['POST'])  # API - User Registration
@@ -116,6 +125,36 @@ def create_app(config_name):
     def uploadData():
         # Check for Authenticated - Check for Duplicate Table name - Call Rain's Edit Distance - db.engine.execute('sql')
         pass
+
+    @app.route('/upload_api', methods=['GET', 'POST']) # API for upload
+    def upload_file():
+        if request.method == 'POST':
+        # check if the post request has the file part
+        print(request.files)
+        if 'file' not in request.files:
+            flash('No file part')
+            return "Error"
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return "Error2"
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            return suggest_headers('uploads/' + filename)
+            
+        return '''
+        <!doctype html>
+        <title>Upload new File</title>
+        <h1>Upload new File</h1>
+        <form method=post enctype=multipart/form-data>
+        <input type=file name=file>
+        <input type=submit value=Upload>
+        </form>
+        '''
 
 # ========================================================= API END HERE ================================================
 
