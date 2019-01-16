@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, jsonify, json, request, session, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -63,8 +64,10 @@ def create_app(config_name):
 
 
     # upload file settings
-    UPLOAD_FOLDER = 'uploads'
+    UPLOAD_FOLDER = 'app/uploads'
     ALLOWED_EXTENSIONS = set(['txt', 'csv'])
+
+    app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
     def allowed_file(filename):
         return '.' in filename and \
@@ -76,16 +79,15 @@ def create_app(config_name):
         req_body = request.get_json()
         email = req_body['email']
         password = req_body['password']
-        firstname = req_body['firstname']
-        lastname = req_body['lastname']
-        company = req_body['company']
+        firstname = req_body['firstName']
+        lastname = req_body['lastName']
 
         emailExist = User.query.filter_by(email=email).first()
         if emailExist:
             return jsonify({'status': 400, 'error': 'Email Exists'})
         else:
             user = models.User(email=email, fullname=(
-                firstname+' '+lastname), company=company, password=password)
+                firstname+' '+lastname), password=password)
             db.session.add(user)
             db.session.commit()
             login_user(user)
@@ -152,6 +154,10 @@ def create_app(config_name):
                     else:
                         sql = f'CREATE TABLE {filename[0:len(filename)-4]}'
                         userData = UserData(data_name=filename[0 : len(filename) - 4],user_id=current_user.id)
+                        db.session.add(userData)
+                        db.session.commit()
+                        if os.path.exists(filename):
+                            os.remove(filename)
 
             else:
                 return jsonify({'status':400, 'error':'Use POST request'})
