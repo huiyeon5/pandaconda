@@ -30,7 +30,7 @@ def clean_headers(headers):
 
 def suggest_headers(path):
     valid_headers = ['Depot', 'SKU', 'Customer', 'ActivityDate', 'Inventory', 'SKUKey', 'UnitVol', 'UnitPrice']
-    header_types = {'Depot' : 'int', 'SKU' : 'int', 'Customer': 'int', 'ActivityDate' : 'date', 'Inventory' : 'int', 'SKUKey' : 'int', 'UnitVol' : 'int', 'UnitPrice' : 'int'}
+    header_types = {'Depot' : 'int', 'SKU' : 'int', 'Customer': 'int', 'ActivityDate' : 'date', 'Inventory' : 'int', 'SKUKey' : 'int', 'UnitVol' : 'double', 'UnitPrice' : 'double'}
 
     df = pd.read_csv(path)
     columns = list(df.columns)
@@ -124,5 +124,5 @@ def suggest_headers(path):
                 "status" : 200,
                 "headers" : return_header_types,
                 "data" : df.to_json(orient='records')
-                })
+            })
     return json.dumps({'data':returned_list, "status":400})

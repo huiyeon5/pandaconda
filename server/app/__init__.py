@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from sqlalchemy import text
+from werkzeug.utils import secure_filename
 from . import check_headers
 
 # local imports
@@ -38,11 +39,21 @@ def create_app(config_name):
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.filter_by(id=user_id).first()
+        
+    @app.route("/")
+    def index():
+        if not current_user.is_authenticated:
+            return login()
+        else:
+            return render_template('home.html')
 
     # Default Render
-    @app.route('/')
-    def index():
-        return render_template('login.html')
+    @app.route('/login')
+    def login():
+        if current_user.is_authenticated:
+            return home()
+        else:
+            return render_template('login.html')
 
     # Migrating the db.Models from the Models.py file to MySQL
     migrate = Migrate(app, db)
@@ -51,17 +62,20 @@ def create_app(config_name):
     from app.models import User, UserData
 
     # Render Homepage
-    @app.route("/home/")
-    def home():
-        return render_template('home.html')
 
     @app.route("/upload/")
     def upload():
-        return render_template('upload.html')
+        if not current_user.is_authenticated:
+            return login()
+        else:
+            return render_template('upload.html')
 
     @app.route("/visualisation/")
     def visualisation():
-        return render_template('visualisation.html')
+        if not current_user.is_authenticated:
+            return login()
+        else:
+            return render_template('visualisation.html')
 
     # upload file settings
     UPLOAD_FOLDER = 'app/uploads'
@@ -133,40 +147,75 @@ def create_app(config_name):
 
     @app.route('/upload_api', methods=['GET', 'POST'])  # API for upload
     def upload_file():
-        if current_user.is_authenticated:
-            if request.method == 'POST':
-                # check if the post request has the file part
-                if 'file' not in request.files:
-                    # flash('No file part')
-                    return "Error"
-                file = request.files['file']
-                # if user does not select file, browser also
-                # submit an empty part without filename
-                if file.filename == '':
-                    # flash('No selected file')
-                    return "Error2"
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    file.save(os.path.join(
-                        app.config['UPLOAD_FOLDER'], filename))
+        # if current_user.is_authenticated:
+        if request.method == 'POST':
+            # check if the post request has the file part
+            print(request.files)
+            if 'file' not in request.files:
+                # flash('No file part')
+                return jsonify({'status':400, 'error':'No File Part'})
+            file = request.files['file']
+            # if user does not select file, browser also
+            # submit an empty part without filename
+            if file.filename == '':
+                # flash('No selected file')
+                return jsonify({'status':401, 'error':'No Selected File'})
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                
+                value = json.loads(check_headers.suggest_headers('app/uploads/' + filename))
+                print(type(json.loads(value['data'])))
+                if value['status'] == 400:
+                    return jsonify(value)
+                else:
+                    header = "("
+                    headerNoType ="("
+                    headerOrder = []
+                    for k,v in value['headers'].items():
+                        header = header + k + " "
+                        headerNoType += k + ","
+                        headerOrder.append(k)
+                        if(v == 'int'):
+                            header = header + "INT"
+                        elif(v == 'string'):
+                            header = header + "VARCHAR(MAX)"
+                        elif(v == 'date'):
+                            header = header + "DATE"
+                        elif(v == 'double'):
+                            header = header + "FLOAT"
+                        header = header + ','
+                    header = header[0:len(header)-1] +')'
+                    print(header)
+                    sql = f'CREATE TABLE {filename[0:len(filename)-4]+"_"+str(current_user.id)} {header}'
 
-                    value = check_headers.suggest_headers(
-                        'uploads/' + filename)
-                    if value['status'] == 400:
-                        return value
-                    else:
-                        sql = f'CREATE TABLE {filename[0:len(filename)-4]}'
-                        userData = UserData(data_name=filename[0: len(
-                            filename) - 4], user_id=current_user.id)
-                        db.session.add(userData)
-                        db.session.commit()
-                        if os.path.exists(filename):
-                            os.remove(filename)
+                    insertSQL = f'INSERT INTO {filename[0:len(filename)-4]+"_"+str(current_user.id)} {headerNoType[0: len(headerNoType) - 1] + ")"} VALUES '
+                    v=""
+                    for item in json.loads(value['data']):
+                        v = v + "("
+                        for el in headerOrder:
+                            i = item[el]
+                            if i is None or isinstance(i,str) or type(i) is str:
+                                i = 0
+                            v = v + "'" +str(i) + "',"
+                        v = v[0: len(v) - 1] + "),"
 
-            else:
-                return jsonify({'status': 400, 'error': 'Use POST request'})
+                    insertSQL += v[0:len(v) - 1] +";"
+
+                    db.engine.execute(text(sql))
+                    db.engine.execute(text(insertSQL))
+                    f = filename[0:len(filename) - 4]+ "_" +str(current_user.id)
+                    userData = UserData(data_name=f, user_id=current_user.id)
+                    db.session.add(userData)
+                    db.session.commit()
+                    if os.path.exists(filename):
+                        os.remove(filename)
+                    return jsonify({"status":200})
+
         else:
-            return jsonify({})
+            return jsonify({'status': 400, 'error': 'Use POST request'})
+        # else:
+        #     return jsonify({})
 
 
 # ========================================================= API END HERE ================================================
