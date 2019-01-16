@@ -17,3 +17,8 @@
   text-align: center;
   color: blue;
 }
+
+.upload-button {
+  display: flex;
+  align-items: right;
+}
