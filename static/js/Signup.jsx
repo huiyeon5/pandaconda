@@ -2,6 +2,11 @@ import React from "react";
 import "../css/Signup";
 
 export default class Signup extends React.Component {
+  constructor() {
+    super();
+    this.checkForm = this.checkForm.bind(this);
+    this.handleSignup = this.handleSignup.bind(this);
+  }
   checkForm() {
     var obj = {
       firstName: document.getElementById("firstName").value,
@@ -9,24 +14,35 @@ export default class Signup extends React.Component {
       email: document.getElementById("email").value,
       password: document.getElementById("password").value
     };
+
+    var firstName = obj.firstName;
+    var lastName = obj.lastName;
     var email = obj.email;
     var password = obj.password;
     email.includes("@");
     password.includes();
 
-    
     //validating all the fields
-    if(firstName == "" || lastName == "" || email=="" || password == ""){
-      alert("You have a blank field.")
+    if (
+      firstName === "" ||
+      lastName === "" ||
+      email === "" ||
+      password === ""
+    ) {
+      alert("You have a blank field.");
     }
-    re = /^\w+$/;
-    if(!re.test(form.username.value)) {
-      alert("Error: Username must contain only letters, numbers and underscores!");
-    
+    var re = /^\w+$/;
+    if (!re.test(firstName)) {
+      alert(
+        "Error: Username must contain only letters, numbers and underscores!"
+      );
+    }
+    return obj;
   }
-  handleSignup(e, obj) {
-    checkForm();
+  handleSignup(e) {
+    var obj = this.checkForm();
     //checking for valid email & password
+    console.log(obj);
     this.postData("/register_api", obj)
       .then(res => {
         if (res["status"] === 400) {
@@ -40,6 +56,20 @@ export default class Signup extends React.Component {
       .catch(err => {
         console.log(err);
       });
+  }
+  async postData(url, bodyObj) {
+    console.log(JSON.stringify(bodyObj));
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(bodyObj)
+    });
+    const body = await response.json();
+    console.log(body);
+    return body;
   }
 
   render() {
@@ -72,8 +102,8 @@ export default class Signup extends React.Component {
                             <input
                               className="signup-input"
                               type="text"
-                              id="firstName"
-                              name="firstName"
+                              id="lastName"
+                              name="lastName"
                             />
                           </label>
                         </div>
@@ -102,7 +132,7 @@ export default class Signup extends React.Component {
                     <div className="center">
                       <div
                         className="signup-button"
-                        onclick={this.handleSignup}
+                        onClick={this.handleSignup}
                       >
                         Signup
                       </div>

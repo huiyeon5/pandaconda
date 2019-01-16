@@ -23,7 +23,8 @@ def create_app(config_name):
     app.config.from_pyfile('config.cfg', silent=True)
     # app.config["CUSTOM_STATIC_PATH"] = "../../static"
 
-    blueprint = Blueprint('site', __name__, static_folder='../../static',template_folder='../../static')
+    blueprint = Blueprint(
+        'site', __name__, static_folder='../../static', template_folder='../../static')
     app.register_blueprint(blueprint)
 
     # Database Setup
@@ -61,7 +62,6 @@ def create_app(config_name):
     @app.route("/visualisation/")
     def visualisation():
         return render_template('visualisation.html')
-
 
     # upload file settings
     UPLOAD_FOLDER = 'app/uploads'
@@ -148,9 +148,11 @@ def create_app(config_name):
                     return "Error2"
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    file.save(os.path.join(
+                        app.config['UPLOAD_FOLDER'], filename))
 
-                    value = check_headers.suggest_headers('uploads/' + filename)
+                    value = check_headers.suggest_headers(
+                        'uploads/' + filename)
                     if value['status'] == 400:
                         return value
                     else:
@@ -162,10 +164,9 @@ def create_app(config_name):
                             os.remove(filename)
 
             else:
-                return jsonify({'status':400, 'error':'Use POST request'})
+                return jsonify({'status': 400, 'error': 'Use POST request'})
         else:
             return jsonify({})
-        
 
 
 # ========================================================= API END HERE ================================================
