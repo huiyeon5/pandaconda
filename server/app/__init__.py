@@ -46,7 +46,7 @@ def create_app(config_name):
     migrate = Migrate(app, db)
 
     from app import models
-    from app.models import *
+    from app.models import User, UserData
 
     # Render Homepage
     @app.route("/home/")
