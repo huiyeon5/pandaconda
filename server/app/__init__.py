@@ -23,7 +23,8 @@ def create_app(config_name):
     app.config.from_pyfile('config.cfg', silent=True)
     # app.config["CUSTOM_STATIC_PATH"] = "../../static"
 
-    blueprint = Blueprint('site', __name__, static_folder='../../static',template_folder='../../static')
+    blueprint = Blueprint(
+        'site', __name__, static_folder='../../static', template_folder='../../static')
     app.register_blueprint(blueprint)
 
     # Database Setup
@@ -62,7 +63,6 @@ def create_app(config_name):
     def visualisation():
         return render_template('visualisation.html')
 
-
     # upload file settings
     UPLOAD_FOLDER = 'app/uploads'
     ALLOWED_EXTENSIONS = set(['txt', 'csv'])
@@ -98,6 +98,8 @@ def create_app(config_name):
         req_body = request.get_json()
         email = req_body['email']
         password = req_body['password']
+        if email == '' or password == '':
+            return jsonify({'status': 400})
         user = User.query.filter_by(email=email).first()
         if user:
             check = user.verify_password(password)
@@ -146,24 +148,26 @@ def create_app(config_name):
                     return "Error2"
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    file.save(os.path.join(
+                        app.config['UPLOAD_FOLDER'], filename))
 
-                    value = check_headers.suggest_headers('uploads/' + filename)
+                    value = check_headers.suggest_headers(
+                        'uploads/' + filename)
                     if value['status'] == 400:
                         return value
                     else:
                         sql = f'CREATE TABLE {filename[0:len(filename)-4]}'
-                        userData = UserData(data_name=filename[0 : len(filename) - 4],user_id=current_user.id)
+                        userData = UserData(data_name=filename[0: len(
+                            filename) - 4], user_id=current_user.id)
                         db.session.add(userData)
                         db.session.commit()
                         if os.path.exists(filename):
                             os.remove(filename)
 
             else:
-                return jsonify({'status':400, 'error':'Use POST request'})
+                return jsonify({'status': 400, 'error': 'Use POST request'})
         else:
             return jsonify({})
-        
 
 
 # ========================================================= API END HERE ================================================

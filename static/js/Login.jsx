@@ -41,8 +41,13 @@ export default class Login extends React.Component {
     };
     this.postData("/login_api", obj)
       .then(res => {
-        console.log(res);
-        window.location = "/home/";
+        if (res["status"] === 400) {
+          alert("You have entered an invalid username or password");
+        } else {
+          console.log(res);
+          window.location = "/home/";
+        }
+        // }
       })
       .catch(err => {
         console.log(err);
@@ -62,7 +67,7 @@ export default class Login extends React.Component {
                   <div className="center">
                     <label>
                       Email
-                      <input type="text" id="email" name="email" />
+                      <input type="email" id="email" name="email" />
                     </label>
                   </div>
 
@@ -81,7 +86,7 @@ export default class Login extends React.Component {
                 </form>
                 <div className="center center-footer">
                   <footer>
-                    Do not have an account? Sign up <a href="#">here</a>
+                    Do not have an account? Sign up <a href="/signup">here</a>
                   </footer>
                 </div>
               </div>
