@@ -99,22 +99,26 @@ export default class Signup extends React.Component {
                         <div className="firstName">
                           <label className="signup-label">
                             First Name
+                            <br/>
                             <input
                               className="signup-input"
                               type="text"
                               id="firstName"
                               name="firstName"
+                              
                             />
                           </label>
                         </div>
                         <div className="lastName">
                           <label className="signup-label">
                             Last Name
+                            <br/>
                             <input
                               className="signup-input"
                               type="text"
                               id="lastName"
                               name="lastName"
+                              
                             />
                           </label>
                         </div>
@@ -124,19 +128,22 @@ export default class Signup extends React.Component {
                     <div className="center">
                       <label className="signup-label">
                         Email
+                        <br/>
                         <input
                           className="signup-input"
                           type="text"
                           id="email"
                           name="email"
+                          
                         />
                       </label>
                     </div>
-                    <br />
+                    
                     <div className="center">
                       <label className="signup-label">
                         Password
-                        <input type="password" id="password" name="password" />
+                        <br/>
+                        <input className="signup-input" type="password" id="password" name="password"/>
                       </label>
                     </div>
                     <br />

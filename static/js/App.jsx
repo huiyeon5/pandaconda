@@ -1,5 +1,5 @@
 import React from "react";
-import Table from "./Table";
+import Signup from "./Signup";
 import { PageHeader } from "react-bootstrap";
 
 require("../css/fullstack.css");
@@ -9,7 +9,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <Table />
+        <Signup />
       </div>
     );
   }

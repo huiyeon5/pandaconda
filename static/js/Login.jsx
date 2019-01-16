@@ -64,17 +64,20 @@ export default class Login extends React.Component {
             <div className="form-input">
               <div className="form-input2">
                 <form className="login-form">
+                  
                   <div className="center">
                     <label>
                       Email
-                      <input type="email" id="email" name="email" />
+                      <br/>
+                      <input className = "login-username-input" type="email" id="email" name="email" />
                     </label>
                   </div>
-
+                  <br/>
                   <div className="center">
                     <label>
                       Password
-                      <input type="password" id="password" name="password" />
+                      <br/>
+                      <input className = "login-password-input" type="password" id="password" name="password" />
                     </label>
                   </div>
 
@@ -85,7 +88,7 @@ export default class Login extends React.Component {
                   </div>
                 </form>
                 <div className="center center-footer">
-                  <footer>
+                  <footer className="login-footer">
                     Do not have an account? Sign up <a href="/signup">here</a>
                   </footer>
                 </div>
