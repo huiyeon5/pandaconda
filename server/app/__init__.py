@@ -157,7 +157,8 @@ def create_app(config_name):
                         return value
                     else:
                         sql = f'CREATE TABLE {filename[0:len(filename)-4]}'
-                        userData = UserData(data_name=filename[0 : len(filename) - 4],user_id=current_user.id)
+                        userData = UserData(data_name=filename[0: len(
+                            filename) - 4], user_id=current_user.id)
                         db.session.add(userData)
                         db.session.commit()
                         if os.path.exists(filename):
