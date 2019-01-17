@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, jsonify, json, request, session, Blueprint
+from flask import Flask, render_template, jsonify, json, request, session, Blueprint, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -43,7 +43,7 @@ def create_app(config_name):
     @app.route("/")
     def index():
         if not current_user.is_authenticated:
-            return login_r()
+            return redirect(url_for('login_r'))
         else:
             return render_template('home.html')
 
@@ -51,7 +51,7 @@ def create_app(config_name):
     @app.route('/login')
     def login_r():
         if current_user.is_authenticated:
-            return index()
+            return redirect('/')
         else:
             return render_template('login.html')
 
@@ -66,14 +66,14 @@ def create_app(config_name):
     @app.route("/upload/")
     def upload():
         if not current_user.is_authenticated:
-            return login_r()
+            return redirect(url_for('login_r'))
         else:
             return render_template('upload.html')
 
     @app.route("/visualisation/")
     def visualisation():
         if not current_user.is_authenticated:
-            return login_r()
+            return redirect(url_for('login_r'))
         else:
             return render_template('visualisation.html')
 
@@ -86,7 +86,7 @@ def create_app(config_name):
         if current_user.is_authenticated:
             return render_template('editTable.html')
         else:
-            login_r()
+            redirect(url_for('login_r'))
     
     # upload file settings
     UPLOAD_FOLDER = 'app/uploads'
