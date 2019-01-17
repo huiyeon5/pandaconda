@@ -31,6 +31,12 @@ const config = {
           publicPath: "/dist/"
         }
       }
+    ],
+    loaders: [
+      {
+        test: /\.json$/,
+        loader: "json-loader"
+      }
     ]
   },
   plugins: [new ExtractTextPlugin("styles.css")]

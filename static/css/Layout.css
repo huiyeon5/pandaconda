@@ -2,7 +2,7 @@
   margin: 0;
   background-color: #f0f0f0;
   height: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .layout {
@@ -22,7 +22,6 @@
   background-color: #fecb2f;
   margin: 0;
   padding: 0;
-  overflow: hidden;
   z-index: 20;
   position: relative;
   box-shadow: 0 5px 4px -2px gray;
@@ -42,6 +41,7 @@
 }
 
 .sidebar-layout {
+  box-sizing: border-box;
   grid-area: sidebar;
   background-color: #4d5762;
   color: #ffffff;
@@ -101,7 +101,11 @@
 
 .content-layout {
   grid-area: content;
-  padding: 0.6rem 2rem;
+  box-sizing: border-box;
+  padding: 1rem 1.5rem;
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
 }
 
 .horizontal {

@@ -1,0 +1,33 @@
+.vis-container {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-areas: "parameters display";
+  /* border: 1px solid black; */
+  box-sizing: border-box;
+  grid-gap: 9px;
+  height: 100%;
+}
+
+.vis-parameters {
+  box-sizing: border-box;
+  grid-area: parameters;
+  background-color: white;
+  padding: 40px 10px;
+  height: 100%;
+  border-radius: 5px;
+  box-shadow: 0 4px 4px -2px gray;
+  /* border-right: 1px dotted grey; */
+}
+
+.vis-display {
+  box-sizing: border-box;
+  grid-area: display;
+  background-color: white;
+  padding-left: 10px;
+  padding-right: 60px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  box-shadow: 0 4px 4px -2px gray;
+  height: 100%;
+  border-radius: 5px;
+}
