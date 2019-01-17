@@ -32,6 +32,6 @@ if (signupPage) {
 }
 
 const tablePage = document.getElementById("tablePage");
-if (signupPage) {
-  ReactDOM.render(<Table />, signupPage);
+if (tablePage) {
+  ReactDOM.render(<Table />, tablePage);
 }

@@ -45,7 +45,7 @@ export default class Login extends React.Component {
           alert("You have entered an invalid username or password");
         } else {
           console.log(res);
-          window.location = "/home/";
+          window.location = "/";
         }
         // }
       })

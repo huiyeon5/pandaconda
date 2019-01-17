@@ -19,12 +19,14 @@
   height: 100%;
 }
 
-.form-side {
+.form-side_s {
   display: grid;
-  grid-template-rows: 2fr 5fr;
+  grid-template-rows: 200px auto;
   grid-template-areas:
     "welcome-msg"
     "form-input";
+    height:100%;
+    width:100%;
 }
 
 .welcome-msg {
@@ -34,31 +36,29 @@
   justify-content: center;
   text-align: center;
   font-family: "Roboto", sans-serif;
-  font-size: 50px;
+  font-size: 30px;
 }
 
-.form-input {
+.form-input_s {
   grid-area: form-input;
-  height:100%
-}
-
-.form-input2 {
   display: grid;
-  grid-template-rows: 2fr 1fr;
+  width: 100%;
+  height: 100%;
+  grid-template-rows: 4fr 1fr;
   grid-template-areas:
     "fields"
     "footer";
-  width: 100%;
-  height: 100%;
 }
 
-.signup-form {
+.signup-form_s {
   grid-area: fields;
+  margin:0;
+  height:100%;
 }
 
-.signup-footer {
+.center-footer {
   grid-area: footer;
-  padding: 30px;
+  /* border:1px solid black; */
 }
 
 .center {
@@ -69,8 +69,8 @@
 
 .signup-input {
   width: 500px;
-  padding: 12px 20px;
-  margin: 8px 0;
+  padding: 8px 20px;
+  /* margin: 8px 0; */
   display: inline-block;
   border-radius: 4px;
   box-sizing: border-box;
@@ -95,12 +95,18 @@
 
 .signup-button {
   background-color: #5baad8;
-  padding: 8px 230px;
+  /* padding: 8px 230px; */
+  width: 560px;
+  height: 50px;
   font-size: 20px;
   color: white;
   border: none;
   font-family: "Roboto";
   border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 .page-header {
   min-height: 100%;
@@ -130,4 +136,110 @@
 
 .header-contents button:focus {
   outline: None;
+}
+@import url(https://fonts.googleapis.com/css?family=Roboto);.login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "dhl-half form-half";
+}
+
+.dhl-half {
+  grid-area: dhl-half;
+  background: url(/dist/2292ed15e04c4d29e82aa0e9bf2afeac.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+.form-half {
+  grid-area: form-half;
+  background: white;
+  height: 100vh;
+}
+
+.form-side {
+  display: grid;
+  grid-template-rows: 1fr 2fr;
+  grid-template-areas:
+    "welcome-msg"
+    "form-input";
+  height: 100%;
+}
+
+.welcome-msg {
+  grid-area: welcome-msg;
+  text-align: center;
+  justify-self: center;
+  font-family: "Roboto", sans-serif;
+  font-size: 30px;
+}
+
+.form-input {
+  grid-area: form-input;
+  height: 100%;
+}
+
+.form-input2 {
+  display: grid;
+  grid-template-rows: 2fr 1fr;
+  grid-template-areas:
+    "fields"
+    "footer";
+  height: 100%;
+}
+
+.login-form {
+  grid-area: fields;
+}
+
+.login-footer {
+  padding: 30px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center-footer {
+  grid-area: footer;
+}
+
+.login-username-input, .login-password-input {
+  width: 500px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #fcfcfc;
+  border: solid 1px #eeeeee;
+}
+
+/* .login-password-input {
+  width: 500px;
+  height:50px;
+  box-sizing: border-box;
+  background-color: #fcfcfc;
+  border: solid 1px #eeeeee;
+  border-radius: 4px;
+} */
+
+
+
+label {
+  font-family: "Roboto", sans-serif;
+  color: #a3a3a3;
+}
+
+.login-button {
+  background-color: #5baad8;
+  padding: 8px 230px;
+  font-size: 20px;
+  color: white;
+  border: none;
+  font-family: "Roboto", sans-serif;
+  border-radius: 4px;
 }

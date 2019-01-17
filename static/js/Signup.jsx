@@ -40,12 +40,12 @@ export default class Signup extends React.Component {
     // }
 
 
-    var re = /^\w+$/;
-    if (!re.test(firstName) || re.test(lastName)) {
-      alert(
-        "Error: Username must contain only letters, numbers and underscores!"
-      );
-    }
+    // var re = /^\w+$/;
+    // if (!re.test(firstName) || re.test(lastName)) {
+    //   alert(
+    //     "Error: Username must contain only letters, numbers and underscores!"
+    //   );
+    // }
     return obj;
   }
 
@@ -60,7 +60,7 @@ export default class Signup extends React.Component {
           alert("You have entered an invalid username or password");
         } else {
           console.log(res);
-          window.location = "/home/";
+          window.location = "/";
         }
         // }
       })
@@ -88,81 +88,52 @@ export default class Signup extends React.Component {
       <div className="signup">
         <div className="dhl-half" />
         <div className="form-half">
-          <div className="form-side">
+          <div className="form-side_s">
             <div className="welcome-msg">Join the DHL Family now!</div>
-            <div className="form-input">
-              <div className="form-input2">
-                <div className="center-container">
-                  <form className="signup-form">
+            <div className="form-input_s">
+                <form className="signup-form_s">
                     <div className="center">
-                      <div className="fullname">
-                        <div className="firstName">
-                          <label className="signup-label">
-                            First Name
-                            <br/>
-                            <input
-                              className="signup-input"
-                              type="text"
-                              id="firstName"
-                              name="firstName"
-                              
-                            />
-                          </label>
+                        <div className="fullname">
+                            <div className="firstName">
+                                <label className="signup-label">
+                                First Name
+                                <br/>
+                                <input className="signup-input" type="text" id="firstName" name="firstName"/>
+                                </label>
+                            </div>
+                            <div className="lastName">
+                                <label className="signup-label">
+                                Last Name
+                                <br/>
+                                <input className="signup-input" type="text" id="lastName" name="lastName"/>
+                                </label>
+                            </div>
                         </div>
-                        <div className="lastName">
-                          <label className="signup-label">
-                            Last Name
-                            <br/>
-                            <input
-                              className="signup-input"
-                              type="text"
-                              id="lastName"
-                              name="lastName"
-                              
-                            />
-                          </label>
-                        </div>
-                      </div>
                     </div>
-
                     <div className="center">
-                      <label className="signup-label">
+                        <label className="signup-label">
                         Email
                         <br/>
-                        <input
-                          className="signup-input"
-                          type="text"
-                          id="email"
-                          name="email"
-                          
-                        />
-                      </label>
+                        <input className="signup-input" type="text" id="email" name="email"/>
+                        </label>
                     </div>
-                    
                     <div className="center">
-                      <label className="signup-label">
+                        <label className="signup-label">
                         Password
                         <br/>
                         <input className="signup-input" type="password" id="password" name="password"/>
-                      </label>
+                        </label>
                     </div>
                     <br />
                     <div className="center">
-                      <div
-                        className="signup-button"
-                        onClick={this.handleSignup}
-                      >
-                        Signup
-                      </div>
+                        <div className="signup-button" onClick={this.handleSignup}>Signup</div>
                     </div>
-                  </form>
-                  <div className="center">
+                </form>
+                <div className="center center-footer">
                     <footer className="signup-footer">
-                      Already an account? Login <a href="#">here</a>
+                        Already an account? Login <a href="/login">here</a>
                     </footer>
-                  </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>

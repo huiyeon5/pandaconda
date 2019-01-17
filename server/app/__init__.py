@@ -43,15 +43,15 @@ def create_app(config_name):
     @app.route("/")
     def index():
         if not current_user.is_authenticated:
-            return login()
+            return login_r()
         else:
             return render_template('home.html')
 
     # Default Render
     @app.route('/login')
-    def login():
+    def login_r():
         if current_user.is_authenticated:
-            return home()
+            return index()
         else:
             return render_template('login.html')
 
@@ -66,16 +66,20 @@ def create_app(config_name):
     @app.route("/upload/")
     def upload():
         if not current_user.is_authenticated:
-            return login()
+            return login_r()
         else:
             return render_template('upload.html')
 
     @app.route("/visualisation/")
     def visualisation():
         if not current_user.is_authenticated:
-            return login()
+            return login_r()
         else:
             return render_template('visualisation.html')
+
+    @app.route('/signup')
+    def signup_r():
+        return render_template('signup.html')
 
     # upload file settings
     UPLOAD_FOLDER = 'app/uploads'
@@ -139,7 +143,6 @@ def create_app(config_name):
                 'current_user': {
                     'name': current_user.fullname,
                     'email': current_user.email,
-                    'company': current_user.company
                 }
             })
         else:

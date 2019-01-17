@@ -36,6 +36,7 @@
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
       var data = this.responseText;
+      alert("Upload Successful")
     };
     xhr.open("post", "/upload_api");
     xhr.send(formData);
