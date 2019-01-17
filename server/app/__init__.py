@@ -227,6 +227,16 @@ def create_app(config_name):
         # else:
         #     return jsonify({})
 
+    @app.route('/get_all_dataset_api')
+    def get_all_dataset_api():
+        if current_user.is_authenticated:
+            c_id = current_user.id
+            ds_names = UserData.query.filter_by(user_id=c_id).all()
+            print(ds_names)
+            return jsonify({'datasets':[d.data_name for d in ds_names]})
+        else:
+            return jsonify({'status':400})
+
 
 # ========================================================= API END HERE ================================================
 
