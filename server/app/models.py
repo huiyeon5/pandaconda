@@ -40,4 +40,4 @@ class UserData(db.Model):
     user_id = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return '<UserData %d %s>' % self.id, self.data_name
+        return '<UserData %d %s>' % (self.id, self.data_name)
