@@ -5,6 +5,8 @@ import HomeContent from "./HomeContent";
 import UploadContent from "./UploadContent";
 import VisualisationContent from "./VisualisationContent";
 import Signup from "./Signup";
+import EditTable from "./EditTable"
+
 
 const loginPage = document.getElementById("loginPage");
 if (loginPage) {
@@ -33,5 +35,5 @@ if (signupPage) {
 
 const tablePage = document.getElementById("tablePage");
 if (tablePage) {
-  ReactDOM.render(<Table />, tablePage);
+  ReactDOM.render(<EditTable />, tablePage);
 }

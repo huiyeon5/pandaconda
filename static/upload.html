@@ -1,6 +1,4 @@
 {% extends "layout.html" %} {% block content %}
-<h1>UPLOAD</h1>
-<div id="uploadPage"></div>
 <script type="text/javascript" src="../dist/bundle.js"></script>
 
 <head>
@@ -21,10 +19,17 @@
     <button type="button" onclick="upload()">UPkoad</button>
   </form> -->
 
-  <button type="submit" onclick="upload()">Upload a file</button>
-  <div class="uploadtext" id="uploadedFile"></div>
+  
+  <div class="uploadtext" ><strong id="uploadedFile"></strong></div>
   <br />
-  <div class="dropzone" id="dropzone">Drag Files here</div>
+  <div class="dropzone" id="dropzone">
+    Drag and drop files here
+  </div>
+  <br/>
+  
+  <div class = "align-right">
+    <button class = "upload-btn" type="submit" onclick="upload()">Upload</button>
+  </div>
 </body>
 
 <script>

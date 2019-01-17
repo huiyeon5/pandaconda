@@ -5,23 +5,43 @@
 .dropzone {
   display: flex;
   width: 100%;
-  height: 70%;
+  height: 80%;
   border: 2px dashed #ccc;
-  color: #000;
+  color: #a3a3a3;
   justify-content: center;
   align-items: center;
+  background-color:#F0F2F9;
 }
 
 .dropzone.dragover {
   border-color: #000;
-  color: #000;
+  background-color: #88aaff;
+  color: #000000;
 }
 
 .uploadtext {
   color: blue;
-}
+  }
 
-.upload-button {
+.align-right {
   display: flex;
   align-items: right;
+  justify-content: right;
+}
+
+.upload-btn{
+  background: #fecb2f;
+  padding: 15px 32px;
+  text-align: center;
+  border:none;
+  font-size:14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border-radius:5px;
+}
+
+.upload-btn:hover{
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border-radius:5px;
+
 }

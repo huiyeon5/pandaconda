@@ -1,8 +1,8 @@
 import React from "react";
-import "../css/Table"
+import "../css/EditTable.css"
 
 
-export default class Table extends React.Component {
+export default class EditTable extends React.Component {
     constructor(){
         super()
         this.state = {
@@ -20,6 +20,9 @@ export default class Table extends React.Component {
         this.fillTable = this.fillTable.bind(this);
     }
 
+    componentDidMount(){
+        this.fillTable()
+    }
     // async postData(url, bodyObj) {
     //     const response = await fetch(url, {
     //         method: "POST",
@@ -59,13 +62,20 @@ export default class Table extends React.Component {
                 
                 //First Column
                 var newRow = document.createElement("TR")
+                newRow.classList.add("tr")
+                newRow.classList.add(`tr${i+1}`)
                 var data1 = document.createElement("TD")
+                // data1.setAttribute("className", "r"+i+"c0")
+                data1.classList.add(`td`);
+                data1.classList.add(`td1`);
                 var val1 = document.createTextNode(data.col_header)
                 data1.appendChild(val1)
                 newRow.appendChild(data1)
                 
                 //Second Column
                 var data2 = document.createElement("TD")
+                data2.classList.add(`td`);
+                data2.classList.add(`td2`);
                 var select = document.createElement("SELECT")
                 if (data.imported_as){
                     for(j=0; j<data.imported_as.length; j=j+1){
@@ -80,13 +90,17 @@ export default class Table extends React.Component {
                 
                 //Third Column
                 var data3 = document.createElement("TD")
+                data3.classList.add(`td`);
+                data3.classList.add(`td3`);
                 var check = document.createElement("input")
                 check.setAttribute("type", "checkbox")
                 data3.appendChild(check)
                 newRow.appendChild(data3)
-
+                
                 //Fourth Column
                 var data4 = document.createElement("TD")
+                data4.classList.add(`td`);
+                data4.classList.add(`td4`);
                 var check2 = document.createElement("input")
                 check2.setAttribute("type", "checkbox")
                 data4.appendChild(check2)
@@ -105,11 +119,11 @@ export default class Table extends React.Component {
     render() {
         return(
             
-            <div>
-                <button onClick={this.fillTable}>here</button>
+            <div className = "table-container">
+                {/* <button onClick={this.fillTable}>here</button> */}
                 <table className="table" id="table" >
                     <tbody className="tBody">
-                        <tr>
+                        <tr className="header-edittable header-value">
                             <th>CSV Headers</th>
                             <th>Valid Headers</th> 
                             <th>Rename Header</th>

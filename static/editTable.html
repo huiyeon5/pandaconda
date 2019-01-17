@@ -1,0 +1,21 @@
+{% extends "layout.html" %} {% block content %}
+<h1>HEADERS</h1>
+<div id="tablePage"></div>
+<script type="text/javascript" src="../dist/bundle.js"></script>
+
+<head>
+  <link
+    rel="stylesheet"
+    href="{{ url_for('site.static', filename='css/EditTable.css') }}"
+  />
+  <script
+  type="text/javascript"
+  src="{{ url_for('site.static', filename='js/Layout.js') }}"
+></script>
+</head> 
+
+<body>
+  <script type="text/javascript" src="../dist/bundle.js"></script>
+</body>
+
+{% endblock content %}
