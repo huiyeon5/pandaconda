@@ -5,6 +5,10 @@
   /* overflow: hidden; */
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .layout {
   width: 100vw;
   height: 100vh;
