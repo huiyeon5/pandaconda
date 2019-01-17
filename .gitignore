@@ -8,3 +8,4 @@ server/instance
 server/app/__pycache__
 static/dist/bundle.js
 static/dist/styles.css
+static/dist
