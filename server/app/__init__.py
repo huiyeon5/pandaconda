@@ -81,6 +81,13 @@ def create_app(config_name):
     def signup_r():
         return render_template('signup.html')
 
+    @app.route('/upload/edit_table')
+    def edit_table():
+        if current_user.is_authenticated:
+            return render_template('editTable.html')
+        else:
+            login_r()
+    
     # upload file settings
     UPLOAD_FOLDER = 'app/uploads'
     ALLOWED_EXTENSIONS = set(['txt', 'csv'])
