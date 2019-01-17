@@ -232,11 +232,28 @@ def create_app(config_name):
         if current_user.is_authenticated:
             c_id = current_user.id
             ds_names = UserData.query.filter_by(user_id=c_id).all()
-            print(ds_names)
-            return jsonify({'datasets':[d.data_name for d in ds_names]})
+            return jsonify({'datasets':[d.data_name[0: d.data_name.rfind("_")] for d in ds_names]})
         else:
             return jsonify({'status':400})
 
+    @app.route('/get_data_api', methods=["POST"])
+    def get_data_api():
+        if current_user.is_authenticated:
+            req = request.get_json()
+            # dataset = req['selectedData'] + "_" + str(current_user.id)
+            dataset = req['selectedData'] + "_" + str(3)
+            headers = db.engine.execute(f'
+            ')
+            head_list = [row[0] for row in headers]
+            data = db.engine.execute(f'SELECT * FROM {dataset}')
+            l = []
+            for row in data:
+                obj = {}
+                for i in range(len(head_list)):
+                    obj[head_list[i]] = row[i]
+                l.append(obj)
+            return jsonify({'data':l,'status':200})
+        return jsonify({'status':400})
 
 # ========================================================= API END HERE ================================================
 
