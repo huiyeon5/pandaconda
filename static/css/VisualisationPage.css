@@ -1,27 +1,27 @@
-.vis-container {
+/* VisDisplay CSS */
+.vis-display-container {
   display: grid;
   grid-template-columns: 1fr 3fr;
-  grid-template-areas: "parameters display";
-  /* border: 1px solid black; */
+  grid-template-rows: 9fr 1fr;
+  grid-template-areas: "sidebar chart" "back next";
   box-sizing: border-box;
   grid-gap: 9px;
   height: 100%;
 }
 
-.vis-parameters {
+.vis-display-sidebar {
   box-sizing: border-box;
-  grid-area: parameters;
+  grid-area: sidebar;
   background-color: white;
   padding: 40px 10px;
   height: 100%;
   border-radius: 5px;
   box-shadow: 0 4px 4px -2px gray;
-  /* border-right: 1px dotted grey; */
 }
 
-.vis-display {
+.vis-display-chart {
   box-sizing: border-box;
-  grid-area: display;
+  grid-area: chart;
   background-color: white;
   padding-left: 10px;
   padding-right: 60px;
@@ -30,4 +30,121 @@
   box-shadow: 0 4px 4px -2px gray;
   height: 100%;
   border-radius: 5px;
+}
+
+/* VisSelect CSS */
+.vis-select-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 9fr 1fr;
+  grid-template-areas: "dataset chart" "back next";
+  box-sizing: border-box;
+  grid-gap: 9px;
+  height: 100%;
+}
+
+.vis-select-dataset {
+  box-sizing: border-box;
+  grid-area: dataset;
+  background-color: white;
+  padding: 40px 10px;
+  height: 100%;
+  border-radius: 5px;
+  box-shadow: 0 4px 4px -2px gray;
+}
+
+.vis-select-chart {
+  box-sizing: border-box;
+  grid-area: chart;
+  background-color: white;
+  padding-left: 10px;
+  padding-right: 60px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  box-shadow: 0 4px 4px -2px gray;
+  height: 100%;
+  border-radius: 5px;
+}
+
+/* VisNav Buttons CSS */
+.vis-next {
+  grid-area: next;
+  align-self: center;
+  justify-self: end;
+}
+
+.vis-back {
+  grid-area: back;
+  align-self: center;
+  justify-self: start;
+}
+
+button {
+  width: 130px;
+  height: 40px;
+  background: #fecb2f;
+  border: none;
+  border-radius: 5px;
+  position: relative;
+  border-bottom: 4px solid #f2ad62;
+  color: rgb(35, 35, 35);
+  font-weight: 700;
+  font-size: 15px;
+  text-align: left;
+  text-indent: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 4px -2px gray;
+}
+
+button:active {
+  top: 1.5px;
+}
+
+/* Next Button CSS */
+button.next:after {
+  content: "";
+  width: 0;
+  height: 0;
+  display: block;
+  border-top: 20px solid #ff7f50;
+  border-bottom: 20px solid #ff7f50;
+  border-left: 16px solid transparent;
+  border-right: 20px solid #ff7f50;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-radius: 0 5px 5px 0;
+}
+
+/* Back Button CSS */
+button.back {
+  text-align: right;
+  padding-right: 12px;
+  box-sizing: border-box;
+}
+
+button.back:after {
+  content: "";
+  width: 0;
+  height: 0;
+  display: block;
+  border-top: 20px solid #ff7f50;
+  border-bottom: 20px solid #ff7f50;
+  border-right: 16px solid transparent;
+  border-left: 20px solid #ff7f50;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 5px 0 0 5px;
+}
+
+/* General Button CSS */
+
+button.general {
+  width: 40px;
+  text-align: center;
+  text-indent: 0;
+}
+button.general:after {
+  display: none;
 }

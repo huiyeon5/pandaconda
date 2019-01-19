@@ -240,8 +240,8 @@ def create_app(config_name):
     def get_data_api():
         if current_user.is_authenticated:
             req = request.get_json()
-            # dataset = req['selectedData'] + "_" + str(current_user.id)
-            dataset = req['selectedData'] + "_" + str(3)
+            dataset = req['selectedData'] + "_" + str(current_user.id)
+            # dataset = req['selectedData'] + "_" + str(3)
             headers = db.engine.execute(f'Show columns from {dataset}')
             head_list = [row[0] for row in headers]
             data = db.engine.execute(f'SELECT * FROM {dataset}')

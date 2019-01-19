@@ -1,5 +1,7 @@
 import React from "react";
 import "../css/VisualisationPage";
+import "../css/VisSelection.css";
+import VisSelection from "./VisSelection";
 import {
   ResponsiveContainer,
   LineChart,
@@ -10,14 +12,19 @@ import {
   Tooltip,
   Legend
 } from "recharts";
+import VisChart from "./VisChart";
 
 var $ = require("jquery");
 
 export default class VisualisationContent extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      currentPage: "selection",
+      test: true
+    };
     this.callBackendAPI = this.callBackendAPI.bind(this);
+    this.navPageHandler = this.navPageHandler.bind(this);
   }
 
   /*
@@ -73,37 +80,51 @@ export default class VisualisationContent extends React.Component {
     return body;
   }
 
+  /*
+  <div className="vis-container">
+    <div className="vis-parameters">
+      
+    </div>
+    <div className="vis-display">
+      <ResponsiveContainer width="100%" height={500}>
+        <LineChart
+          // width={600}
+          // height={300}
+          data={this.state.data}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
+          <XAxis dataKey="ActivityDate" minTickGap={30} />
+          <YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="Inventory"
+            stroke="#8884d8"
+            activeDot={{ r: 8 }}
+            dot={false}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  </div>
+  */
+
+  navPageHandler(value) {
+    console.log("clicked " + value);
+    this.setState({ currentPage: value });
+  }
+
   render() {
-    {
-      this.getData();
+    if (this.state.currentPage === "selection") {
+      console.log("Vis Selection");
+      console.log(this.state);
+      return <VisSelection handler={this.navPageHandler} />;
+    } else if (this.state.currentPage === "chart") {
+      console.log("Vis Display");
+      console.log(this.state);
+      return <VisChart handler={this.navPageHandler} />;
     }
-    return (
-      <div className="vis-container">
-        <div className="vis-parameters" />
-        <div className="vis-display">
-          <ResponsiveContainer width="100%" height={500}>
-            <LineChart
-              // width={600}
-              // height={300}
-              data={this.state.data}
-              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-            >
-              <XAxis dataKey="ActivityDate" minTickGap={30} />
-              <YAxis />
-              <CartesianGrid strokeDasharray="3 3" />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="Inventory"
-                stroke="#8884d8"
-                activeDot={{ r: 8 }}
-                dot={false}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-    );
   }
 }
