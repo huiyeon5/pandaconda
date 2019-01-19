@@ -17,6 +17,43 @@ export default class VisualisationContent extends React.Component {
   constructor() {
     super();
     this.state = {};
+    this.callBackendAPI = this.callBackendAPI.bind(this);
+  }
+
+  /*
+  Example Code:
+  
+  componentDidMount() {
+    const posts = new Request("https://jsonplaceholder.typicode.com/posts", {
+      method: "GET",
+      "Content-Type": "application/json"
+    });
+
+    fetch(posts)
+      .then(response => {
+        return response.json();
+      })
+      .then(posts => {
+        // When the promise has resolved we can adjust our state letting the UI know that we're no longer loading
+        // and that we're ready to start showing some posts.
+        debugger;
+        this.setState({
+          posts,
+          loading: !this.state.loading
+        });
+      });
+  }
+  */
+
+  componentDidMount() {
+    console.log("In ComponentDidMount method");
+    this.callBackendAPI("/get_all_dataset_api")
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   getData() {
@@ -24,6 +61,16 @@ export default class VisualisationContent extends React.Component {
     this.state = {
       data: sampleData
     };
+  }
+
+  // GET METHOD CALL
+  async callBackendAPI(url) {
+    const response = await fetch(url);
+    const body = await response.json();
+    if (response.status !== 200) {
+      throw Error(body.message);
+    }
+    return body;
   }
 
   render() {
