@@ -74,23 +74,24 @@
   grid-area: 1/1/2/2;
   justify-self: center;
   align-self: center;
-  color: #ff7f50;
+  color: #333333;
   font-family: "Roboto", sans-serif;
   font-size: 24px;
   font-weight: 900;
   text-align: center;
   text-transform: uppercase;
+  text-shadow: 1px 2px 1px rgba(128, 128, 128, 0.3);
 }
 
 /* dataset item design */
-.vis-select-dataset > form > .inputGroup {
+.vis-card-grid > form > .inputGroup {
   background-color: #fff;
   display: block;
   margin: 10px 0;
   position: relative;
 }
 
-.vis-select-dataset > form > .inputGroup label {
+.vis-card-grid > form > .inputGroup label {
   padding: 12px 30px;
   border: 0.5px dotted #ff6868;
   width: 100%;
@@ -104,12 +105,12 @@
   overflow: hidden;
 }
 
-.vis-select-dataset > form > .inputGroup label:hover {
+.vis-card-grid > form > .inputGroup label:hover {
   background: #fff2ed;
   transition: all ease-in-out 100ms;
 }
 
-.vis-select-dataset > form > .inputGroup label:before {
+.vis-card-grid > form > .inputGroup label:before {
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -124,7 +125,7 @@
   z-index: -1;
 }
 
-.vis-select-dataset > form > .inputGroup label:after {
+.vis-card-grid > form > .inputGroup label:after {
   width: 32px;
   height: 32px;
   content: "";
@@ -143,22 +144,22 @@
   transition: all 200ms ease-in;
 }
 
-.vis-select-dataset > form > .inputGroup input:checked ~ label {
+.vis-card-grid > form > .inputGroup input:checked ~ label {
   color: #fff;
   /*   text-shadow: 1px 2px 1px rgba(0, 0, 0, 0.3); */
 }
 
-.vis-select-dataset > form > .inputGroup input:checked ~ label:before {
+.vis-card-grid > form > .inputGroup input:checked ~ label:before {
   transform: translate(-50%, -50%) scale3d(56, 56, 1);
   opacity: 1;
 }
 
-.vis-select-dataset > form > .inputGroup input:checked ~ label:after {
+.vis-card-grid > form > .inputGroup input:checked ~ label:after {
   background-color: #3cb371;
   border-color: #3cb371;
 }
 
-.vis-select-dataset > form > .inputGroup input {
+.vis-card-grid > form > .inputGroup input {
   width: 32px;
   height: 32px;
   order: 1;
@@ -171,12 +172,12 @@
   visibility: hidden;
 }
 
-.vis-select-dataset > form {
+.vis-card-grid > form {
   /* padding: 0 16px; */
   /* max-width: 550px; */
   /* margin: 50px auto; */
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   font-family: inherit;
   line-height: 30px;
   text-transform: uppercase;
