@@ -22,66 +22,75 @@ export default class VisualisationContent extends React.Component {
       currentPage: "selection",
       datasetNames: [
         {
-          id: "item-1",
+          id: "dataset-name-1",
           name: "inventory.csv"
         },
         {
-          id: "item-2",
+          id: "dataset-name-2",
           name: "sku.csv"
         },
         {
-          id: "item-3",
+          id: "dataset-name-3",
           name: "movement.csv"
+        }
+      ],
+      chartTypes: [
+        {
+          id: "line-chart",
+          name: "Line Chart"
+        },
+        {
+          id: "column-chart",
+          name: "Column Chart"
+        },
+        {
+          id: "bar-chart",
+          name: "Bar Chart"
+        },
+        {
+          id: "stacked-bar-chart",
+          name: "Stacked Bar Chart"
+        },
+        {
+          id: "synchronised-line-chart",
+          name: "Synchronised Line Chart"
+        },
+        {
+          id: "scatter-chart",
+          name: "Scatter Chart"
+        },
+        {
+          id: "box-plot",
+          name: "Box Plot"
         }
       ],
       test: true
     };
     this.callBackendAPI = this.callBackendAPI.bind(this);
     this.navPageHandler = this.navPageHandler.bind(this);
+    this.selectDatasetHandler = this.selectDatasetHandler.bind(this);
+    this.selectChartTypeHandler = this.selectChartTypeHandler.bind(this);
   }
 
-  /*
-  Example Code:
-  
-  componentDidMount() {
-    const posts = new Request("https://jsonplaceholder.typicode.com/posts", {
-      method: "GET",
-      "Content-Type": "application/json"
-    });
+  // componentDidMount() {
+  //   console.log("In ComponentDidMount method");
+  //   this.callBackendAPI("/get_all_dataset_api")
+  //     .then(res => {
+  //       console.log(res);
+  //       console.log(res.datasets);
+  //       this.setState({ datasetNames: res.datasets });
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }
 
-    fetch(posts)
-      .then(response => {
-        return response.json();
-      })
-      .then(posts => {
-        // When the promise has resolved we can adjust our state letting the UI know that we're no longer loading
-        // and that we're ready to start showing some posts.
-        debugger;
-        this.setState({
-          posts,
-          loading: !this.state.loading
-        });
-      });
-  }
-  */
-
-  componentDidMount() {
-    console.log("In ComponentDidMount method");
-    this.callBackendAPI("/get_all_dataset_api")
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
-  getData() {
-    var sampleData = require("./SampleData.js").data;
-    this.state = {
-      data: sampleData
-    };
-  }
+  // getData() {
+  //   var sampleData = require("./SampleData.js").data;
+  //   this.state = {
+  //     data: sampleData
+  //   };
+  // }
 
   // GET METHOD CALL
   async callBackendAPI(url) {
@@ -93,40 +102,19 @@ export default class VisualisationContent extends React.Component {
     return body;
   }
 
-  /*
-  <div className="vis-container">
-    <div className="vis-parameters">
-      
-    </div>
-    <div className="vis-display">
-      <ResponsiveContainer width="100%" height={500}>
-        <LineChart
-          // width={600}
-          // height={300}
-          data={this.state.data}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-        >
-          <XAxis dataKey="ActivityDate" minTickGap={30} />
-          <YAxis />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="Inventory"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-            dot={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  </div>
-  */
-
   navPageHandler(value) {
     console.log("clicked " + value);
     this.setState({ currentPage: value });
+  }
+
+  selectDatasetHandler(value) {
+    console.log("Change state of 'selectedDataset' to " + value);
+    this.setState({ selectedDataset: value });
+  }
+
+  selectChartTypeHandler(value) {
+    console.log("Change state of 'selectedChartType' to " + value);
+    this.setState({ selectedChartType: value });
   }
 
   render() {
@@ -137,6 +125,9 @@ export default class VisualisationContent extends React.Component {
         <VisSelection
           handler={this.navPageHandler}
           datasetItems={this.state.datasetNames}
+          chartTypes={this.state.chartTypes}
+          selectDatasetHandler={this.selectDatasetHandler}
+          selectChartTypeHandler={this.selectChartTypeHandler}
         />
       );
     } else if (this.state.currentPage === "chart") {
