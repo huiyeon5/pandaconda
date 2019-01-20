@@ -13,15 +13,27 @@ export default class EditTable extends React.Component {
                     {col_header: "Customer", imported_as: ["Customer", "ActivityDate", "Depot", "Inventory", "SKU", "Unnamed"], drop: false, cosine: "high"}, {col_header: "ActivityDate", imported_as: ["ActivityDate", "Customer", "Depot", "Inventory", "SKU", "Unnamed"], drop: false, cosine: "high"}, {col_header: "Inventory", imported_as: ["Inventory", "ActivityDate", "Customer", "Depot", "SKU", "Unnamed"], drop: false, cosine: "high"}
                         ], 
                     status: 400 
-            }
+            },
+            check:{value: ""}
+        
         };
         //this.loadTable = this.loadTable.bind(this);
         //this.postData = this.postData.bind(this);
         this.fillTable = this.fillTable.bind(this);
+        this.checkInput = this.checkInput.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount(){
-        this.fillTable()
+        this.fillTable() 
+       
+        
+    }
+
+
+    handleChange(event){
+       this.checkInput() //where do i put this method? Is it even useful
+       this.setState.check({value:event.target.value});
     }
     // async postData(url, bodyObj) {
     //     const response = await fetch(url, {
@@ -51,8 +63,6 @@ export default class EditTable extends React.Component {
     //         });
     // }
 
-
-    //{"col_header": "Depot", "imported_as": ["Depot", "ActivityDate", "Customer", "Inventory", "SKU", "Unnamed"]"drop": false, "cosine": "high"}
     fillTable(){
         var i;
         var j;
@@ -103,6 +113,7 @@ export default class EditTable extends React.Component {
                 data4.classList.add(`td4`);
                 var check2 = document.createElement("input")
                 check2.setAttribute("type", "checkbox")
+                check2.setAttribute("onchange", "{this.handleChange.bind(this)}")
                 data4.appendChild(check2)
                 newRow.appendChild(data4)
 
@@ -110,17 +121,28 @@ export default class EditTable extends React.Component {
                 document.querySelector(".tBody").appendChild(newRow)
 
             }
-            
+    }
 
-            
+    checkInput(){
+        console.log("checkInput entered")
+        var trList = document.getElementsByClassName("tr"); //taking list of tr elements
 
+        // looping tr elements to check for 3rd child if checked, disable first child (select)
+        for(var i=0; i<trList.length; i++){
+            var dropCell = trList[i].children[3] //this refers to the dropheader td
+            if(dropCell.getAttribute("checked")){
+                document.getElementById(String(trList[i].children[1].toString)).disabled
+                this.state.check.concat(trList[i].children[1])
+            }
         }
+        console.log(this.state.check)
+
+
+    }
     
     render() {
         return(
-            
             <div className = "table-container">
-                {/* <button onClick={this.fillTable}>here</button> */}
                 <table className="table" id="table" >
                     <tbody className="tBody">
                         <tr className="header-edittable header-value">
