@@ -12,14 +12,18 @@ export default class VisSelectDataSet extends React.Component {
       datasetItem
     ) {
       return (
-        <VisSelectDataSetItem key={datasetItem.id} name={datasetItem.name} />
+        <VisSelectDataSetItem
+          key={datasetItem.id}
+          id={datasetItem.id}
+          name={datasetItem.name}
+        />
       );
     });
 
     return (
       <div className="vis-select-dataset vis-card-grid">
         <div className="vis-card-title">Select Your Dataset</div>
-        <div className="vis-card-items">{datasetItemComponents}</div>
+        <form className="form">{datasetItemComponents}</form>
       </div>
     );
   }
