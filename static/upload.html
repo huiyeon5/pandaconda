@@ -40,8 +40,12 @@
     formData.append('file',files[0])
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
-      var data = this.responseText;
-      alert("Upload Successful")
+        var data = JSON.parse(this.responseText);
+        if(data["status"] == 200){ 
+            alert("Data has been successfully uploaded!")
+            window.location = '/visualisation'
+        }
+        
     };
     xhr.open("post", "/upload_api");
     xhr.send(formData);

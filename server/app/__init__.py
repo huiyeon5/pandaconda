@@ -6,6 +6,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from sqlalchemy import text
 from werkzeug.utils import secure_filename
 from . import check_headers
+import datetime
 
 # local imports
 from config import app_config
@@ -175,58 +176,73 @@ def create_app(config_name):
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 
                 value = json.loads(check_headers.suggest_headers('app/uploads/' + filename))
-                print(type(json.loads(value['data'])))
                 if value['status'] == 400:
                     return jsonify(value)
                 else:
-                    header = "("
-                    headerNoType ="("
-                    headerOrder = []
-                    for k,v in value['headers'].items():
-                        header = header + k + " "
-                        headerNoType += k + ","
-                        headerOrder.append(k)
-                        if(v == 'int'):
-                            header = header + "INT"
-                        elif(v == 'string'):
-                            header = header + "VARCHAR(MAX)"
-                        elif(v == 'date'):
-                            header = header + "DATE"
-                        elif(v == 'double'):
-                            header = header + "FLOAT"
-                        header = header + ','
-                    header = header[0:len(header)-1] +')'
-                    print(header)
-                    sql = f'CREATE TABLE {filename[0:len(filename)-4]+"_"+str(current_user.id)} {header}'
-
-                    insertSQL = f'INSERT INTO {filename[0:len(filename)-4]+"_"+str(current_user.id)} {headerNoType[0: len(headerNoType) - 1] + ")"} VALUES '
-                    v=""
-                    for item in json.loads(value['data']):
-                        v = v + "("
-                        for el in headerOrder:
-                            i = item[el]
-                            if i is None or isinstance(i,str) or type(i) is str:
-                                i = 0
-                            v = v + "'" +str(i) + "',"
-                        v = v[0: len(v) - 1] + "),"
-
-                    insertSQL += v[0:len(v) - 1] +";"
-
-                    db.engine.execute(text(sql))
-                    db.engine.execute(text(insertSQL))
                     f = filename[0:len(filename) - 4]+ "_" +str(current_user.id)
-                    userData = UserData(data_name=f, user_id=current_user.id)
-                    db.session.add(userData)
-                    db.session.commit()
-                    if os.path.exists(filename):
-                        os.remove(filename)
-                    return jsonify({"status":200})
+                    has = UserData.query.filter_by(data_name=f).first()
+                    if has is None:
+                        header = "("
+                        headerNoType ="("
+                        headerOrder = []
+                        dateIndex = []
+                        d = 0
+                        for k,v in value['headers'].items():
+                            header = header + k + " "
+                            headerNoType += k + ","
+                            headerOrder.append(k)
+                            if(v == 'int'):
+                                header = header + "INT"
+                            elif(v == 'string'):
+                                header = header + "VARCHAR(MAX)"
+                            elif(v == 'date'):
+                                header = header + "DATE"
+                                dateIndex.append(d)
+                            elif(v == 'double'):
+                                header = header + "FLOAT"
+                            header = header + ','
+                            d = d + 1
+                        header = header[0:len(header)-1] +')'
+
+                        sql = f'CREATE TABLE {filename[0:len(filename)-4]+"_"+str(current_user.id)} {header}'
+
+                        insertSQL = f'INSERT INTO {filename[0:len(filename)-4]+"_"+str(current_user.id)} {headerNoType[0: len(headerNoType) - 1] + ")"} VALUES '
+                        v=""
+                        for item in json.loads(value['data']):
+                            v = v + "("
+                            for el in range(len(headerOrder)):
+                                i = item[headerOrder[el]]
+                                if i is None:
+                                    v = v + "NULL,"
+                                else:
+                                    if el in dateIndex:
+                                        i = convertToDate(i)
+                                        if i is None:
+                                            v = v + "NULL,"
+                                        else:
+                                            v = v + "'" +str(i) + "',"
+                                    else:
+                                        v = v + "'" +str(i) + "',"
+                            v = v[0: len(v) - 1] + "),"
+
+                        insertSQL += v[0:len(v) - 1] +";"
+                        db.engine.execute(text(sql))
+                        db.engine.execute(text(insertSQL))
+                        userData = UserData(data_name=f, user_id=current_user.id)
+                        db.session.add(userData)
+                        db.session.commit()
+                        if os.path.exists(filename):
+                            os.remove(filename)
+                        return jsonify({"status":200})
+                    else:
+                        return jsonify({"status":400, "error": "Dataset exists"})
 
         else:
             return jsonify({'status': 400, 'error': 'Use POST request'})
         # else:
         #     return jsonify({})
-
+    
+    
     @app.route('/get_all_dataset_api')
     def get_all_dataset_api():
         if current_user.is_authenticated:
@@ -252,7 +268,15 @@ def create_app(config_name):
                     obj[head_list[i]] = row[i]
                 l.append(obj)
             return jsonify({'data':l,'status':200})
+
         return jsonify({'status':400})
+
+    def convertToDate(i):
+        dateList = i.split("/")
+        if len(dateList) != 3:
+            return None
+        date = datetime.date(int(dateList[2]), int(dateList[1]), int(dateList[0]))
+        return date
 
 # ========================================================= API END HERE ================================================
 
