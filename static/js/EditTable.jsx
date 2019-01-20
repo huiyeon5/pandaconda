@@ -33,6 +33,7 @@ export default class EditTable extends React.Component {
 
     handleChange(event){
        this.checkInput() //where do i put this method? Is it even useful
+       console.log(event);
        this.setState.check({value:event.target.value});
     }
     // async postData(url, bodyObj) {
@@ -112,8 +113,20 @@ export default class EditTable extends React.Component {
                 data4.classList.add(`td`);
                 data4.classList.add(`td4`);
                 var check2 = document.createElement("input")
+                check2.classList.add(`check-${i+1}`)
                 check2.setAttribute("type", "checkbox")
-                check2.setAttribute("onchange", "{this.handleChange.bind(this)}")
+                // check2.setAttribute("onchange", "{this.handleChange.bind(this)}")
+                check2.addEventListener("change", function(e) {
+                    var className = e.target.classList[0];
+                    var index = parseInt(className.substring(className.indexOf("-")+1, className.length));
+                    var row = document.querySelector(`.tr${index} > .td2 > select`);
+                    console.log(row)
+                    if(row.disabled) {
+                        row.disabled = false;
+                    }else {
+                        row.disabled = true;
+                    }
+                })
                 data4.appendChild(check2)
                 newRow.appendChild(data4)
 
