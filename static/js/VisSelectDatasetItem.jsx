@@ -15,8 +15,3 @@ export default class VisSelectDataSetItem extends React.Component {
     );
   }
 }
-
-{
-  /* <input id={this.props.id} name="radio" type="radio" />
-<label htmlFor={this.props.id}>{this.props.name} </label> */
-}
