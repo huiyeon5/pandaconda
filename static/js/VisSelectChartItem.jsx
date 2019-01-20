@@ -1,7 +1,7 @@
 import React from "react";
 import "../css/VisualisationPage";
 
-export default class VisSelectDatasetItem extends React.Component {
+export default class VisSelectChartItem extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -13,7 +13,7 @@ export default class VisSelectDatasetItem extends React.Component {
           id={this.props.id}
           name="radio"
           type="radio"
-          onChange={() => this.props.selectDatasetHandler(this.props.name)}
+          onChange={() => this.props.selectChartTypeHandler(this.props.name)}
         />
         <label htmlFor={this.props.id}>{this.props.name}</label>
       </div>

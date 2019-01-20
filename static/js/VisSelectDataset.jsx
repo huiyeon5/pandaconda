@@ -8,6 +8,7 @@ export default class VisSelectDataSet extends React.Component {
   }
 
   render() {
+    const selectDatasetHandler = this.props.selectDatasetHandler;
     const datasetItemComponents = this.props.datasetItems.map(function(
       datasetItem
     ) {
@@ -16,6 +17,7 @@ export default class VisSelectDataSet extends React.Component {
           key={datasetItem.id}
           id={datasetItem.id}
           name={datasetItem.name}
+          selectDatasetHandler={selectDatasetHandler}
         />
       );
     });
