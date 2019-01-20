@@ -13,7 +13,7 @@ export default class VisSelection extends React.Component {
   render() {
     return (
       <div className="vis-select-container">
-        <VisSelectDataset />
+        <VisSelectDataset datasetItems={this.props.datasetItems} />
         <VisSelectChart />
         <VisNavBackButton handler={this.props.handler} />
         <VisNavNextButton handler={this.props.handler} />

@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:900");
+
 /* VisDisplay CSS */
 .vis-display-container {
   display: grid;
@@ -47,7 +49,7 @@
   box-sizing: border-box;
   grid-area: dataset;
   background-color: white;
-  padding: 40px 10px;
+  padding: 10px 70px;
   height: 100%;
   border-radius: 5px;
   box-shadow: 0 4px 4px -2px gray;
@@ -57,13 +59,76 @@
   box-sizing: border-box;
   grid-area: chart;
   background-color: white;
-  padding-left: 10px;
-  padding-right: 60px;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding: 10px 70px;
   box-shadow: 0 4px 4px -2px gray;
   height: 100%;
   border-radius: 5px;
+}
+
+.vis-card-grid {
+  display: grid;
+  grid-template-rows: 1fr 9fr;
+}
+
+.vis-card-title {
+  grid-area: 1/1/2/2;
+  justify-self: center;
+  align-self: center;
+  color: #ff7f50;
+  font-family: "Roboto", sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* dataset item design */
+.vis-card-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.vis-card-item {
+  display: flex;
+}
+
+.vis-card-item label {
+  background: black;
+  color: white;
+}
+
+/* .vis-card-item label input {
+  opacity: 0;
+} */
+/* Styles for alert... 
+by the way it is so weird when you look at your code a couple of years after you wrote it XD */
+
+.alert {
+  box-sizing: border-box;
+  background-color: #0dff92;
+  width: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 300;
+  padding: 20px 40px;
+  color: #333;
+}
+
+.alert h2 {
+  font-size: 22px;
+  color: #232323;
+  margin-top: 0;
+}
+
+.alert p {
+  line-height: 1.6em;
+  font-size: 18px;
+}
+
+.alert a {
+  color: #232323;
+  font-weight: bold;
 }
 
 /* VisNav Buttons CSS */

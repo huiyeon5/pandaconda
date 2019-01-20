@@ -1,6 +1,5 @@
 import React from "react";
 import "../css/VisualisationPage";
-import "../css/VisSelection.css";
 import VisSelection from "./VisSelection";
 import {
   ResponsiveContainer,
@@ -21,6 +20,20 @@ export default class VisualisationContent extends React.Component {
     super();
     this.state = {
       currentPage: "selection",
+      datasetNames: [
+        {
+          id: "item-1",
+          name: "inventory.csv"
+        },
+        {
+          id: "item-2",
+          name: "sku.csv"
+        },
+        {
+          id: "item-3",
+          name: "movement.csv"
+        }
+      ],
       test: true
     };
     this.callBackendAPI = this.callBackendAPI.bind(this);
@@ -120,7 +133,12 @@ export default class VisualisationContent extends React.Component {
     if (this.state.currentPage === "selection") {
       console.log("Vis Selection");
       console.log(this.state);
-      return <VisSelection handler={this.navPageHandler} />;
+      return (
+        <VisSelection
+          handler={this.navPageHandler}
+          datasetItems={this.state.datasetNames}
+        />
+      );
     } else if (this.state.currentPage === "chart") {
       console.log("Vis Display");
       console.log(this.state);

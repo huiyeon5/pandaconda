@@ -47,6 +47,7 @@
     "webpack": "^3.0.0"
   },
   "dependencies": {
-    "recharts": "^1.4.2"
+    "recharts": "^1.4.2",
+    "sass": "^1.16.1"
   }
 }
