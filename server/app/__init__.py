@@ -16,7 +16,6 @@ db = SQLAlchemy()
 
 # Creating App
 
-
 def create_app(config_name):
     app = Flask(__name__, static_folder='../../static/dist',
                 template_folder='../../static', instance_relative_config=True)
@@ -156,7 +155,8 @@ def create_app(config_name):
         else:
             return jsonify({'status': 400})
 
-    nonLocal = None
+
+
     @app.route('/upload_api', methods=['GET', 'POST'])  # API for upload
     def upload_file():
         # if current_user.is_authenticated:
@@ -177,10 +177,8 @@ def create_app(config_name):
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 
                 value = json.loads(check_headers.suggest_headers('app/uploads/' + filename))
-                nonlocal nonLocal
                 if value['status'] == 400:
-                    nonLocal = value
-                    print(nonLocal)
+                    session['editData'] = value
                     return jsonify(value)
                 else:
                     f = filename[0:len(filename) - 4]+ "_" +str(current_user.id)
@@ -285,12 +283,11 @@ def create_app(config_name):
     
     @app.route("/update_api")
     def update_api():
-        if nonLocal == None:
+        print("here")
+        if 'editData' not in session or session['editData'] == None:
             return jsonify({"status":500})
         else:
-            nonlocal nonLocal
-            value = nonLocal
-            nonLocal = None
+            value = session.get('editData')
             return jsonify(value)
 
     def convertToDate(i):
