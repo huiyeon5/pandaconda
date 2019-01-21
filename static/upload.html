@@ -25,12 +25,16 @@
   <div class="dropzone" id="dropzone">
     Drag and drop files here
   </div>
+
   <br/>
   
   <div class = "align-right">
-    <button class = "upload-btn" type="submit" onclick="upload()">Upload</button>
+    <button class = "upload-btn" onclick="upload()">Upload</button>
   </div>
+
+
 </body>
+
 
 <script>
   var files;
@@ -47,7 +51,9 @@
         }
         
     };
+
     xhr.open("post", "/upload_api");
+    console.log("Sent")
     xhr.send(formData);
     
   }
