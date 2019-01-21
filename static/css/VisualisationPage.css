@@ -15,7 +15,7 @@
   box-sizing: border-box;
   grid-area: sidebar;
   background-color: white;
-  padding: 40px 10px;
+  padding: 10px 10px;
   height: 100%;
   border-radius: 5px;
   box-shadow: 0 4px 4px -2px gray;
@@ -25,10 +25,7 @@
   box-sizing: border-box;
   grid-area: chart;
   background-color: white;
-  padding-left: 10px;
-  padding-right: 60px;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding: 10px 10px;
   box-shadow: 0 4px 4px -2px gray;
   height: 100%;
   border-radius: 5px;

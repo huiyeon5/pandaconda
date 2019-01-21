@@ -133,7 +133,13 @@ export default class VisualisationContent extends React.Component {
     } else if (this.state.currentPage === "chart") {
       console.log("Vis Display");
       console.log(this.state);
-      return <VisChart handler={this.navPageHandler} />;
+      return (
+        <VisChart
+          handler={this.navPageHandler}
+          dataset={this.state.selectedDataset}
+          chart={this.state.selectedChartType}
+        />
+      );
     }
   }
 }

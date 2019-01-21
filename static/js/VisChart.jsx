@@ -13,8 +13,14 @@ export default class VisChart extends React.Component {
   render() {
     return (
       <div className="vis-display-container">
-        <VisChartSidebar />
-        <VisChartDisplay />
+        <VisChartSidebar
+          dataset={this.props.dataset}
+          chart={this.props.chart}
+        />
+        <VisChartDisplay
+          dataset={this.props.dataset}
+          chart={this.props.chart}
+        />
         <VisNavBackButton handler={this.props.handler} />
         <VisNavNextButton handler={this.props.handler} />
       </div>

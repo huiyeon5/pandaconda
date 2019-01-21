@@ -6,6 +6,10 @@ export default class VisChartSidebar extends React.Component {
   }
 
   render() {
-    return <div className="vis-display-sidebar" />;
+    return (
+      <div className="vis-display-sidebar vis-card-grid">
+        <div className="vis-card-title">PARAMETERS</div>
+      </div>
+    );
   }
 }

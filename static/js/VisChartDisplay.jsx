@@ -6,6 +6,12 @@ export default class VisChartDisplay extends React.Component {
   }
 
   render() {
-    return <div className="vis-display-chart" />;
+    return (
+      <div className="vis-display-chart vis-card-grid">
+        <div className="vis-card-title">
+          {this.props.chart} ({this.props.dataset})
+        </div>
+      </div>
+    );
   }
 }
