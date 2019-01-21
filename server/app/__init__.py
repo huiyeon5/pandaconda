@@ -156,6 +156,7 @@ def create_app(config_name):
         else:
             return jsonify({'status': 400})
 
+    nonLocal = None
     @app.route('/upload_api', methods=['GET', 'POST'])  # API for upload
     def upload_file():
         # if current_user.is_authenticated:
@@ -164,7 +165,7 @@ def create_app(config_name):
             print(request.files)
             if 'file' not in request.files:
                 # flash('No file part')
-                return jsonify({'status':400, 'error':'No File Part'})
+                return jsonify({'status':402, 'error':'No File Part'})
             file = request.files['file']
             # if user does not select file, browser also
             # submit an empty part without filename
@@ -176,7 +177,10 @@ def create_app(config_name):
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 
                 value = json.loads(check_headers.suggest_headers('app/uploads/' + filename))
+                nonlocal nonLocal
                 if value['status'] == 400:
+                    nonLocal = value
+                    print(nonLocal)
                     return jsonify(value)
                 else:
                     f = filename[0:len(filename) - 4]+ "_" +str(current_user.id)
@@ -231,14 +235,14 @@ def create_app(config_name):
                         userData = UserData(data_name=f, user_id=current_user.id)
                         db.session.add(userData)
                         db.session.commit()
-                        if os.path.exists(filename):
-                            os.remove(filename)
+                        if os.path.join(app.config['UPLOAD_FOLDER']).exists(filename):
+                            os.path.join(app.config['UPLOAD_FOLDER']).remove(filename)
                         return jsonify({"status":200})
                     else:
                         return jsonify({"status":400, "error": "Dataset exists"})
 
         else:
-            return jsonify({'status': 400, 'error': 'Use POST request'})
+            return jsonify({'status': 404, 'error': 'Use POST request'})
         # else:
         #     return jsonify({})
     
@@ -248,7 +252,14 @@ def create_app(config_name):
         if current_user.is_authenticated:
             c_id = current_user.id
             ds_names = UserData.query.filter_by(user_id=c_id).all()
-            return jsonify({'datasets':[d.data_name[0: d.data_name.rfind("_")] for d in ds_names]})
+            returnList =[]
+            for dd in range(len(ds_names)):
+                d = ds_names[dd]
+                temp = {}
+                temp["id"] = f'dataset-name-{dd+1}'
+                temp["name"] = d.data_name[0: d.data_name.rfind("_")]
+                returnList.append(temp)
+            return jsonify({'datasetNames':returnList})
         else:
             return jsonify({'status':400})
 
@@ -270,6 +281,17 @@ def create_app(config_name):
             return jsonify({'data':l,'status':200})
 
         return jsonify({'status':400})
+
+    
+    @app.route("/update_api")
+    def update_api():
+        if nonLocal == None:
+            return jsonify({"status":500})
+        else:
+            nonlocal nonLocal
+            value = nonLocal
+            nonLocal = None
+            return jsonify(value)
 
     def convertToDate(i):
         dateList = i.split("/")

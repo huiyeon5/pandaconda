@@ -6,36 +6,40 @@ export default class EditTable extends React.Component {
     constructor(){
         super()
         this.state = {
-            obj:{
-                data: [
-                    {col_header: "Unnamed: 0", imported_as: null, drop: true, cosine: "NA"}, 
-                    {col_header: "Depot", imported_as: ["Depot", "ActivityDate", "Customer", "Inventory", "SKU", "Unnamed"], drop: false, cosine: "high"}, {col_header: "SKU", imported_as: ["SKU", "ActivityDate", "Customer", "Depot", "Inventory", "Unnamed"], drop: false, cosine: "high"}, 
-                    {col_header: "Customer", imported_as: ["Customer", "ActivityDate", "Depot", "Inventory", "SKU", "Unnamed"], drop: false, cosine: "high"}, {col_header: "ActivityDate", imported_as: ["ActivityDate", "Customer", "Depot", "Inventory", "SKU", "Unnamed"], drop: false, cosine: "high"}, {col_header: "Inventory", imported_as: ["Inventory", "ActivityDate", "Customer", "Depot", "SKU", "Unnamed"], drop: false, cosine: "high"}
-                        ], 
-                    status: 400 
-            },
+            obj:null,
             check:{value: ""}
-        
         };
         //this.loadTable = this.loadTable.bind(this);
         //this.postData = this.postData.bind(this);
         this.fillTable = this.fillTable.bind(this);
-        this.checkInput = this.checkInput.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.callBackendAPI = this.callBackendAPI.bind(this);
     }
 
     componentDidMount(){
-        this.fillTable() 
-       
-        
+        this.callBackendAPI("/update_api")
+        .then(res => {
+            console.log(res)
+            if(res['status'] == 500){
+                window.location='/upload'
+            }else {
+                this.setState({obj:res})
+                this.fillTable();
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
-
-    handleChange(event){
-       this.checkInput() //where do i put this method? Is it even useful
-       console.log(event);
-       this.setState.check({value:event.target.value});
+    async callBackendAPI(url) {
+        const response = await fetch(url);
+        const body = await response.json();
+        if (response.status !== 200) {
+          throw Error(body.message);
+        }
+        return body;
     }
+
     // async postData(url, bodyObj) {
     //     const response = await fetch(url, {
     //         method: "POST",
@@ -47,21 +51,6 @@ export default class EditTable extends React.Component {
     //     });
     //     const body = await response.json();
     //     return body;
-    // }
-
-    // loadTable(e) {
-    //     this.postData("/upload_api")
-    //         .then(res => {
-    //             if (res["status"] === 400) {
-    //                 console.log(res)
-    //             } else {
-    //                 console.log(res);
-    //                 alert("error reload table");
-    //             }
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //         });
     // }
 
     fillTable(){
@@ -135,24 +124,6 @@ export default class EditTable extends React.Component {
 
             }
     }
-
-    checkInput(){
-        console.log("checkInput entered")
-        var trList = document.getElementsByClassName("tr"); //taking list of tr elements
-
-        // looping tr elements to check for 3rd child if checked, disable first child (select)
-        for(var i=0; i<trList.length; i++){
-            var dropCell = trList[i].children[3] //this refers to the dropheader td
-            if(dropCell.getAttribute("checked")){
-                document.getElementById(String(trList[i].children[1].toString)).disabled
-                this.state.check.concat(trList[i].children[1])
-            }
-        }
-        console.log(this.state.check)
-
-
-    }
-    
     render() {
         return(
             <div className = "table-container">
@@ -164,7 +135,6 @@ export default class EditTable extends React.Component {
                             <th>Rename Header</th>
                             <th>Drop Header</th>
                         </tr>
-                        
                     </tbody>
                 </table>
             </div>

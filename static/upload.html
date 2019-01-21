@@ -45,9 +45,12 @@
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
         var data = JSON.parse(this.responseText);
+        console.log(data);
         if(data["status"] == 200){ 
             alert("Data has been successfully uploaded!")
             window.location = '/visualisation'
+        }else {
+            window.location = '/upload/edit_table'
         }
         
     };
