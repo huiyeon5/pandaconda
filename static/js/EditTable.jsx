@@ -65,7 +65,7 @@ export default class EditTable extends React.Component {
             newRow.classList.add("tr")
             newRow.classList.add(`tr${i+1}`)
             var data1 = document.createElement("TD")
-            // data1.setAttribute("className", "r"+i+"c0")
+            
             data1.classList.add(`td`);
             data1.classList.add(`td1`);
             var val1 = document.createTextNode(data.col_header)
@@ -127,19 +127,29 @@ export default class EditTable extends React.Component {
             document.querySelector(".tBody").appendChild(newRow)
         }
     }
+
+    result(){
+        return null;
+    }
     render() {
         return(
-            <div className = "table-container">
-                <table className="table" id="table" >
-                    <tbody className="tBody">
-                        <tr className="header-edittable header-value">
-                            <th>CSV Headers</th>
-                            <th>Valid Headers</th> 
-                            {/* <th>Rename Header</th> */}
-                            <th>Drop Header</th>
-                        </tr>
-                    </tbody>
-                </table>
+            <div>
+                <div className = "table-container">
+                    <table className="table" id="table" >
+                        <tbody className="tBody">
+                            <tr className="header-edittable header-value">
+                                <th>CSV Headers</th>
+                                <th>Valid Headers</th> 
+                                {/* <th>Rename Header</th> */}
+                                <th>Drop Header</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    <br/>
+                <div className = "align-right">
+                    <button className = "change-btn" onClick= "result()">Change</button>
+                </div>
             </div>
         )
     }

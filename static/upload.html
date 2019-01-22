@@ -23,7 +23,14 @@
   <div class="uploadtext" ><strong id="uploadedFile"></strong></div>
   <br />
   <div class="dropzone" id="dropzone">
-    Drag and drop files here
+    <div class="center">
+      <span class="drag-text">Drag and drop files here</span>
+    </div>
+    <span class="manual-upload">
+      <div class="center">
+        <input type="file" name="file" id="uploaded-btn"/> 
+      </div>
+    </span> 
   </div>
 
   <br/>
@@ -37,15 +44,14 @@
 
 
 <script>
-  var files;
+var files=[]
 
   function upload() {
     var formData = new FormData();
     formData.append('file',files[0])
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
-        var data = JSON.parse(this.responseText);
-        // console.log(data);
+        var data = JSON.parse(this.responseText);    
         if(data["status"] == 200){ 
             alert("Data has been successfully uploaded!")
             window.location = '/visualisation'
@@ -63,6 +69,7 @@
 
   (function() {
     var dropzone = document.getElementById("dropzone");
+    var uploaded = document.getElementById("uploaded-btn")
 
     //create a upload function, checks accept only one file and sends it to the backend "/upload/"
     var loadFile = function(file) {
@@ -71,7 +78,7 @@
       } else if (file.length > 1) {
         alert("Upload only one file");
       } else {
-        document.getElementById("uploadedFile").innerHTML = file[0].name;
+        document.getElementById("uploadedFile").innerHTML = files[files.length-1].name;
       }
     };
 
@@ -80,10 +87,16 @@
     dropzone.ondrop = function(event) {
       event.preventDefault();
       this.className = "dropzone";
-      loadFile(event.dataTransfer.files);
-      files = event.dataTransfer.files;
+      fileList = event.dataTransfer.files
+      files.push(fileList[fileList.length-1])
+      
+      loadFile(fileList[(fileList.length-1)]);
+      
+      // loadFile(event.dataTransfer.files);
+      // files = files.push(event.dataTransfer.files);
     };
 
+   
     dropzone.ondragover = function() {
       this.className = "dropzone dragover";
       return false;
@@ -93,6 +106,14 @@
       this.className = "dropzone";
       return false;
     };
+
+    uploaded.onchange = function(event) {
+      var fileList = uploaded.files;
+      files.push(fileList[fileList.length-1])
+      console.log(files)
+      loadFile(fileList[(fileList.length-1)]);
+      
+    }
   })();
 
   
