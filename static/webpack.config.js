@@ -2,7 +2,7 @@ const webpack = require("webpack");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const config = {
-  entry: __dirname + "/js/index.jsx",
+  entry: ["babel-polyfill",__dirname + "/js/index.jsx"],
   output: {
     path: __dirname + "/dist",
     filename: "bundle.js"
@@ -15,7 +15,20 @@ const config = {
       {
         test: /\.jsx?/,
         exclude: /node_modules/,
-        use: "babel-loader"
+        use: {
+            loader: "babel-loader",
+            options: {
+                babelrc:true
+            }
+        }
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader"
+          }
+        ]
       },
       {
         test: /\.css$/,
@@ -26,18 +39,20 @@ const config = {
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        loader: "file-loader",
-        options: {
-          publicPath: "/dist/"
-        }
-      }
-    ],
-    loaders: [
+        use: [
+            {
+                loader: "file-loader",
+                options: {
+                    publicPath: "/dist/"
+                }
+            },
+        ],
+      },
       {
         test: /\.json$/,
         loader: "json-loader"
-      }
-    ]
+      },
+    ],
   },
   plugins: [new ExtractTextPlugin("styles.css")]
 };

@@ -6,6 +6,7 @@ import UploadContent from "./UploadContent";
 import VisualisationContent from "./VisualisationContent";
 import Signup from "./Signup";
 import EditTable from "./EditTable"
+import 'babel-polyfill';
 
 
 const loginPage = document.getElementById("loginPage");
