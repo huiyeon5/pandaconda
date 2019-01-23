@@ -320,7 +320,7 @@ def create_app(config_name):
         df.drop(columns=to_drop, axis=1, inplace=True)
         df.rename(columns=rename_dict, inplace=True)
 
-        df.to_sql(name = filename[0:len(filename)-4]+"_"+str(current_user.id), con=engine)
+        df.to_sql(name = filename[0:len(filename)-4]+"_"+str(current_user.id), con=db.engine)
 
         # headers = list(df)
 
