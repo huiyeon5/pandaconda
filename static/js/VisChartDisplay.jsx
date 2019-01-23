@@ -1,4 +1,5 @@
 import React from "react";
+import Visual from './Visual';
 
 export default class VisChartDisplay extends React.Component {
   constructor(props) {
@@ -11,6 +12,7 @@ export default class VisChartDisplay extends React.Component {
         <div className="vis-card-title">
           {this.props.chart} ({this.props.dataset})
         </div>
+        {this.props.chart ? this.props.x && this.props.y ? <Visual chartName={this.props.chart} x={this.props.x} y={this.props.y}/> : null}
       </div>
     );
   }
