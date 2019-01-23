@@ -6,13 +6,14 @@ export default class EditTable extends React.Component {
     constructor(){
         super()
         this.state = {
-            obj:null,
-            check:{value: ""}
+            obj:null
         };
         //this.loadTable = this.loadTable.bind(this);
         //this.postData = this.postData.bind(this);
         this.fillTable = this.fillTable.bind(this);
         this.callBackendAPI = this.callBackendAPI.bind(this);
+        this.result=this.result.bind(this);
+        this.postData = this.postData.bind(this);
     }
 
     componentDidMount(){
@@ -129,8 +130,87 @@ export default class EditTable extends React.Component {
     }
 
     result(){
-        return null;
+      var obj={}
+        
+        /*
+        var obj=
+            { 
+                "old_header_name" : "new_header_name" ,            
+
+                "old_header_name" : "new_header_name"   
+
+
+            }
+        */
+       
+        
+        var i;
+        var totalDataRows = this.state.obj.data;
+
+        var old_header_list = document.getElementsByClassName("td td1")
+        //iterating through each row in the table
+        for(i=0; i<totalDataRows.length; i=i+1){
+            var old_header;
+            var new_header;
+            //result = result + (old_header_list[i].innerHTML)
+            var row = document.getElementsByClassName("tr tr"+(i+1))
+            if(document.querySelector(`.tr${i+1} > .td4`).checked){
+                new_header = null;
+            }
+            else{
+                old_header = document.querySelector(`.tr${i+1} > .td1`).innerHTML
+
+                //retrieving user selected value from the dropdown
+
+                var dropdown = document.querySelector(`.tr${i+1} > .td2 > select`)
+                if(dropdown){
+                    new_header = dropdown.options[dropdown.selectedIndex].text
+                }
+                else{
+                    new_header=null;
+                }
+                    
+            }
+            var key = old_header
+            obj[key] = new_header
+            
+        }
+        this.postData("", obj)
+        .then(res => {
+            if (res["status"] === 400) {
+            } else {
+              console.log(res);
+              window.location = "/";
+            }
+            // }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        
     }
+
+    async postData(url, bodyObj) {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(bodyObj)
+        });
+        const body = await response.json();
+        return body;
+      }
+
+
+// if drop, new_header will be null
+
+// If changed selected, new header will be the new name 
+
+// if no change, will be the same
+
+    
     render() {
         return(
             <div>
@@ -148,7 +228,7 @@ export default class EditTable extends React.Component {
                     </div>
                     <br/>
                 <div className = "align-right">
-                    <button className = "change-btn" onClick= "result()">Change</button>
+                    <button className = "change-btn" onClick={this.result}>Change</button>
                 </div>
             </div>
         )
