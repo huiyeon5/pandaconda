@@ -7,6 +7,7 @@ from sqlalchemy import text
 from werkzeug.utils import secure_filename
 from . import check_headers
 import datetime
+import pandas as pd
 
 # local imports
 from config import app_config
@@ -175,6 +176,8 @@ def create_app(config_name):
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                session['filePath'] = 'app/uploads/' + filename
+                session['fileName'] = filename
                 
                 value = json.loads(check_headers.suggest_headers('app/uploads/' + filename))
                 if value['status'] == 400:
@@ -296,6 +299,81 @@ def create_app(config_name):
             return None
         date = datetime.date(int(dateList[2]), int(dateList[1]), int(dateList[0]))
         return date
+
+    @app.route('/finalize_headers_api', methods=['POST'])  # API for the final headers
+    def finalize_headers_api():
+        headers_dict = request.get_json()
+        filePath = session.get('filePath')
+        filename = session.get('fileName')
+
+        df = pd.read_csv(filePath)
+        
+        to_drop = []
+        rename_dict = {}
+
+        for key, value in headers_dict.items():
+            if value == None:
+                to_drop.append(key)
+            else:
+                rename_dict[key] = value
+
+        df.drop(columns=to_drop, axis=1, inplace=True)
+        df.rename(columns=rename_dict, inplace=True)
+
+        df.to_sql(name = filename[0:len(filename)-4]+"_"+str(current_user.id), con=engine)
+
+        # headers = list(df)
+
+        # header = "("
+        # headerNoType ="("
+        # headerOrder = []
+        # dateIndex = []
+        # d = 0
+        # for h in headers:
+        #     v = check_headers.get_header_type(h)
+        #     header = header + h + " "
+        #     headerNoType += h + ","
+        #     headerOrder.append(h)
+        #     if(v == 'int'):
+        #         header = header + "INT"
+        #     elif(v == 'string'):
+        #         header = header + "VARCHAR(MAX)"
+        #     elif(v == 'date'):
+        #         header = header + "DATE"
+        #         dateIndex.append(d)
+        #     elif(v == 'double'):
+        #         header = header + "FLOAT"
+        #     header = header + ','
+        #     d = d + 1
+        # header = header[0:len(header)-1] +')'
+        # sql = f'CREATE TABLE {filename[0:len(filename)-4]+"_"+str(current_user.id)} {header}'
+        # insertSQL = f'INSERT INTO {filename[0:len(filename)-4]+"_"+str(current_user.id)} {headerNoType[0: len(headerNoType) - 1] + ")"} VALUES '
+        # v=""
+        # for item in json.loads(value['data']):
+        #     v = v + "("
+        #     for el in range(len(headerOrder)):
+        #         i = item[headerOrder[el]]
+        #         if i is None:
+        #             v = v + "NULL,"
+        #         else:
+        #             if el in dateIndex:
+        #                 i = convertToDate(i)
+        #                 if i is None:
+        #                     v = v + "NULL,"
+        #                 else:
+        #                     v = v + "'" +str(i) + "',"
+        #             else:
+        #                 v = v + "'" +str(i) + "',"
+        #     v = v[0: len(v) - 1] + "),"
+        # insertSQL += v[0:len(v) - 1] +";"
+        # db.engine.execute(text(sql))
+        # db.engine.execute(text(insertSQL))
+        # userData = UserData(data_name=f, user_id=current_user.id)
+        # db.session.add(userData)
+        # db.session.commit()
+        # if os.path.join(app.config['UPLOAD_FOLDER']).exists(filename):
+        #     os.path.join(app.config['UPLOAD_FOLDER']).remove(filename)
+        # return jsonify({"status":200})
 
 # ========================================================= API END HERE ================================================
 

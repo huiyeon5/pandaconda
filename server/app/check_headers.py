@@ -163,3 +163,7 @@ def suggest_headers(path):
                 "data" : df.to_json(orient='records')
             })
     return json.dumps({'data':returned_list, "status":400})
+
+    def get_header_type(header):
+        header_types = {'Depot' : 'int', 'SKU' : 'int', 'Customer': 'int', 'ActivityDate' : 'date', 'Inventory' : 'int', 'SKUKey' : 'int', 'UnitVol' : 'double', 'UnitPrice' : 'double'}
+        return header_types[header]
