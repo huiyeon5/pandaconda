@@ -4,6 +4,7 @@ import re
 import json
 from collections import Counter
 from math import sqrt
+from Levenshtein import distance
 
 def word2vec(word):
     # count the characters in word
@@ -65,8 +66,26 @@ def suggest_headers(path):
                     cosine_value = cosdis(column_vec, valid_header_vec)
                     ranked_headers.append([valid_header, (cosine_value*-1)])
                 ranked_headers = sorted(ranked_headers, key = lambda x: (x[1], x[0]))
+                #header has cosine similarity score of 1.0 but they are not the same words
+                if ranked_headers[0][1] == 1.0 and ranked_headers[0][0] != column:
+                    lev_ranked_headers = []
+                    for valid_header in valid_headers:
+                        edit_distance = distance(column, valid_header)
+                        lev_ranked_headers.append([valid_header, 1/edit_distance])
+                    lev_ranked_headers = sorted(lev_ranked_headers, key = lambda x: (x[1], x[0]))
+                    #edit distance has a low score
+                    if lev_ranked_headers[0][1] < threshold:
+                        toReturn = []
+                        for temp in lev_ranked_headers:
+                            toReturn.append(temp[0])
+                        returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'low'})
+                    else:
+                        toReturn = []
+                        for temp in lev_ranked_headers:
+                            toReturn.append(temp[0])
+                        returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'high'})                   
                 #header has low cosine similarity score
-                if ranked_headers[0][1] < threshold:
+                elif ranked_headers[0][1] < threshold:
                     toReturn = []
                     for temp in ranked_headers:
                         toReturn.append(temp[0])
@@ -109,7 +128,25 @@ def suggest_headers(path):
                     ranked_headers.append([valid_header, (cosine_value*-1)])
                 ranked_headers = sorted(ranked_headers, key = lambda x: (x[1], x[0]))
                 
-                if ranked_headers[0][1] < threshold:
+                #header has cosine similarity score of 1.0 but they are not the same words
+                if ranked_headers[0][1] == 1.0 and ranked_headers[0][0] != column:
+                    lev_ranked_headers = []
+                    for valid_header in valid_headers:
+                        edit_distance = distance(column, valid_header)
+                        lev_ranked_headers.append([valid_header, 1/edit_distance])
+                    lev_ranked_headers = sorted(lev_ranked_headers, key = lambda x: (x[1], x[0]))
+                    #edit distance has a low score
+                    if lev_ranked_headers[0][1] < threshold:
+                        toReturn = []
+                        for temp in lev_ranked_headers:
+                            toReturn.append(temp[0])
+                        returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'low'})
+                    else:
+                        toReturn = []
+                        for temp in lev_ranked_headers:
+                            toReturn.append(temp[0])
+                        returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'high'})                   
+                elif ranked_headers[0][1] < threshold:
                     toReturn = []
                     for temp in ranked_headers:
                         toReturn.append(temp[0])
