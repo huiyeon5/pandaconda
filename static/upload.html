@@ -19,17 +19,27 @@
     <button type="button" onclick="upload()">UPkoad</button>
   </form> -->
 
-  <div class="uploadtext"><strong id="uploadedFile"></strong></div>
+  
   <br />
   <div class="dropzone" id="dropzone">
+      <div class="center">
+          <img
+          src="{{ url_for('site.static', filename='images/folder.png') }}"
+          alt="Upload Icon" height=100 width=100
+        />
+      </div>
     <div class="center">
       <span class="drag-text">Drag and drop files here</span>
     </div>
     <span class="manual-upload">
       <div class="center">
-        <input type="file" name="file" id="uploaded-btn" />
+        <input type="file" name="file" id="uploaded-btn" class="inputfile"/>
+        <label class = "labelinput" for="uploaded-btn">Choose File</label>
       </div>
     </span>
+    <div class="center">
+      <div class="uploadtext"><strong id="uploadedFile"></strong></div>
+    </div>
   </div>
 
   <br />

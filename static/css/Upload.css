@@ -9,10 +9,12 @@
   color: #a3a3a3;
   background-color:#F0F2F9;
   display:grid;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 2fr 1fr 1fr 1fr;
   grid-template-areas: 
+    "upload-icon"
     "drag-text"
     "manual-upload"
+    "uploaded-text"
 }
 
 .dropzone.dragover {
@@ -21,7 +23,11 @@
   color: #000000;
 }
 
+.upload-icon{
+  grid-area:upload-icon;
+}
 .uploadtext {
+  grid-area: uploaded-text;
   color: blue;
   }
 
@@ -48,10 +54,6 @@
 
 }
 
-input[type='file']{
-  color:transparent;
-}
-
 .drag-text{
   grid-area: drag-text;
 }
@@ -65,4 +67,29 @@ input[type='file']{
   display:flex;
   justify-content: center;
   align-content: center;
+}
+
+.inputfile{
+  width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + .labelinput {
+  background: #4d5762;
+  padding: 15px 32px;
+  text-align: center;
+  border:none;
+  font-size:14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border-radius:5px;
+}
+
+.inputfile:focus + .labelinput,
+.inputfile + .labelinput:hover {
+  background-color: white;
+  
 }
