@@ -162,6 +162,9 @@ def create_app(config_name):
     @app.route('/upload_api', methods=['GET', 'POST'])  # API for upload
     def upload_file():
         # if current_user.is_authenticated:
+        print("here2")
+        if 'editData' in session:
+            session.pop('editData')
         if request.method == 'POST':
             # check if the post request has the file part
             print(request.files)

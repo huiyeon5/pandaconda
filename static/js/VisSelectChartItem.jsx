@@ -13,7 +13,12 @@ export default class VisSelectChartItem extends React.Component {
           id={this.props.id}
           name="radio"
           type="radio"
-          onChange={() => this.props.selectChartTypeHandler(this.props.name)}
+          onChange={() =>
+            this.props.selectChartTypeHandler({
+              id: this.props.id,
+              chartName: this.props.name
+            })
+          }
         />
         <label htmlFor={this.props.id}>{this.props.name}</label>
       </div>

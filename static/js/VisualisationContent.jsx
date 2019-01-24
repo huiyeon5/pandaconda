@@ -36,7 +36,7 @@ export default class VisualisationContent extends React.Component {
       ],
       chartTypes: [
         {
-          id: "line-chart",
+          id: "scatter",
           name: "Line Chart"
         },
         {
@@ -72,18 +72,19 @@ export default class VisualisationContent extends React.Component {
     this.selectChartTypeHandler = this.selectChartTypeHandler.bind(this);
   }
 
-  // componentDidMount() {
-  //   console.log("In ComponentDidMount method");
-  //   this.callBackendAPI("/get_all_dataset_api")
-  //     .then(res => {
-  //       console.log(res);
-  //       console.log(res.datasets);
-  //       this.setState({ datasetNames: res.datasets });
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // }
+  componentDidMount() {
+    console.log("In ComponentDidMount method");
+    this.callBackendAPI("/get_all_dataset_api")
+      .then(res => {
+        console.log("==Datasets Names Response==");
+        console.log(res);
+        console.log(res.datasetNames);
+        this.setState({ datasetNames: res.datasetNames });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   // getData() {
   //   var sampleData = require("./SampleData.js").data;

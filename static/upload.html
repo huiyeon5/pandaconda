@@ -19,8 +19,7 @@
     <button type="button" onclick="upload()">UPkoad</button>
   </form> -->
 
-  
-  <div class="uploadtext" ><strong id="uploadedFile"></strong></div>
+  <div class="uploadtext"><strong id="uploadedFile"></strong></div>
   <br />
   <div class="dropzone" id="dropzone">
     <div class="center">
@@ -28,58 +27,53 @@
     </div>
     <span class="manual-upload">
       <div class="center">
-        <input type="file" name="file" id="uploaded-btn"/> 
+        <input type="file" name="file" id="uploaded-btn" />
       </div>
-    </span> 
+    </span>
   </div>
 
-  <br/>
-  
-  <div class = "align-right">
-    <button class = "upload-btn" onclick="upload()">Upload</button>
+  <br />
+
+  <div class="align-right">
+    <button class="upload-btn" onclick="upload()">Upload</button>
   </div>
-
-
 </body>
 
-
 <script>
-var files=[]
+  var files = [];
 
   function upload() {
     var formData = new FormData();
-    formData.append('file',files[0])
+    formData.append("file", files[0]);
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
-        var data = JSON.parse(this.responseText);
-        console.log(data);
-        if(data["status"] == 200){ 
-            alert("Data has been successfully uploaded!")
-            window.location = '/visualisation'
-        }else {
-            window.location = '/upload/edit_table'
-        }
-        
+      var data = JSON.parse(this.responseText);
+      if (data["status"] == 200) {
+        alert("Data has been successfully uploaded!");
+        window.location = "/visualisation";
+      } else {
+        window.location = "/upload/edit_table";
+      }
     };
 
     xhr.open("post", "/upload_api");
-    console.log("Sent")
+    console.log("Sent");
     xhr.send(formData);
-    
   }
 
   (function() {
     var dropzone = document.getElementById("dropzone");
-    var uploaded = document.getElementById("uploaded-btn")
+    var uploaded = document.getElementById("uploaded-btn");
 
     //create a upload function, checks accept only one file and sends it to the backend "/upload/"
     var loadFile = function(file) {
       if (file.length == 0) {
-        alert("Please select a file")
+        alert("Please select a file");
       } else if (file.length > 1) {
         alert("Upload only one file");
       } else {
-        document.getElementById("uploadedFile").innerHTML = files[files.length-1].name;
+        document.getElementById("uploadedFile").innerHTML =
+          files[files.length - 1].name;
       }
     };
 
@@ -88,16 +82,15 @@ var files=[]
     dropzone.ondrop = function(event) {
       event.preventDefault();
       this.className = "dropzone";
-      fileList = event.dataTransfer.files
-      files.push(fileList[fileList.length-1])
-      
-      loadFile(fileList[(fileList.length-1)]);
-      
+      fileList = event.dataTransfer.files;
+      files.push(fileList[fileList.length - 1]);
+
+      loadFile(fileList[fileList.length - 1]);
+
       // loadFile(event.dataTransfer.files);
       // files = files.push(event.dataTransfer.files);
     };
 
-   
     dropzone.ondragover = function() {
       this.className = "dropzone dragover";
       return false;
@@ -110,13 +103,10 @@ var files=[]
 
     uploaded.onchange = function(event) {
       var fileList = uploaded.files;
-      files.push(fileList[fileList.length-1])
-      console.log(files)
-      loadFile(fileList[(fileList.length-1)]);
-      
-    }
+      files.push(fileList[fileList.length - 1]);
+      console.log(files);
+      loadFile(fileList[fileList.length - 1]);
+    };
   })();
-
-  
 </script>
 {% endblock content %}

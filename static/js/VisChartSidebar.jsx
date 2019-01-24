@@ -1,4 +1,5 @@
 import React from "react";
+import VisChartSidebarSelection from "./VisChartSidebarSelection";
 
 export default class VisChartSidebar extends React.Component {
   constructor(props) {
@@ -9,6 +10,18 @@ export default class VisChartSidebar extends React.Component {
     return (
       <div className="vis-display-sidebar vis-card-grid">
         <div className="vis-card-title">PARAMETERS</div>
+        <div>
+          <VisChartSidebarSelection
+            selectionTitle="X-Axis: "
+            headers={["hello", "works"]}
+            update={this.props.updateSelectedXAxis}
+          />
+          <VisChartSidebarSelection
+            selectionTitle="Y-Axis: "
+            headers={["x", "y", "z"]}
+            update={this.props.updateSelectedYAxis}
+          />
+        </div>
       </div>
     );
   }
