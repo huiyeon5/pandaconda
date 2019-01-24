@@ -20,20 +20,7 @@ export default class VisualisationContent extends React.Component {
     super();
     this.state = {
       currentPage: "selection",
-      datasetNames: [
-        {
-          id: "dataset-name-1",
-          name: "inventory.csv"
-        },
-        {
-          id: "dataset-name-2",
-          name: "sku.csv"
-        },
-        {
-          id: "dataset-name-3",
-          name: "movement.csv"
-        }
-      ],
+      datasetNames: [],
       chartTypes: [
         {
           id: "scatter",
@@ -64,27 +51,43 @@ export default class VisualisationContent extends React.Component {
           name: "Box Plot"
         }
       ],
-      test: true
+      test: true,
+      actualData: null
     };
     this.callBackendAPI = this.callBackendAPI.bind(this);
+    this.postData = this.postData.bind(this);
     this.navPageHandler = this.navPageHandler.bind(this);
     this.selectDatasetHandler = this.selectDatasetHandler.bind(this);
     this.selectChartTypeHandler = this.selectChartTypeHandler.bind(this);
+    this.getActualData = this.getActualData.bind(this);
   }
 
   componentDidMount() {
     console.log("In ComponentDidMount method");
     this.callBackendAPI("/get_all_dataset_api")
       .then(res => {
-        console.log("==Datasets Names Response==");
-        console.log(res);
-        console.log(res.datasetNames);
+        // console.log("==Datasets Names Response==");
+        // console.log(res);
+        // console.log(res.datasetNames);
         this.setState({ datasetNames: res.datasetNames });
       })
       .catch(err => {
         console.log(err);
       });
   }
+
+   async postData(url, bodyObj) {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(bodyObj)
+        });
+        const body = await response.json();
+        return body;
+    }
 
   // getData() {
   //   var sampleData = require("./SampleData.js").data;
@@ -110,7 +113,14 @@ export default class VisualisationContent extends React.Component {
 
   selectDatasetHandler(value) {
     console.log("Change state of 'selectedDataset' to " + value);
-    this.setState({ selectedDataset: value });
+    this.setState({ selectedDataset: value }, this.getActualData);
+  }
+
+  getActualData() {
+      this.postData("/get_data_api", {selectedData: this.state.selectedDataset})
+      .then(res => {
+          this.setState({actualData: res})
+      }).catch(err => console.log(err))
   }
 
   selectChartTypeHandler(value) {
@@ -139,6 +149,7 @@ export default class VisualisationContent extends React.Component {
           handler={this.navPageHandler}
           dataset={this.state.selectedDataset}
           chart={this.state.selectedChartType}
+          actualData={this.state.actualData}
         />
       );
     }

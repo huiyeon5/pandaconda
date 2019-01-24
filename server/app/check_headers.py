@@ -104,7 +104,6 @@ def suggest_headers(path):
         #     })
     #no index in the csv file
     else:
-        print("index is not present")
         all_correct = True
         user_headers = [ clean_headers(header) for header in columns ]
         return_header_types = {}
@@ -158,11 +157,6 @@ def suggest_headers(path):
                         toReturn.append(temp[0])
                     returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'high'}) 
         if all_correct:
-            # print (json.dumps({
-            #     "status" : 200,
-            #     "headers" : return_header_types,
-            #     "data" : df.to_json(orient='records')
-            # }))
             return json.dumps({
                 "status" : 200,
                 "headers" : return_header_types,

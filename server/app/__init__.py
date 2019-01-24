@@ -276,18 +276,24 @@ def create_app(config_name):
     def get_data_api():
         if current_user.is_authenticated:
             req = request.get_json()
+            # print(req)
             dataset = req['selectedData'] + "_" + str(current_user.id)
             # dataset = req['selectedData'] + "_" + str(3)
             headers = db.engine.execute(f'Show columns from {dataset}')
             head_list = [row[0] for row in headers]
             data = db.engine.execute(f'SELECT * FROM {dataset}')
-            l = []
+            l = {}
             for row in data:
-                obj = {}
                 for i in range(len(head_list)):
-                    obj[head_list[i]] = row[i]
-                l.append(obj)
-            return jsonify({'data':l,'status':200})
+                    head = head_list[i]
+                    data = row[i]
+                    # print("HEAD: ")
+                    if head not in l:
+                        l[head] = [data]
+                    else:
+                        l[head].append(data)
+                        
+            return jsonify({'data':l,'status':200, 'headers': head_list})
 
         return jsonify({'status':400})
 

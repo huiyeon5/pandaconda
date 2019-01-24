@@ -12,7 +12,7 @@ export default class VisChartDisplay extends React.Component {
         <div className="vis-card-title">
           {this.props.chartTitle} ({this.props.dataset})
         </div>
-        {console.log(this.props.plotlyType)}
+        {/* {console.log(this.props)} */}
         {this.props.plotlyType ? (
           this.props.xaxis && this.props.yaxis ? (
             <Visual

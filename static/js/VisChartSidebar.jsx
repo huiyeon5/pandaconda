@@ -13,12 +13,12 @@ export default class VisChartSidebar extends React.Component {
         <div>
           <VisChartSidebarSelection
             selectionTitle="X-Axis: "
-            headers={["hello", "works"]}
+            headers={this.props.headers}
             update={this.props.updateSelectedXAxis}
           />
           <VisChartSidebarSelection
             selectionTitle="Y-Axis: "
-            headers={["x", "y", "z"]}
+            headers={this.props.headers}
             update={this.props.updateSelectedYAxis}
           />
         </div>

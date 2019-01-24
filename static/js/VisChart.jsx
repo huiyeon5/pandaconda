@@ -32,13 +32,16 @@ export default class VisChart extends React.Component {
           chart={this.props.chart}
           updateSelectedXAxis={this.updateSelectedXAxis}
           updateSelectedYAxis={this.updateSelectedYAxis}
+          headers={this.props.actualData.headers}
         />
+
+        {console.log(this.props)}
         <VisChartDisplay
           dataset={this.props.dataset}
           plotlyType={this.props.chart.id}
           chartTitle={this.props.chart.chartName}
-          xaxis={this.state.xaxis}
-          yaxis={this.state.yaxis}
+          xaxis={this.props.actualData ? this.props.actualData.data[this.state.xaxis] : null}
+          yaxis={this.props.actualData ? this.props.actualData.data[this.state.yaxis] : null}
         />
         <VisNavBackButton handler={this.props.handler} />
         <VisNavNextButton handler={this.props.handler} />
