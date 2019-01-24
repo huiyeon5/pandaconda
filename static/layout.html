@@ -41,7 +41,11 @@
 
   <body class="body-layout">
     <div class="layout">
-      <div class="header-layout"></div>
+      <div class="header-layout">
+        <div class="logout-align-right">
+          <button style="display:flex;justify-content:center;align-content:center;text-align:center;padding: 15px 32px;" onclick="callBackendAPI('/logout_api')">Log Out</button>
+        </div>
+      </div>
       <div class="logo-layout">
         <img
           src="{{ url_for('site.static', filename='images/DHL_Logo.png') }}"
@@ -74,4 +78,11 @@
       <div class="content-layout">{% block content %}{% endblock %}</div>
     </div>
   </body>
+
+  <script>
+  async function callBackendAPI(url) {
+    const response = await fetch(url);
+    window.location = "/";
+  }
+  </script>
 </html>

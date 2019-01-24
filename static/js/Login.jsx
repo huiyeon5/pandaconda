@@ -9,7 +9,14 @@ export default class Login extends React.Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.postData = this.postData.bind(this);
   }
-
+  componentDidMount(){
+    document.getElementById("password").addEventListener("keyup", function(event) {
+      event.preventDefault();
+      if (event.keyCode === 13) {
+        document.getElementsByClassName("login-button")[0].click();
+      }
+    });
+  }
   //GET
   async callBackendAPI(url) {
     const response = await fetch(url);
@@ -52,6 +59,7 @@ export default class Login extends React.Component {
       .catch(err => {
         console.log(err);
       });
+
   }
 
   render() {

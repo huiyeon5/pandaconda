@@ -136,12 +136,13 @@ def create_app(config_name):
         return jsonify({'status': 400})
 
     @app.route('/logout_api')  # API -> User Log Out
-    @login_required
+    #@login_required
     def logout():
         logout_user()
-        return jsonify({
-            'status': 200
-        })
+        # return jsonify({
+        #     'status': 200'
+        # })
+        return redirect(url_for('login_r'))
 
     @app.route('/getSession_api')  # API -> get Current User if available
     def getSession():

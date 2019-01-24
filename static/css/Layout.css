@@ -141,3 +141,9 @@ li a:active {
 .active {
   background-color: #fecb2f;
 }
+
+.logout-align-right{
+  display:flex;
+  align-content: right;
+  justify-content: right;
+}
