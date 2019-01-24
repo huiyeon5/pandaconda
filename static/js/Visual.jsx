@@ -15,7 +15,7 @@ class Visual extends React.Component {
           }
           //   {type: 'bar', x: [1, 2, 3], y: [2, 5, 3]},
         ]}
-        layout={{ width: 320, height: 240, title: "A Fancy Plot" }}
+        layout={{ width: 800, height: 500, title: "Visualisation" }}
       />
     );
   }

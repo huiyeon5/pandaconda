@@ -27,11 +27,7 @@ export default class VisualisationContent extends React.Component {
           name: "Line Chart"
         },
         {
-          id: "column-chart",
-          name: "Column Chart"
-        },
-        {
-          id: "bar-chart",
+          id: "bar",
           name: "Bar Chart"
         },
         {
