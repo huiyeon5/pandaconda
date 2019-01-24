@@ -180,12 +180,16 @@ def create_app(config_name):
                 session['fileName'] = filename
                 
                 value = json.loads(check_headers.suggest_headers('app/uploads/' + filename))
+                # print("==VALUE OUPUT==")
+                # print(value)
                 if value['status'] == 400:
                     session['editData'] = value
                     return jsonify(value)
                 else:
                     f = filename[0:len(filename) - 4]+ "_" +str(current_user.id)
                     has = UserData.query.filter_by(data_name=f).first()
+                    # print("==HAS VALUE==")
+                    # print(has)
                     if has is None:
                         header = "("
                         headerNoType ="("
@@ -236,8 +240,8 @@ def create_app(config_name):
                         userData = UserData(data_name=f, user_id=current_user.id)
                         db.session.add(userData)
                         db.session.commit()
-                        if os.path.join(app.config['UPLOAD_FOLDER']).exists(filename):
-                            os.path.join(app.config['UPLOAD_FOLDER']).remove(filename)
+                        # if os.path.join(app.config['UPLOAD_FOLDER']).exists(filename):
+                        #     os.path.join(app.config['UPLOAD_FOLDER']).remove(filename)
                         return jsonify({"status":200})
                     else:
                         return jsonify({"status":400, "error": "Dataset exists"})
