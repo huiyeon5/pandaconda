@@ -175,7 +175,7 @@ export default class EditTable extends React.Component {
             obj[key] = new_header
             
         }
-        this.postData("", obj)
+        this.postData("/finalize_headers_api", obj)
         .then(res => {
             if (res["status"] === 400) {
             } else {
