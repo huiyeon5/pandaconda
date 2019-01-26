@@ -344,6 +344,10 @@ def create_app(config_name):
 
         df.to_sql(name = filename[0:len(filename)-4]+"_"+str(current_user.id), con=db.engine)
 
+        userData = UserData(data_name=filename[0:len(filename)-4]+"_"+str(current_user.id), user_id=current_user.id)
+        db.session.add(userData)
+        db.session.commit()
+
         return jsonify({'status':200})
 
 # ========================================================= API END HERE ================================================
