@@ -48,23 +48,17 @@ export default class VisualisationContent extends React.Component {
         }
       ],
       test: true,
-      actualData: null
     };
     this.callBackendAPI = this.callBackendAPI.bind(this);
     this.postData = this.postData.bind(this);
     this.navPageHandler = this.navPageHandler.bind(this);
     this.selectDatasetHandler = this.selectDatasetHandler.bind(this);
     this.selectChartTypeHandler = this.selectChartTypeHandler.bind(this);
-    this.getActualData = this.getActualData.bind(this);
   }
 
   componentDidMount() {
-    console.log("In ComponentDidMount method");
     this.callBackendAPI("/get_all_dataset_api")
       .then(res => {
-        // console.log("==Datasets Names Response==");
-        // console.log(res);
-        // console.log(res.datasetNames);
         this.setState({ datasetNames: res.datasetNames });
       })
       .catch(err => {
@@ -72,7 +66,7 @@ export default class VisualisationContent extends React.Component {
       });
   }
 
-   async postData(url, bodyObj) {
+    async postData(url, bodyObj) {
         const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -84,13 +78,6 @@ export default class VisualisationContent extends React.Component {
         const body = await response.json();
         return body;
     }
-
-  // getData() {
-  //   var sampleData = require("./SampleData.js").data;
-  //   this.state = {
-  //     data: sampleData
-  //   };
-  // }
 
   // GET METHOD CALL
   async callBackendAPI(url) {
@@ -108,15 +95,7 @@ export default class VisualisationContent extends React.Component {
   }
 
   selectDatasetHandler(value) {
-    console.log("Change state of 'selectedDataset' to " + value);
-    this.setState({ selectedDataset: value }, this.getActualData);
-  }
-
-  getActualData() {
-      this.postData("/get_data_api", {selectedData: this.state.selectedDataset})
-      .then(res => {
-          this.setState({actualData: res})
-      }).catch(err => console.log(err))
+    this.setState({ selectedDataset: value });
   }
 
   selectChartTypeHandler(value) {
@@ -126,8 +105,6 @@ export default class VisualisationContent extends React.Component {
 
   render() {
     if (this.state.currentPage === "selection") {
-      console.log("Vis Selection");
-      console.log(this.state);
       return (
         <VisSelection
           handler={this.navPageHandler}
@@ -138,14 +115,11 @@ export default class VisualisationContent extends React.Component {
         />
       );
     } else if (this.state.currentPage === "chart") {
-      console.log("Vis Display");
-      console.log(this.state);
       return (
         <VisChart
           handler={this.navPageHandler}
           dataset={this.state.selectedDataset}
           chart={this.state.selectedChartType}
-          actualData={this.state.actualData}
         />
       );
     }

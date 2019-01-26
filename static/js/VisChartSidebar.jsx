@@ -1,5 +1,6 @@
 import React from "react";
 import VisChartSidebarSelection from "./VisChartSidebarSelection";
+import VisChartSidebarButton from "./VisChartSidebarButton";
 
 export default class VisChartSidebar extends React.Component {
   constructor(props) {
@@ -21,7 +22,13 @@ export default class VisChartSidebar extends React.Component {
             headers={this.props.headers}
             update={this.props.updateSelectedYAxis}
           />
+          <VisChartSidebarSelection
+            selectionTitle="Aggregate Method: "
+            headers={["SUM", "AVG", "COUNT"]}
+            update={this.props.updateSelectedAggregate}
+          />
         </div>
+        <VisChartSidebarButton onClick={this.props.runQuery}/>
       </div>
     );
   }

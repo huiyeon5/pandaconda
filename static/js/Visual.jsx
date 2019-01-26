@@ -2,6 +2,8 @@ import React from "react";
 import Plot from "react-plotly.js";
 
 class Visual extends React.Component {
+
+    
   render() {
     return (
       <Plot

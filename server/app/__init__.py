@@ -272,31 +272,39 @@ def create_app(config_name):
         else:
             return jsonify({'status':400})
 
-    @app.route('/get_data_api', methods=["POST"])
-    def get_data_api():
+    
+    @app.route('/get_headers_api', methods=['POST'])
+    def get_headers_api():
         if current_user.is_authenticated:
             req = request.get_json()
-            # print(req)
             dataset = req['selectedData'] + "_" + str(current_user.id)
-            # dataset = req['selectedData'] + "_" + str(3)
             headers = db.engine.execute(f'Show columns from {dataset}')
             head_list = [row[0] for row in headers]
-            data = db.engine.execute(f'SELECT * FROM {dataset}')
-            l = {}
-            for row in data:
-                for i in range(len(head_list)):
-                    head = head_list[i]
-                    data = row[i]
-                    # print("HEAD: ")
-                    if head not in l:
-                        l[head] = [data]
-                    else:
-                        l[head].append(data)
-                        
-            return jsonify({'data':l,'status':200, 'headers': head_list})
-
+            return jsonify({'status':200, 'headers': head_list})
         return jsonify({'status':400})
+    
+    @app.route('/viz_filter_api', methods=["POST"])
+    def viz_filter_api():
+        if current_user.is_authenticated:
+            req = request.get_json()
 
+            dataset = req['selectedData'] + "_" + str(current_user.id)
+            x_axis = req['headers'][0]
+            y_axis = req['headers'][1]
+            aggre = req['aggregate']
+            
+            sql = f'SELECT {x_axis}, {aggre}({y_axis}) as y_axis FROM {dataset} GROUP BY {x_axis} ORDER BY {x_axis} ASC'
+            returnSQL = db.engine.execute(sql)
+
+            returnDict = {}
+            returnDict["xaxis"] = []
+            returnDict["yaxis"] = []
+            for row in returnSQL:
+                returnDict["xaxis"].append(row[0])
+                returnDict["yaxis"].append(float(row[1]))
+
+            return jsonify({'data': returnDict, 'status': 200})
+        return jsonify({'status':400})
     
     @app.route("/update_api")
     def update_api():
@@ -337,59 +345,6 @@ def create_app(config_name):
         df.to_sql(name = filename[0:len(filename)-4]+"_"+str(current_user.id), con=db.engine)
 
         return jsonify({'status':200})
-
-        # headers = list(df)
-
-        # header = "("
-        # headerNoType ="("
-        # headerOrder = []
-        # dateIndex = []
-        # d = 0
-        # for h in headers:
-        #     v = check_headers.get_header_type(h)
-        #     header = header + h + " "
-        #     headerNoType += h + ","
-        #     headerOrder.append(h)
-        #     if(v == 'int'):
-        #         header = header + "INT"
-        #     elif(v == 'string'):
-        #         header = header + "VARCHAR(MAX)"
-        #     elif(v == 'date'):
-        #         header = header + "DATE"
-        #         dateIndex.append(d)
-        #     elif(v == 'double'):
-        #         header = header + "FLOAT"
-        #     header = header + ','
-        #     d = d + 1
-        # header = header[0:len(header)-1] +')'
-        # sql = f'CREATE TABLE {filename[0:len(filename)-4]+"_"+str(current_user.id)} {header}'
-        # insertSQL = f'INSERT INTO {filename[0:len(filename)-4]+"_"+str(current_user.id)} {headerNoType[0: len(headerNoType) - 1] + ")"} VALUES '
-        # v=""
-        # for item in json.loads(value['data']):
-        #     v = v + "("
-        #     for el in range(len(headerOrder)):
-        #         i = item[headerOrder[el]]
-        #         if i is None:
-        #             v = v + "NULL,"
-        #         else:
-        #             if el in dateIndex:
-        #                 i = convertToDate(i)
-        #                 if i is None:
-        #                     v = v + "NULL,"
-        #                 else:
-        #                     v = v + "'" +str(i) + "',"
-        #             else:
-        #                 v = v + "'" +str(i) + "',"
-        #     v = v[0: len(v) - 1] + "),"
-        # insertSQL += v[0:len(v) - 1] +";"
-        # db.engine.execute(text(sql))
-        # db.engine.execute(text(insertSQL))
-        # userData = UserData(data_name=f, user_id=current_user.id)
-        # db.session.add(userData)
-        # db.session.commit()
-        # if os.path.join(app.config['UPLOAD_FOLDER']).exists(filename):
-        #     os.path.join(app.config['UPLOAD_FOLDER']).remove(filename)
-        # return jsonify({"status":200})
 
 # ========================================================= API END HERE ================================================
 

@@ -10,10 +10,57 @@ export default class VisChart extends React.Component {
     super(props);
     this.state = {
       xaxis: null,
-      yaxis: null
+      yaxis: null,
+      aggregate:null,
+      headers: [],
+      data: null
     };
     this.updateSelectedXAxis = this.updateSelectedXAxis.bind(this);
     this.updateSelectedYAxis = this.updateSelectedYAxis.bind(this);
+    this.updateSelectedAggregate = this.updateSelectedAggregate.bind(this);
+    this.postData = this.postData.bind(this);
+    this.runQuery = this.runQuery.bind(this);
+  }
+
+  componentDidMount() {
+      if(this.props.dataset) {
+        this.postData('/get_headers_api', {'selectedData': this.props.dataset})
+        .then(res => {
+            if(res.status === 200){
+                this.setState({headers: res.headers})
+            }
+        }).catch(err => console.log(err))
+      }
+  }
+
+  async postData(url, bodyObj) {
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(bodyObj)
+    });
+    const body = await response.json();
+    return body;
+  }
+
+  runQuery() {
+      console.log("running")
+      if(this.state.xaxis && this.state.yaxis && this.state.aggregate) {
+          var queryObj = {
+              'selectedData': this.props.dataset, 
+              "headers": [this.state.xaxis, this.state.yaxis],
+              "aggregate":this.state.aggregate
+          }
+          this.postData('/viz_filter_api', queryObj)
+          .then(res => {
+            this.setState({data: res.data})
+          })
+      }else {
+          alert("Please make all the necessary Selections to run the charts!")
+      }
   }
 
   updateSelectedXAxis(value) {
@@ -24,6 +71,10 @@ export default class VisChart extends React.Component {
     this.setState({ yaxis: value });
   }
 
+  updateSelectedAggregate(value) {
+    this.setState({ aggregate: value });
+  }
+
   render() {
     return (
       <div className="vis-display-container">
@@ -32,16 +83,15 @@ export default class VisChart extends React.Component {
           chart={this.props.chart}
           updateSelectedXAxis={this.updateSelectedXAxis}
           updateSelectedYAxis={this.updateSelectedYAxis}
-          headers={this.props.actualData.headers}
+          updateSelectedAggregate={this.updateSelectedAggregate}
+          headers={this.state.headers}
+          runQuery={this.runQuery}
         />
-
-        {console.log(this.props)}
         <VisChartDisplay
           dataset={this.props.dataset}
           plotlyType={this.props.chart.id}
           chartTitle={this.props.chart.chartName}
-          xaxis={this.props.actualData ? this.props.actualData.data[this.state.xaxis] : null}
-          yaxis={this.props.actualData ? this.props.actualData.data[this.state.yaxis] : null}
+          data={this.state.data}
         />
         <VisNavBackButton handler={this.props.handler} />
         <VisNavNextButton handler={this.props.handler} />
