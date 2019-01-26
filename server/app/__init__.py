@@ -292,18 +292,33 @@ def create_app(config_name):
             x_axis = req['headers'][0]
             y_axis = req['headers'][1]
             aggre = req['aggregate']
-            
-            sql = f'SELECT {x_axis}, {aggre}({y_axis}) as y_axis FROM {dataset} GROUP BY {x_axis} ORDER BY {x_axis} ASC'
-            returnSQL = db.engine.execute(sql)
+            filters = req['filter']
 
+            if len(filters) == 0:
+                sql = f'SELECT {x_axis}, {aggre}({y_axis}) as y_axis FROM {dataset} GROUP BY {x_axis} ORDER BY {x_axis} ASC'
+                returnSQL = db.engine.execute(sql)
+
+            else:
+                conditions = "WHERE "
+                for f in filters:
+                    conditions += f['column'] + " " + f['condition'] + " '" + f['value'] + "' AND "
+
+                conditions = conditions[0: len(conditions) - 4]
+
+                sql = f'SELECT {x_axis}, {aggre}({y_axis}) as y_axis FROM {dataset} {conditions} GROUP BY {x_axis} ORDER BY {x_axis} ASC'
+
+            returnSQL = db.engine.execute(sql)
             returnDict = {}
             returnDict["xaxis"] = []
             returnDict["yaxis"] = []
             for row in returnSQL:
                 returnDict["xaxis"].append(row[0])
                 returnDict["yaxis"].append(float(row[1]))
-
+            
+            if len(returnDict["xaxis"]) == 0 or len(returnDict["yaxis"]) == 0:
+                return jsonify({'status':400, 'error': "Filters Invalid"})
             return jsonify({'data': returnDict, 'status': 200})
+
         return jsonify({'status':400})
     
     @app.route("/update_api")
