@@ -11,56 +11,59 @@ export default class VisChart extends React.Component {
     this.state = {
       xaxis: null,
       yaxis: null,
-      aggregate:null,
+      aggregate: null,
       headers: [],
-      data: null
+      data: null,
+      filter: []
     };
     this.updateSelectedXAxis = this.updateSelectedXAxis.bind(this);
     this.updateSelectedYAxis = this.updateSelectedYAxis.bind(this);
     this.updateSelectedAggregate = this.updateSelectedAggregate.bind(this);
+    this.updateSelectedFilter = this.updateSelectedFilter.bind(this);
     this.postData = this.postData.bind(this);
     this.runQuery = this.runQuery.bind(this);
   }
 
   componentDidMount() {
-      if(this.props.dataset) {
-        this.postData('/get_headers_api', {'selectedData': this.props.dataset})
+    if (this.props.dataset) {
+      this.postData("/get_headers_api", { selectedData: this.props.dataset })
         .then(res => {
-            if(res.status === 200){
-                this.setState({headers: res.headers})
-            }
-        }).catch(err => console.log(err))
-      }
+          if (res.status === 200) {
+            this.setState({ headers: res.headers });
+          }
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   async postData(url, bodyObj) {
     const response = await fetch(url, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(bodyObj)
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(bodyObj)
     });
     const body = await response.json();
     return body;
   }
 
   runQuery() {
-      console.log("running")
-      if(this.state.xaxis && this.state.yaxis && this.state.aggregate) {
-          var queryObj = {
-              'selectedData': this.props.dataset, 
-              "headers": [this.state.xaxis, this.state.yaxis],
-              "aggregate":this.state.aggregate
-          }
-          this.postData('/viz_filter_api', queryObj)
-          .then(res => {
-            this.setState({data: res.data})
-          })
-      }else {
-          alert("Please make all the necessary Selections to run the charts!")
-      }
+    console.log("running");
+    if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
+      var queryObj = {
+        selectedData: this.props.dataset,
+        headers: [this.state.xaxis, this.state.yaxis],
+        aggregate: this.state.aggregate,
+        filter: this.state.filter
+      };
+      this.postData("/viz_filter_api", queryObj).then(res => {
+        this.setState({ data: res.data });
+      });
+    } else {
+      alert("Please make all the necessary Selections to run the charts!");
+    }
   }
 
   updateSelectedXAxis(value) {
@@ -75,6 +78,12 @@ export default class VisChart extends React.Component {
     this.setState({ aggregate: value });
   }
 
+  updateSelectedFilter(value) {
+    this.setState(prevState => ({
+      filter: [...prevState.filter, value]
+    }));
+  }
+
   render() {
     return (
       <div className="vis-display-container">
@@ -84,6 +93,7 @@ export default class VisChart extends React.Component {
           updateSelectedXAxis={this.updateSelectedXAxis}
           updateSelectedYAxis={this.updateSelectedYAxis}
           updateSelectedAggregate={this.updateSelectedAggregate}
+          updateSelectedFilter={this.updateSelectedFilter}
           headers={this.state.headers}
           runQuery={this.runQuery}
         />

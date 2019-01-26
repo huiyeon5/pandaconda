@@ -64,7 +64,19 @@
 
 .vis-card-grid {
   display: grid;
-  grid-template-rows: 1fr 9fr;
+  grid-template-rows: 80px 1fr;
+}
+
+.vis-card-grid-config {
+  display: grid;
+  grid-template-rows: 50px 80px 1fr 50px;
+}
+
+.vis-select-filter-box {
+  margin: 0px 10px 20px 10px;
+  padding: 10px 30px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  width: 90%;
 }
 
 .vis-card-title {

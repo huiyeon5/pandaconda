@@ -7,7 +7,14 @@ export default class VisChartSidebarButton extends React.Component {
 
   render() {
     return (
-      <button onClick={this.props.onClick} style={{display:`flex`, justifyContent:`center`, alignItems:`center`}}>
+      <button
+        onClick={this.props.onClick}
+        style={{
+          display: `flex`,
+          justifyContent: `center`,
+          alignItems: `center`
+        }}
+      >
         Run
       </button>
     );
