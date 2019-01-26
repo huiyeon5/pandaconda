@@ -10,6 +10,7 @@ export default class VisChartSidebarSelection extends React.Component {
       <div>
         {this.props.selectionTitle}
         <select onChange={e => this.props.update(e.target.value)}>
+            <option value="" selected disabled style={{color:`gray`}}>Choose</option>
           {this.props.headers.map(function(header, i) {
             return (
               <option key={i} value={header}>
