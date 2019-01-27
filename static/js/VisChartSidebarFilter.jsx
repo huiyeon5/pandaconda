@@ -15,22 +15,7 @@ export default class VisChartSidebarFilter extends React.Component {
     this.updateValue = this.updateValue.bind(this);
   }
 
-  updateColumn(value) {
-    this.setState({ column: value });
-    this.updateFilter();
-  }
-
-  updateCondition(value) {
-    this.setState({ condition: value });
-    this.updateFilter();
-  }
-
-  updateValue(value) {
-    this.setState({ value: value });
-    this.updateFilter();
-  }
-
-  updateFilter() {
+  componentDidUpdate() {
     console.log(
       "update filter: ",
       this.state.column && this.state.condition && this.state.value
@@ -38,6 +23,18 @@ export default class VisChartSidebarFilter extends React.Component {
     if (this.state.column && this.state.condition && this.state.value) {
       this.props.updateSelectedFilter(this.state);
     }
+  }
+
+  updateColumn(value) {
+    this.setState({ column: value });
+  }
+
+  updateCondition(value) {
+    this.setState({ condition: value });
+  }
+
+  updateValue(value) {
+    this.setState({ value: value });
   }
 
   render() {
