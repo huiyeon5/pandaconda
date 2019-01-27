@@ -23,7 +23,8 @@ export default class VisChartSidebar extends React.Component {
           updateSpecificFilterObject={this.props.updateSpecificFilterObject}
           key={prevState.filterChildren.length}
           filterIndex={prevState.filterChildren.length}
-          filterValueSelection={this.props.filterValueSelection}
+        //   filterValueSelection={this.props.filterValueSelection}
+         uniqueValues={this.props.uniqueValues}
         />
       ]
     }));

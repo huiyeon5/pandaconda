@@ -292,7 +292,7 @@ def create_app(config_name):
             # print("DATASET::: ", dataset)
             col = req['column']
             # print("COLUMN::: ", col)
-            sql_data = db.engine.execute(f'Select distinct {col} from {dataset}')
+            sql_data = db.engine.execute(f'Select distinct {col} from {dataset} ORDER BY {col} ASC')
             result = []
             # print("DATA::: ", sql_data)
             for row in sql_data:

@@ -22,9 +22,7 @@ export default class VisChart extends React.Component {
     this.updateSelectedAggregate = this.updateSelectedAggregate.bind(this);
     this.updateSelectedFilter = this.updateSelectedFilter.bind(this);
     this.addFilterObject = this.addFilterObject.bind(this);
-    this.updateSpecificFilterObject = this.updateSpecificFilterObject.bind(
-      this
-    );
+    this.updateSpecificFilterObject = this.updateSpecificFilterObject.bind(this);
     this.postData = this.postData.bind(this);
     this.runQuery = this.runQuery.bind(this);
   }
@@ -144,6 +142,7 @@ export default class VisChart extends React.Component {
           updateSelectedYAxis={this.updateSelectedYAxis}
           updateSelectedAggregate={this.updateSelectedAggregate}
           //   updateSelectedFilter={this.updateSelectedFilter}
+          uniqueValues={this.state.headersUniqueValues}
           updateSpecificFilterObject={this.updateSpecificFilterObject}
           addFilterObject={this.addFilterObject}
           headers={this.state.headers}

@@ -30,6 +30,7 @@ export default class VisChartSidebarFilter extends React.Component {
       "column",
       value
     );
+    this.setState({column: value})
   }
 
   updateCondition(value) {
@@ -38,6 +39,7 @@ export default class VisChartSidebarFilter extends React.Component {
       "condition",
       value
     );
+    this.setState({condition: value})
   }
 
   updateValue(value) {
@@ -46,6 +48,7 @@ export default class VisChartSidebarFilter extends React.Component {
       "value",
       value
     );
+    this.setState({value: value})
   }
 
   updateFilterValues(value) {
@@ -62,12 +65,12 @@ export default class VisChartSidebarFilter extends React.Component {
         />
         <VisChartSidebarSelection
           selectionTitle="Condition: "
-          dropdownValues={["=", ">", "<"]}
+          dropdownValues={["=", ">", "<", ">=", "<="]}
           update={this.updateCondition}
         />
         <VisChartSidebarSelection
           selectionTitle="Value: "
-          dropdownValues={["a", "b", "c"]}
+          dropdownValues={this.state.column ? this.props.uniqueValues[this.state.column] : []}
           update={this.updateValue}
         />
       </div>
