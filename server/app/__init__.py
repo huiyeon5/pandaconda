@@ -282,6 +282,23 @@ def create_app(config_name):
             head_list = [row[0] for row in headers]
             return jsonify({'status':200, 'headers': head_list})
         return jsonify({'status':400})
+
+    @app.route('/get_headers_unique_values_api', methods=['POST'])
+    def get_headers_unique_values_api():
+        if current_user.is_authenticated:      
+            req = request.get_json()
+            # print("Request", req)
+            dataset = req['dataset'] + "_" + str(current_user.id)
+            # print("DATASET::: ", dataset)
+            col = req['column']
+            # print("COLUMN::: ", col)
+            sql_data = db.engine.execute(f'Select distinct {col} from {dataset}')
+            result = []
+            # print("DATA::: ", sql_data)
+            for row in sql_data:
+                result.append(row[0])
+            return jsonify({'status':200, 'data': result})
+        return jsonify({'status':400})
     
     @app.route('/viz_filter_api', methods=["POST"])
     def viz_filter_api():

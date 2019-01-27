@@ -13,6 +13,7 @@ export default class VisChart extends React.Component {
       yaxis: null,
       aggregate: null,
       headers: [],
+      headersUniqueValues: {},
       data: null,
       filter: []
     };
@@ -21,7 +22,9 @@ export default class VisChart extends React.Component {
     this.updateSelectedAggregate = this.updateSelectedAggregate.bind(this);
     this.updateSelectedFilter = this.updateSelectedFilter.bind(this);
     this.addFilterObject = this.addFilterObject.bind(this);
-    this.updateSpecificFilterObject = this.updateSpecificFilterObject.bind(this);
+    this.updateSpecificFilterObject = this.updateSpecificFilterObject.bind(
+      this
+    );
     this.postData = this.postData.bind(this);
     this.runQuery = this.runQuery.bind(this);
   }
@@ -32,6 +35,36 @@ export default class VisChart extends React.Component {
         .then(res => {
           if (res.status === 200) {
             this.setState({ headers: res.headers });
+          }
+        })
+        .then(() => {
+          if (this.state.headers) {
+            let tempDict = {};
+            for (var i = 0; i < this.state.headers.length; i++) {
+              tempDict[this.state.headers[i]] = null;
+            }
+            this.setState({ headersUniqueValues: tempDict });
+          }
+        })
+        .then(() => {
+          for (var i = 0; i < this.state.headers.length; i++) {
+            let colName = this.state.headers[i];
+            this.postData("/get_headers_unique_values_api", {
+              dataset: this.props.dataset,
+              column: colName
+            })
+              .then(res => {
+                if (res.status === 200) {
+                  this.setState(prevState => {
+                    let tempHeadersUniqueValues = prevState.headersUniqueValues;
+                    tempHeadersUniqueValues[colName] = res.data;
+                    return { headersUniqueValues: tempHeadersUniqueValues };
+                  });
+                }
+              })
+              .catch(err =>
+                console.log(colName, "column has no response", err)
+              );
           }
         })
         .catch(err => console.log(err));
@@ -87,18 +120,18 @@ export default class VisChart extends React.Component {
   }
 
   addFilterObject() {
-    var obj = {"column": null, "condition": null, "value":null}
+    var obj = { column: null, condition: null, value: null };
     this.setState(prevState => ({
-        filter: [...prevState.filter, obj]
+      filter: [...prevState.filter, obj]
     }));
   }
 
   updateSpecificFilterObject(i, key, value) {
-      var filterList = this.state.filter;
-      var obj = filterList[i];
-      obj[key] = value;
-      filterList[i] = obj;
-      this.setState({filter: filterList})
+    var filterList = this.state.filter;
+    var obj = filterList[i];
+    obj[key] = value;
+    filterList[i] = obj;
+    this.setState({ filter: filterList });
   }
 
   render() {
@@ -110,7 +143,7 @@ export default class VisChart extends React.Component {
           updateSelectedXAxis={this.updateSelectedXAxis}
           updateSelectedYAxis={this.updateSelectedYAxis}
           updateSelectedAggregate={this.updateSelectedAggregate}
-        //   updateSelectedFilter={this.updateSelectedFilter}
+          //   updateSelectedFilter={this.updateSelectedFilter}
           updateSpecificFilterObject={this.updateSpecificFilterObject}
           addFilterObject={this.addFilterObject}
           headers={this.state.headers}

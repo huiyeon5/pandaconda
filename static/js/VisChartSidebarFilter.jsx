@@ -8,30 +8,48 @@ export default class VisChartSidebarFilter extends React.Component {
     this.state = {
       column: null,
       condition: null,
-      value: null
+      value: null,
+      filterValues: null
     };
     this.updateColumn = this.updateColumn.bind(this);
     this.updateCondition = this.updateCondition.bind(this);
     this.updateValue = this.updateValue.bind(this);
+    this.updateFilterValues = this.updateFilterValues.bind(this);
   }
 
-//   componentDidUpdate() {
-//     console.log(`Column: ${this.state.column} condition: ${this.state.condition} value: ${this.state.value}`)
-//     if (this.state.column && this.state.condition && this.state.value) {
-//       this.props.updateSelectedFilter(this.state);
-//     }
-//   }
+  //   componentDidUpdate() {
+  //     console.log(`Column: ${this.state.column} condition: ${this.state.condition} value: ${this.state.value}`)
+  //     if (this.state.column && this.state.condition && this.state.value) {
+  //       this.props.updateSelectedFilter(this.state);
+  //     }
+  //   }
 
   updateColumn(value) {
-    this.props.updateSpecificFilterObject(this.props.filterIndex, "column", value)
+    this.props.updateSpecificFilterObject(
+      this.props.filterIndex,
+      "column",
+      value
+    );
   }
 
   updateCondition(value) {
-    this.props.updateSpecificFilterObject(this.props.filterIndex, "condition", value)
+    this.props.updateSpecificFilterObject(
+      this.props.filterIndex,
+      "condition",
+      value
+    );
   }
 
   updateValue(value) {
-    this.props.updateSpecificFilterObject(this.props.filterIndex, "value", value)
+    this.props.updateSpecificFilterObject(
+      this.props.filterIndex,
+      "value",
+      value
+    );
+  }
+
+  updateFilterValues(value) {
+    this.setState({ filterValues: value });
   }
 
   render() {

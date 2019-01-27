@@ -13,16 +13,17 @@ export default class VisChartSidebar extends React.Component {
   }
 
   appendFilter() {
-      this.props.addFilterObject()
+    this.props.addFilterObject();
     this.setState((prevState, props) => ({
       filterChildren: [
         ...prevState.filterChildren,
         <VisChartSidebarFilter
           columns={this.props.headers}
-        //   updateSelectedFilter={this.props.updateSelectedFilter}
+          //   updateSelectedFilter={this.props.updateSelectedFilter}
           updateSpecificFilterObject={this.props.updateSpecificFilterObject}
           key={prevState.filterChildren.length}
           filterIndex={prevState.filterChildren.length}
+          filterValueSelection={this.props.filterValueSelection}
         />
       ]
     }));
