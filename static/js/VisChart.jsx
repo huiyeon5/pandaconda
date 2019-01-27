@@ -20,6 +20,8 @@ export default class VisChart extends React.Component {
     this.updateSelectedYAxis = this.updateSelectedYAxis.bind(this);
     this.updateSelectedAggregate = this.updateSelectedAggregate.bind(this);
     this.updateSelectedFilter = this.updateSelectedFilter.bind(this);
+    this.addFilterObject = this.addFilterObject.bind(this);
+    this.updateSpecificFilterObject = this.updateSpecificFilterObject.bind(this);
     this.postData = this.postData.bind(this);
     this.runQuery = this.runQuery.bind(this);
   }
@@ -84,6 +86,21 @@ export default class VisChart extends React.Component {
     }));
   }
 
+  addFilterObject() {
+    var obj = {"column": null, "condition": null, "value":null}
+    this.setState(prevState => ({
+        filter: [...prevState.filter, obj]
+    }));
+  }
+
+  updateSpecificFilterObject(i, key, value) {
+      var filterList = this.state.filter;
+      var obj = filterList[i];
+      obj[key] = value;
+      filterList[i] = obj;
+      this.setState({filter: filterList})
+  }
+
   render() {
     return (
       <div className="vis-display-container">
@@ -93,7 +110,9 @@ export default class VisChart extends React.Component {
           updateSelectedXAxis={this.updateSelectedXAxis}
           updateSelectedYAxis={this.updateSelectedYAxis}
           updateSelectedAggregate={this.updateSelectedAggregate}
-          updateSelectedFilter={this.updateSelectedFilter}
+        //   updateSelectedFilter={this.updateSelectedFilter}
+          updateSpecificFilterObject={this.updateSpecificFilterObject}
+          addFilterObject={this.addFilterObject}
           headers={this.state.headers}
           runQuery={this.runQuery}
         />
