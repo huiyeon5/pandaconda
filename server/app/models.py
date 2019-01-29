@@ -43,5 +43,11 @@ class UserData(db.Model):
     def __repr__(self):
         return '<UserData %d %s>' % (self.id, self.data_name)
 
-# class Group_ValidHeaders(db.Model):
-    
+class GroupValidHeaders(db.Model):
+    # id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    group_id = db.Column(db.Integer, primary_key=True)
+    header_name = db.Column(db.String(255), nullable=False, primary_key=True)
+    data_type = db.Column(db.String(255), nullable=False)
+
+    def __repr__(self):
+        return '<Group_ValidHeaders %d >' % self.group_id

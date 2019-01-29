@@ -29,9 +29,7 @@ def clean_headers(headers):
     return re.sub('[^a-zA-Z]+', '', headers)
 
 
-def suggest_headers(path):
-    valid_headers = ['Depot', 'SKU', 'Customer', 'ActivityDate', 'Inventory', 'SKUKey', 'UnitVol', 'UnitPrice']
-    header_types = {'Depot' : 'int', 'SKU' : 'int', 'Customer': 'int', 'ActivityDate' : 'date', 'Inventory' : 'int', 'SKUKey' : 'int', 'UnitVol' : 'double', 'UnitPrice' : 'double'}
+def suggest_headers(path, valid_headers, header_types):
 
     df = pd.read_csv(path)
     columns = list(df.columns)

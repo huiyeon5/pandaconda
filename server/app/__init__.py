@@ -60,7 +60,7 @@ def create_app(config_name):
     migrate = Migrate(app, db)
 
     from app import models
-    from app.models import User, UserData
+    from app.models import User, UserData, GroupValidHeaders
 
     # Render Homepage
 
@@ -182,8 +182,14 @@ def create_app(config_name):
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 session['filePath'] = 'app/uploads/' + filename
                 session['fileName'] = filename
-                
-                value = json.loads(check_headers.suggest_headers('app/uploads/' + filename))
+                valid = GroupValidHeaders.query.filter_by(group_id=current_user.group_id).all()
+                valid_headers=[]
+                header_types ={}
+                for row in valid:
+                    valid_headers.append(row.header_name)
+                    header_types[row.header_name] = row.data_type
+
+                value = json.loads(check_headers.suggest_headers('app/uploads/' + filename, valid_headers, header_types))
                 # print("==VALUE OUPUT==")
                 # print(value)
                 if value['status'] == 400:
