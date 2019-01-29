@@ -241,7 +241,7 @@ def create_app(config_name):
                         insertSQL += v[0:len(v) - 1] +";"
                         db.engine.execute(text(sql))
                         db.engine.execute(text(insertSQL))
-                        userData = UserData(data_name=f, user_id=current_user.id)
+                        userData = UserData(data_name=f, user_id=current_user.id, upload_date=datetime.datetime.now())
                         db.session.add(userData)
                         db.session.commit()
                         # if os.path.join(app.config['UPLOAD_FOLDER']).exists(filename):
@@ -260,7 +260,7 @@ def create_app(config_name):
     def get_all_dataset_api():
         if current_user.is_authenticated:
             c_id = current_user.id
-            ds_names = UserData.query.filter_by(user_id=c_id).all()
+            ds_names = UserData.query.filter_by(user_id=c_id).order_by(UserData.upload_date.desc()).all()
             returnList =[]
             for dd in range(len(ds_names)):
                 d = ds_names[dd]
@@ -376,7 +376,7 @@ def create_app(config_name):
 
         df.to_sql(name = filename[0:len(filename)-4]+"_"+str(current_user.id), con=db.engine)
 
-        userData = UserData(data_name=filename[0:len(filename)-4]+"_"+str(current_user.id), user_id=current_user.id)
+        userData = UserData(data_name=filename[0:len(filename)-4]+"_"+str(current_user.id), user_id=current_user.id, upload_date=datetime.datetime.now())
         db.session.add(userData)
         db.session.commit()
 

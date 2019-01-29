@@ -38,6 +38,10 @@ class UserData(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     data_name = db.Column(db.String(120), nullable=False)
     user_id = db.Column(db.Integer, nullable=False)
+    upload_date = db.Column(db.DateTime, nullable=False)
 
     def __repr__(self):
         return '<UserData %d %s>' % (self.id, self.data_name)
+
+# class Group_ValidHeaders(db.Model):
+    
