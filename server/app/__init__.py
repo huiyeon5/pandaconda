@@ -209,7 +209,7 @@ def create_app(config_name):
                             elif(v == 'string'):
                                 header = header + "VARCHAR(MAX)"
                             elif(v == 'date'):
-                                header = header + "DATE"
+                                header = header + "DATETIME"
                                 dateIndex.append(d)
                             elif(v == 'double'):
                                 header = header + "FLOAT"
