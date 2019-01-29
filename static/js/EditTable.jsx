@@ -1,11 +1,25 @@
 import React from "react";
 import "../css/EditTable.css";
 
+class Popup extends React.Component {
+  render() {
+    return (
+      <div className='popup'>
+        <div className='popup_inner'>
+          <h1>{this.props.text}</h1>
+        <button onClick={this.props.closePopup}>close</button>
+        </div>
+      </div>
+    );
+  }
+}
+
 export default class EditTable extends React.Component {
   constructor() {
     super();
     this.state = {
-      obj: null
+      obj: null,
+      showPopup: false
     };
     //this.loadTable = this.loadTable.bind(this);
     //this.postData = this.postData.bind(this);
@@ -13,6 +27,12 @@ export default class EditTable extends React.Component {
     this.callBackendAPI = this.callBackendAPI.bind(this);
     this.result = this.result.bind(this);
     this.postData = this.postData.bind(this);
+  }
+
+  togglePopup() {
+    this.setState({
+      showPopup: !this.state.showPopup
+    });
   }
 
   componentDidMount() {
@@ -184,6 +204,8 @@ export default class EditTable extends React.Component {
       });
   }
 
+  
+
   async postData(url, bodyObj) {
     const response = await fetch(url, {
       method: "POST",
@@ -223,6 +245,15 @@ export default class EditTable extends React.Component {
           <button className="change-btn" onClick={this.result}>
             Change
           </button>
+
+          <button onClick={this.togglePopup.bind(this)}>Show Data</button>
+            {this.state.showPopup ? 
+              <Popup
+                
+                closePopup={this.togglePopup.bind(this)}
+              />
+              : null
+            }
         </div>
       </div>
     );
