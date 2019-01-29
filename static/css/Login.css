@@ -105,4 +105,5 @@ label {
   border: none;
   font-family: "Roboto", sans-serif;
   border-radius: 4px;
+  pointer-events: auto;
 }
