@@ -388,6 +388,25 @@ def create_app(config_name):
 
         return jsonify({'status':200})
 
+    @app.route('/view_data_api', methods=["GET"])
+    def view_data_api():
+        filePath = session.get('filePath')
+        filename = session.get('fileName')
+
+        df = pd.read_csv(filePath)
+
+        df = df.head()
+
+        dic = {}
+        s = [list(l) for l in zip(*df.values)]
+        i = 0
+        for row in s:
+            dic[df.columns[i]] = row
+            i = i + 1
+
+        toReturn = [(k,v) for k,v in dic.items()]
+        return jsonify({'data': toReturn})
+
 # ========================================================= API END HERE ================================================
 
     return app
