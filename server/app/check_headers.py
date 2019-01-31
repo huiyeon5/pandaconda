@@ -79,7 +79,7 @@ def suggest_headers(path, valid_headers, header_types):
                     temp_header_dict['datetime'] = 1
                 header_dict[header] = temp_header_dict
 
-    for header in headers:
+    for header in columns:
         temp_dict = header_dict[header]
         for k, v in temp_dict.items():
             if v >= count_threshold:
