@@ -1,25 +1,15 @@
 import React from "react";
 import "../css/EditTable.css";
+import EditTablePopup from './EditTablePopup' 
 
-class Popup extends React.Component {
-  render() {
-    return (
-      <div className='popup'>
-        <div className='popup_inner'>
-          <h1>{this.props.text}</h1>
-        <button onClick={this.props.closePopup}>close</button>
-        </div>
-      </div>
-    );
-  }
-}
 
 export default class EditTable extends React.Component {
   constructor() {
     super();
     this.state = {
       obj: null,
-      showPopup: false
+      showPopup: false,
+      data : null
     };
     //this.loadTable = this.loadTable.bind(this);
     //this.postData = this.postData.bind(this);
@@ -30,9 +20,27 @@ export default class EditTable extends React.Component {
   }
 
   togglePopup() {
-    this.setState({
-      showPopup: !this.state.showPopup
-    });
+    this.callBackendAPI("/view_data_api")
+      .then(res => {
+        console.log(res);
+        if (res["status"] == 500) {
+          alert("error")
+        } else {
+          this.setState({ data : res.data },
+            () => {
+              this.setState({
+                showPopup: !this.state.showPopup
+              });
+            });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    
+
+
   }
 
   componentDidMount() {
@@ -248,8 +256,8 @@ export default class EditTable extends React.Component {
 
           <button onClick={this.togglePopup.bind(this)}>Show Data</button>
             {this.state.showPopup ? 
-              <Popup
-                
+              <EditTablePopup
+                data={this.state.data}
                 closePopup={this.togglePopup.bind(this)}
               />
               : null
