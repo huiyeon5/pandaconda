@@ -30,7 +30,7 @@ def clean_headers(headers):
 
 
 def suggest_headers(path, valid_headers, header_types):
-
+    print(valid_headers, header_types)
     df = pd.read_csv(path)
     columns = list(df.columns)
     returned_list = []
@@ -90,20 +90,26 @@ def suggest_headers(path, valid_headers, header_types):
     #if index is present and must be dropped
     if columns[0] == 'Unnamed: 0' and df[columns[0]].dtype == 'int64':
         returned_list.append({'col_header' : columns[0], 'imported_as': valid_headers.sort(), 'drop' : True, 'cosine' : 'NA'})
-        user_headers = [ clean_headers(header) for header in columns[1:] ]
+        #user_headers = [ clean_headers(header) for header in columns[1:] ]
 
         #all_correct = True
         # return_header_types = {}
         #loop through remaining headers
-        for i in range(1, len(user_headers)):
-            column = user_headers[i]
+        for i in range(1, len(columns)):
+            column = columns[i]
             #if header is part of the valid list
             if column in valid_headers:
                 imported_as = [column]
-                temp_headers = list(user_headers)
-                temp_headers.remove(column)
-                temp_headers.sort()
-                imported_as.extend(temp_headers)
+                temp_valid_headers = []
+                type_to_get = checked_headers[column]
+                if type_to_get == None:
+                    temp_valid_headers = valid_headers
+                else:
+                    temp_valid_headers = [k for k,v in header_types.items() if v == type_to_get]
+                if column in temp_valid_headers:
+                    temp_valid_headers.remove(column)
+                temp_valid_headers.sort()
+                imported_as.extend(temp_valid_headers)
                 returned_list.append({'col_header' : column, 'imported_as': imported_as, 'drop' : False, 'cosine' : 'high'})
                 # return_header_types[column] = header_types.get(column)
             #header is not part of valid list
@@ -161,15 +167,21 @@ def suggest_headers(path, valid_headers, header_types):
     #no index in the csv file
     else:
         all_correct = True
-        user_headers = [ clean_headers(header) for header in columns ]
+        #user_headers = [ clean_headers(header) for header in columns ]
         return_header_types = {}
-        for i in range(len(user_headers)):
-            column = user_headers[i]
+        for i in range(len(columns)):
+            column = columns[i]
             #if header is part of the valid list
             if column in valid_headers:
                 imported_as = [column]
-                temp_headers = list(user_headers)
-                temp_headers.remove(column)
+                temp_headers = []
+                type_to_get = checked_headers[column]
+                if type_to_get == None:
+                    temp_headers = valid_headers
+                else:
+                    temp_headers = [k for k,v in header_types.items() if v == type_to_get]
+                if column in temp_headers:
+                    temp_headers.remove(column)
                 temp_headers.sort()
                 imported_as.extend(temp_headers)
                 returned_list.append({'col_header' : column, 'imported_as': imported_as, 'drop' : False, 'cosine' : 'high'})

@@ -31,7 +31,7 @@ class EditTablePopup extends React.Component {
       return (
         <div className='popup'>
           <div className='popup_inner'>
-          <button onClick={this.props.closePopup}>close</button>
+            <button id ="close" onClick={this.props.closePopup}>X</button>
           </div>
         </div>
       );

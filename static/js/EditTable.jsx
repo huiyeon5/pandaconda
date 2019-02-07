@@ -236,6 +236,12 @@ export default class EditTable extends React.Component {
   render() {
     return (
       <div>
+        <div className="align-right">
+        <button onClick={this.togglePopup.bind(this)}>Show Data</button>
+        
+        </div>
+        <br/>
+         
         <div className="table-container">
           <table className="table" id="table">
             <tbody className="tBody">
@@ -254,7 +260,7 @@ export default class EditTable extends React.Component {
             Change
           </button>
 
-          <button onClick={this.togglePopup.bind(this)}>Show Data</button>
+         
             {this.state.showPopup ? 
               <EditTablePopup
                 data={this.state.data}
