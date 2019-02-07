@@ -60,7 +60,7 @@ def create_app(config_name):
     migrate = Migrate(app, db)
 
     from app import models
-    from app.models import User, UserData, GroupValidHeaders
+    from app.models import User, UserData, GroupValidHeaders, UserVisualization
 
     # Render Homepage
 
@@ -407,6 +407,13 @@ def create_app(config_name):
         toReturn = [(k,v) for k,v in dic.items()]
         return jsonify({'data': toReturn})
 
+    @app.route('/save_visualization', methods=["POST"])
+    def save_visualization():
+        userID = current_user.id
+        userViz = UserVisualization(upload_date=datetime.datetime.now(), configs=request.get_json(),user_id=userID)
+        db.session.add(userViz)
+        db.session.commit()
+        return jsonify({'status':200})
 # ========================================================= API END HERE ================================================
 
     return app

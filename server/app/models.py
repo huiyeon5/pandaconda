@@ -51,3 +51,9 @@ class GroupValidHeaders(db.Model):
 
     def __repr__(self):
         return '<Group_ValidHeaders %d >' % self.group_id
+
+class UserVisualization(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    upload_date = db.Column(db.DateTime, nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
+    configs = db.Column(db.JSON, nullable=False)
