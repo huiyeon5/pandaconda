@@ -414,6 +414,21 @@ def create_app(config_name):
         db.session.add(userViz)
         db.session.commit()
         return jsonify({'status':200})
+
+    @app.route('/get_all_saved_viz')
+    def get_all_saved_viz():
+        userID = current_user.id
+        res = UserVisualization.query.filter_by(user_id=userID).order_by(UserVisualization.upload_date.desc()).all()
+        returnList = []
+        print(res)
+        for item in res:
+            temp = {}
+            temp[str(item.upload_date)] = item.configs
+            returnList.append(temp)
+        
+        return jsonify({'data':returnList, 'status': 200})
+
+
 # ========================================================= API END HERE ================================================
 
     return app
