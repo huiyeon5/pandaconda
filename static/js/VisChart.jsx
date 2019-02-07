@@ -2,6 +2,7 @@ import React from "react";
 import "../css/VisualisationPage";
 import VisNavBackButton from "./VisNavBackButton";
 import VisNavNextButton from "./VisNavNextButton";
+import VisSaveButton from "./VisSaveButton";
 import VisChartSidebar from "./VisChartSidebar";
 import VisChartDisplay from "./VisChartDisplay";
 
@@ -25,6 +26,7 @@ export default class VisChart extends React.Component {
     this.updateSpecificFilterObject = this.updateSpecificFilterObject.bind(this);
     this.postData = this.postData.bind(this);
     this.runQuery = this.runQuery.bind(this);
+    this.saveViz = this.saveViz.bind(this);
   }
 
   componentDidMount() {
@@ -83,7 +85,6 @@ export default class VisChart extends React.Component {
   }
 
   runQuery() {
-    console.log("running");
     if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
       var queryObj = {
         selectedData: this.props.dataset,
@@ -93,6 +94,24 @@ export default class VisChart extends React.Component {
       };
       this.postData("/viz_filter_api", queryObj).then(res => {
         this.setState({ data: res.data });
+      });
+    } else {
+      alert("Please make all the necessary Selections to run the charts!");
+    }
+  }
+
+  saveViz() {
+    if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
+      var queryObj = {
+        selectedData: this.props.dataset,
+        headers: [this.state.xaxis, this.state.yaxis],
+        aggregate: this.state.aggregate,
+        filter: this.state.filter
+      };
+      this.postData("/save_visualization", queryObj).then(res => {
+        if(res.status === 200) {
+            alert("Visualization Saved!")
+        }
       });
     } else {
       alert("Please make all the necessary Selections to run the charts!");
@@ -134,7 +153,7 @@ export default class VisChart extends React.Component {
 
   render() {
     return (
-      <div className="vis-display-container">
+      <div className="vis-display-container" style={{position:`relative`}}>
         <VisChartSidebar
           dataset={this.props.dataset}
           chart={this.props.chart}
@@ -156,6 +175,7 @@ export default class VisChart extends React.Component {
         />
         <VisNavBackButton handler={this.props.handler} />
         <VisNavNextButton handler={this.props.handler} />
+        <VisSaveButton onClick={this.saveViz}/>
       </div>
     );
   }
