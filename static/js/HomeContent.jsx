@@ -1,5 +1,6 @@
 import React from "react";
 import HomeVizCard from './HomeVizCard';
+import {Redirect} from 'react-router'
 
 require("../css/fullstack.css");
 require("../css/HomeContent.css");

@@ -48,6 +48,7 @@
     "html-loader": "^0.5.5",
     "plotly.js": "^1.44.0",
     "react-plotly.js": "^2.2.0",
+    "react-router-dom": "^4.3.1",
     "recharts": "^1.4.2",
     "sass": "^1.16.1"
   }
