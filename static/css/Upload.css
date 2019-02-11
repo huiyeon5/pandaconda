@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 
-.dropzone {
+.dropzone-pc {
   width: 100%;
   height: 80%;
   border: 2px dashed #ccc;
@@ -17,27 +17,27 @@
     "uploaded-text"
 }
 
-.dropzone.dragover {
+.dropzone-pc.dragover-pc {
   border-color: #000;
   background-color: #88aaff;
   color: #000000;
 }
 
-.upload-icon{
+.upload-icon-pc{
   grid-area:upload-icon;
 }
-.uploadtext {
+.uploadtext-pc {
   grid-area: uploaded-text;
   color: blue;
   }
 
-.align-right {
+.align-right-pc {
   display: flex;
   align-items: right;
   justify-content: right;
 }
 
-.upload-btn{
+.upload-btn-pc{
   background: #fecb2f;
   padding: 15px 32px;
   text-align: center;
@@ -47,29 +47,29 @@
   border-radius:5px;
 }
 
-.upload-btn:hover{
+.upload-btn-pc:hover{
   background: #fff;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   border-radius:5px;
 
 }
 
-.drag-text{
+.drag-text-pc{
   grid-area: drag-text;
 }
 
-.manual-upload{
+.manual-upload-pc{
   grid-area: manual-upload;
   
 }
 
-.center{
+.center-pc{
   display:flex;
   justify-content: center;
   align-content: center;
 }
 
-.inputfile{
+.inputfile-pc{
   width: 0.1px;
 	height: 0.1px;
 	opacity: 0;
@@ -78,7 +78,7 @@
 	z-index: -1;
 }
 
-.inputfile + .labelinput {
+.inputfile-pc + .labelinput-pc {
   background: #4d5762;
   padding: 15px 32px;
   text-align: center;
@@ -88,8 +88,8 @@
   border-radius:5px;
 }
 
-.inputfile:focus + .labelinput,
-.inputfile + .labelinput:hover {
+.inputfile-pc:focus + .labelinput-pc,
+.inputfile-pc + .labelinput-pc:hover {
   background-color: white;
   
 }

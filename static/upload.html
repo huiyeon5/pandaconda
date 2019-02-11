@@ -21,31 +21,31 @@
 
   
   <br />
-  <div class="dropzone" id="dropzone">
-      <div class="center">
+  <div class="dropzone-pc" id="dropzone">
+      <div class="center-pc">
           <img
           src="{{ url_for('site.static', filename='images/folder.png') }}"
           alt="Upload Icon" height=100 width=100
         />
       </div>
-    <div class="center">
-      <span class="drag-text">Drag and drop files here</span>
+    <div class="center-pc">
+      <span class="drag-text-pc">Drag and drop files here</span>
     </div>
-    <span class="manual-upload">
-      <div class="center">
-        <input type="file" name="file" id="uploaded-btn" class="inputfile"/>
-        <label class = "labelinput" for="uploaded-btn">Choose File</label>
+    <span class="manual-upload-pc">
+      <div class="center-pc">
+        <input type="file" name="file" id="uploaded-btn" class="inputfile-pc"/>
+        <label class = "labelinput-pc" for="uploaded-btn">Choose File</label>
       </div>
     </span>
-    <div class="center">
-      <div class="uploadtext"><strong id="uploadedFile"></strong></div>
+    <div class="center-pc">
+      <div class="uploadtext-pc"><strong id="uploadedFile"></strong></div>
     </div>
   </div>
 
   <br />
 
-  <div class="align-right">
-    <button class="upload-btn" onclick="upload()">Upload</button>
+  <div class="align-right-pc">
+    <button class="upload-btn-pc" onclick="upload()">Upload</button>
   </div>
 </body>
 
@@ -101,7 +101,7 @@
 
     dropzone.ondrop = function(event) {
       event.preventDefault();
-      this.className = "dropzone";
+      this.className = "dropzone-pc";
       fileList = event.dataTransfer.files;
       files.push(fileList[fileList.length - 1]);
 
@@ -112,12 +112,12 @@
     };
 
     dropzone.ondragover = function() {
-      this.className = "dropzone dragover";
+      this.className = "dropzone-pc dragover-pc";
       return false;
     };
 
     dropzone.ondragleave = function() {
-      this.className = "dropzone";
+      this.className = "dropzone-pc";
       return false;
     };
 
