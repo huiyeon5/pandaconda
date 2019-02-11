@@ -85,52 +85,52 @@ export default class Signup extends React.Component {
 
   render() {
     return (
-      <div className="signup">
-        <div className="dhl-half" />
-        <div className="form-half">
-          <div className="form-side_s">
-            <div className="welcome-msg">Join the DHL Family now!</div>
-            <div className="form-input_s">
-                <form className="signup-form_s">
-                    <div className="center">
-                        <div className="fullname">
-                            <div className="firstName">
-                                <label className="signup-label">
+      <div className="signup-pc">
+        <div className="dhl-half-pc" />
+        <div className="form-half-pc">
+          <div className="form-side_s-pc">
+            <div className="welcome-msg-pc">Join the DHL Family now!</div>
+            <div className="form-input_s-pc">
+                <form className="signup-form_s-pc">
+                    <div className="center-pc">
+                        <div className="fullname-pc">
+                            <div className="firstName-pc">
+                                <label className="signup-label-pc">
                                 First Name
                                 <br/>
-                                <input className="signup-input" type="text" id="firstName" name="firstName"/>
+                                <input className="signup-input-pc" type="text" id="firstName" name="firstName"/>
                                 </label>
                             </div>
-                            <div className="lastName">
-                                <label className="signup-label">
+                            <div className="lastName-pc">
+                                <label className="signup-label-pc">
                                 Last Name
                                 <br/>
-                                <input className="signup-input" type="text" id="lastName" name="lastName"/>
+                                <input className="signup-input-pc" type="text" id="lastName" name="lastName"/>
                                 </label>
                             </div>
                         </div>
                     </div>
-                    <div className="center">
-                        <label className="signup-label">
+                    <div className="center-pc">
+                        <label className="signup-label-pc">
                         Email
                         <br/>
-                        <input className="signup-input" type="text" id="email" name="email"/>
+                        <input className="signup-input-pc" type="text" id="email" name="email"/>
                         </label>
                     </div>
-                    <div className="center">
-                        <label className="signup-label">
+                    <div className="center-pc">
+                        <label className="signup-label-pc">
                         Password
                         <br/>
-                        <input className="signup-input" type="password" id="password" name="password"/>
+                        <input className="signup-input-pc" type="password" id="password" name="password"/>
                         </label>
                     </div>
                     <br />
-                    <div className="center">
-                        <div className="signup-button" onClick={this.handleSignup}>Signup</div>
+                    <div className="center-pc">
+                        <div className="signup-button-pc" onClick={this.handleSignup}>Signup</div>
                     </div>
                 </form>
-                <div className="center center-footer">
-                    <footer className="signup-footer">
+                <div className="center-pc center-footer-pc">
+                    <footer className="center-footer-pc">
                         Already an account? Login <a href="/login">here</a>
                     </footer>
                 </div>

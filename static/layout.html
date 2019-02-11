@@ -52,7 +52,9 @@
           alt="DHL Logo"
         />
       </div>
-      <div class="sidebar-layout">
+
+      <div class="sidebar-layout" id="sidebar-layout">
+        <!-- <button onclick="close()">close</button> -->
         <a id="home" class="sidebar-item" href="/">
           <img
             src="{{ url_for('site.static', filename='images/home.png') }}"
@@ -75,7 +77,10 @@
           Upload Data
         </a>
       </div>
-      <div class="content-layout">{% block content %}{% endblock %}</div>
+      
+      <div class="content-layout" id="content-layout">
+        {% block content %}{% endblock %}
+      </div>
     </div>
   </body>
 
@@ -84,5 +89,18 @@
     const response = await fetch(url);
     window.location = "/";
   }
+
+//   function open() {
+//   document.getElementById("content-layout").style.marginLeft = "250px";
+//   document.getElementById("sidebar-layout").style.width = "25%";
+//   document.getElementById("sidebar-layout").style.display = "block";
+//   document.getElementById("openNav").style.display = 'none';
+// }
+  function close() {
+  document.getElementById("content-layout").style.marginLeft = "0";
+  document.getElementById("sidebar-layout").style.width = "0";
+  document.getElementById("sidebar-layout").style.display = "none";
+  document.getElementById("openNav").style.display = "inline-block";
+}
   </script>
 </html>

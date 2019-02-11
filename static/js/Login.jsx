@@ -13,7 +13,7 @@ export default class Login extends React.Component {
     document.getElementById("password").addEventListener("keyup", function(event) {
       event.preventDefault();
       if (event.keyCode === 13) {
-        document.getElementsByClassName("login-button")[0].click();
+        document.getElementsByClassName("login-button-pc")[0].click();
       }
     });
   }
@@ -64,33 +64,33 @@ export default class Login extends React.Component {
 
   render() {
     return (
-      <div className="login">
-        <div className="dhl-half" />
-        <div className="form-half">
-          <div className="form-side">
-            <div className="welcome-msg">Welcome to DHL portal!</div>
-            <div className="form-input">
-              <div className="form-input2">
-                <form className="login-form">
+      <div className="login-pc">
+        <div className="dhl-half-pc" />
+        <div className="form-half-pc">
+          <div className="form-side-pc">
+            <div className="welcome-msg-pc">Welcome to DHL portal!</div>
+            <div className="form-input-pc">
+              <div className="form-input2-pc">
+                <form className="login-form-pc">
                   
-                  <div className="center">
-                    <label>
+                  <div className="center-pc">
+                    <label className="label-pc">
                       Email
                       <br/>
-                      <input className = "login-username-input" type="email" id="email" name="email" />
+                      <input className = "login-username-input-pc" type="email" id="email" name="email" />
                     </label>
                   </div>
                   <br/>
-                  <div className="center">
-                    <label>
+                  <div className="center-pc">
+                    <label className="label-pc">
                       Password
                       <br/>
-                      <input className = "login-password-input" type="password" id="password" name="password" />
+                      <input className = "login-password-input-pc" type="password" id="password" name="password" />
                     </label>
                   </div>
 
-                  <div className="center">
-                    <div className="login-button" onClick={this.handleLogin}>
+                  <div className="center-pc">
+                    <div className="login-button-pc" onClick={this.handleLogin}>
                       Login
                     </div>
                   </div>
@@ -99,8 +99,8 @@ export default class Login extends React.Component {
 
 
                 </form>
-                <div className="center center-footer">
-                  <footer className="login-footer">
+                <div className="center-pc center-footer-pc">
+                  <footer className="login-footer-pc">
                     Do not have an account? Sign up <a href="/signup">here</a>
                   </footer>
                 </div>

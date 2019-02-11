@@ -31,6 +31,14 @@ class EditTablePopup extends React.Component {
       return (
         <div className='popup'>
           <div className='popup_inner'>
+            <div className="table-container">
+                <table className="table" id="table">
+                    <tbody className="tBody">
+                        <tr className="header-edittable header-value">
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <button id ="close" onClick={this.props.closePopup}>X</button>
           </div>
         </div>

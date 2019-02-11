@@ -248,7 +248,6 @@ export default class EditTable extends React.Component {
               <tr className="header-edittable header-value">
                 <th>CSV Headers</th>
                 <th>Valid Headers</th>
-                {/* <th>Rename Header</th> */}
                 <th>Drop Header</th>
               </tr>
             </tbody>
