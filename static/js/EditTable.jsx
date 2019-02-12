@@ -87,7 +87,7 @@ export default class EditTable extends React.Component {
     var totalDataRows = this.state.obj.data;
     for (i = 0; i < totalDataRows.length; i = i + 1) {
       var data = totalDataRows[i];
-
+      console.log(data)
       //First Column
       var newRow = document.createElement("TR");
       newRow.classList.add("tr");
@@ -236,16 +236,16 @@ export default class EditTable extends React.Component {
   render() {
     return (
       <div>
-        <div className="align-right">
+        <div className="align-right-pc">
         <button onClick={this.togglePopup.bind(this)}>Show Data</button>
         
         </div>
         <br/>
          
-        <div className="table-container">
+        <div className="table-container-pc">
           <table className="table" id="table">
             <tbody className="tBody">
-              <tr className="header-edittable header-value">
+              <tr className="header-edittable-pc header-value">
                 <th>CSV Headers</th>
                 <th>Valid Headers</th>
                 <th>Drop Header</th>
@@ -254,8 +254,8 @@ export default class EditTable extends React.Component {
           </table>
         </div>
         <br />
-        <div className="align-right">
-          <button className="change-btn" onClick={this.result}>
+        <div className="align-right-pc">
+          <button className="change-btn-pc" onClick={this.result}>
             Change
           </button>
 
