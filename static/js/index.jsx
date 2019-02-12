@@ -6,6 +6,7 @@ import UploadContent from "./UploadContent";
 import VisualisationContent from "./VisualisationContent";
 import Signup from "./Signup";
 import EditTable from "./EditTable"
+import Manage from "./Manage"
 import 'babel-polyfill';
 
 
@@ -37,4 +38,9 @@ if (signupPage) {
 const tablePage = document.getElementById("tablePage");
 if (tablePage) {
   ReactDOM.render(<EditTable />, tablePage);
+}
+
+const managePage = document.getElementById("managePage");
+if (managePage) {
+  ReactDOM.render(<Manage />, managePage);
 }

@@ -60,7 +60,7 @@ def create_app(config_name):
     migrate = Migrate(app, db)
 
     from app import models
-    from app.models import User, UserData, GroupValidHeaders, UserVisualization
+    from app.models import User, UserData, GroupValidHeaders, UserVisualization, Group, GroupMember, GroupDataset
 
     # Render Homepage
 
@@ -77,6 +77,13 @@ def create_app(config_name):
             return redirect(url_for('login_r'))
         else:
             return render_template('visualisation.html')
+
+    @app.route("/manage/")
+    def manage():
+        if not current_user.is_authenticated:
+            return redirect(url_for('login_r'))
+        else:
+            return render_template('manage.html')
 
     @app.route('/signup')
     def signup_r():
@@ -188,7 +195,7 @@ def create_app(config_name):
                 for row in valid:
                     valid_headers.append(row.header_name)
                     header_types[row.header_name] = row.data_type
-
+                print(filename)
                 value = json.loads(check_headers.suggest_headers('app/uploads/' + filename, valid_headers, header_types))
                 # print("==VALUE OUPUT==")
                 # print(value)
@@ -427,6 +434,50 @@ def create_app(config_name):
             returnList.append(temp)
         
         return jsonify({'data':returnList, 'status': 200})
+
+    @app.route('/has_group')
+    def has_group():
+        if(current_user.group_id is not None):
+            returnObj = {}
+            returnObj['status'] = 200
+            group = Group.query.filter_by(id=current_user.group_id).one()
+            returnObj['managerId'] = group.manager_id
+            members = GroupMember.query.filter_by(group_id=current_user.group_id).all()
+            returnObj['numMember'] = len(members)
+            returnObj['group_id'] = current_user.group_id
+            print(returnObj)
+            return jsonify(returnObj)
+        return jsonify({'status':400})
+
+    @app.route('/get_manager_info',methods=["POST"])
+    def get_manager_info():
+        dic = request.get_json()
+        manager_id = dic['manager_id']
+        man = User.query.filter_by(id=manager_id).one()
+        returnDict = {}
+        returnDict['name'] = man.fullname
+        returnDict['email'] = man.email
+        returnDict['status'] = 200
+        return jsonify(returnDict)
+        
+    @app.route('/get_group_user_dataset')
+    def get_group_user_dataset():
+        if current_user.is_authenticated:
+            c_id = current_user.id
+            g_id = current_user.group_id
+            ds_names = UserData.query.filter_by(user_id=c_id).order_by(UserData.upload_date.desc()).all()
+            gds_names = GroupDataset.query.filter_by(group_id=g_id).order_by(GroupDataset.upload_date.desc()).all()
+            returnList =[]
+            for dd in range(len(ds_names)):
+                d = ds_names[dd]
+                temp = {}
+                temp["id"] = f'dataset-name-{dd+1}'
+                temp["name"] = d.data_name[0: d.data_name.rfind("_")]
+                returnList.append(temp)
+            return jsonify({'datasetNames':returnList})
+        else:
+            return jsonify({'status':400})
+
 
 
 # ========================================================= API END HERE ================================================

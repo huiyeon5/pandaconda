@@ -9,6 +9,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128), nullable=False)
     fullname = db.Column(db.String(80), nullable=False)
     group_id = db.Column(db.Integer, default=0)
+    isManager = db.Column(db.Boolean, default=False)
 
     @property
     def password(self):
@@ -27,12 +28,27 @@ class User(UserMixin, db.Model):
 
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_ids = db.Column(db.Integer)
     manager_id = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<Group %d, Manager %d>' % self.id, self.manager_id
+        return '<Group %d, Manager %d>' % (self.id, self.manager_id)
 
+class GroupMember(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    group_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return '<GroupMember %d>' % (self.group_id)
+
+class GroupDataset(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    group_id = db.Column(db.Integer, nullable=False)
+    data_name = db.Column(db.String(120), nullable=False)
+    upload_date = db.Column(db.DateTime, nullable=False)
+
+    def __repr__(self):
+        return '<GroupDataset %s>' % (self.dataset_id)
 
 class UserData(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
