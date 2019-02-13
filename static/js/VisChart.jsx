@@ -16,14 +16,22 @@ export default class VisChart extends React.Component {
       headers: [],
       headersUniqueValues: {},
       data: null,
-      filter: []
+      filter: [],
+      topKTog: true,
+      topKSort: null,
+      topKLimit: null
     };
     this.updateSelectedXAxis = this.updateSelectedXAxis.bind(this);
     this.updateSelectedYAxis = this.updateSelectedYAxis.bind(this);
     this.updateSelectedAggregate = this.updateSelectedAggregate.bind(this);
     this.updateSelectedFilter = this.updateSelectedFilter.bind(this);
     this.addFilterObject = this.addFilterObject.bind(this);
-    this.updateSpecificFilterObject = this.updateSpecificFilterObject.bind(this);
+    this.updateSpecificFilterObject = this.updateSpecificFilterObject.bind(
+      this
+    );
+    this.toggleTopK = this.toggleTopK.bind(this);
+    this.updateTopKSort = this.updateTopKSort.bind(this);
+    this.updateTopKLimit = this.updateTopKLimit.bind(this);
     this.postData = this.postData.bind(this);
     this.runQuery = this.runQuery.bind(this);
     this.saveViz = this.saveViz.bind(this);
@@ -90,9 +98,12 @@ export default class VisChart extends React.Component {
         selectedData: this.props.dataset,
         headers: [this.state.xaxis, this.state.yaxis],
         aggregate: this.state.aggregate,
-        filter: this.state.filter
+        filter: this.state.filter,
+        topKSort: this.state.topKSort,
+        topKLimit: this.state.topKLimit
       };
       this.postData("/viz_filter_api", queryObj).then(res => {
+        console.log(res.data);
         this.setState({ data: res.data });
       });
     } else {
@@ -109,8 +120,8 @@ export default class VisChart extends React.Component {
         filter: this.state.filter
       };
       this.postData("/save_visualization", queryObj).then(res => {
-        if(res.status === 200) {
-            alert("Visualization Saved!")
+        if (res.status === 200) {
+          alert("Visualization Saved!");
         }
       });
     } else {
@@ -151,9 +162,30 @@ export default class VisChart extends React.Component {
     this.setState({ filter: filterList });
   }
 
+  toggleTopK() {
+    this.setState(
+      prevState => ({
+        topKTog: !prevState.topKTog
+      }),
+      () => {
+        if (!this.state.topKTog) {
+          this.setState({ topKSort: null, topKLimit: null });
+        }
+      }
+    );
+  }
+
+  updateTopKSort(value) {
+    this.setState({ topKSort: value });
+  }
+
+  updateTopKLimit(value) {
+    this.setState({ topKLimit: value });
+  }
+
   render() {
     return (
-      <div className="vis-display-container" style={{position:`relative`}}>
+      <div className="vis-display-container" style={{ position: `relative` }}>
         <VisChartSidebar
           dataset={this.props.dataset}
           chart={this.props.chart}
@@ -166,6 +198,11 @@ export default class VisChart extends React.Component {
           addFilterObject={this.addFilterObject}
           headers={this.state.headers}
           runQuery={this.runQuery}
+          topKTog={this.state.topKTog}
+          plotlyType={this.props.chart.id}
+          toggleTopK={this.toggleTopK}
+          updateTopKSort={this.updateTopKSort}
+          updateTopKLimit={this.updateTopKLimit}
         />
         <VisChartDisplay
           dataset={this.props.dataset}
@@ -175,7 +212,7 @@ export default class VisChart extends React.Component {
         />
         <VisNavBackButton handler={this.props.handler} />
         <VisNavNextButton handler={this.props.handler} />
-        <VisSaveButton onClick={this.saveViz}/>
+        <VisSaveButton onClick={this.saveViz} />
       </div>
     );
   }

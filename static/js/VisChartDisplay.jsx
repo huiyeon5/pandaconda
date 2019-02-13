@@ -6,7 +6,6 @@ export default class VisChartDisplay extends React.Component {
     super(props);
   }
 
-
   render() {
     return (
       <div className="vis-display-chart vis-card-grid">
@@ -14,7 +13,7 @@ export default class VisChartDisplay extends React.Component {
           {this.props.chartTitle} ({this.props.dataset})
         </div>
         {this.props.plotlyType ? (
-            this.props.data ? (
+          this.props.data ? (
             <Visual
               plotlyType={this.props.plotlyType}
               x={this.props.data.xaxis}

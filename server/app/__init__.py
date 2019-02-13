@@ -316,6 +316,13 @@ def create_app(config_name):
     
     @app.route('/viz_filter_api', methods=["POST"])
     def viz_filter_api():
+        
+        def sortConvert(direction):
+            return {
+                "ascending": "ASC",
+                "descending": "DESC"
+            }[direction]
+        
         if current_user.is_authenticated:
             req = request.get_json()
 
@@ -324,26 +331,56 @@ def create_app(config_name):
             y_axis = req['headers'][1]
             aggre = req['aggregate']
             filters = req['filter']
-
-            if len(filters) == 0:
-                sql = f'SELECT {x_axis}, {aggre}({y_axis}) as y_axis FROM {dataset} GROUP BY {x_axis} ORDER BY {x_axis} ASC'
-                returnSQL = db.engine.execute(sql)
-
-            else:
+            
+            conditions = ""
+            if len(filters) > 0:
                 conditions = "WHERE "
                 for f in filters:
                     conditions += f['column'] + " " + f['condition'] + " '" + f['value'] + "' AND "
-
                 conditions = conditions[0: len(conditions) - 4]
+            else:
+                conditions = ""
 
-                sql = f'SELECT {x_axis}, {aggre}({y_axis}) as y_axis FROM {dataset} {conditions} GROUP BY {x_axis} ORDER BY {x_axis} ASC'
+
+            orderBy = ""
+            if (req['topKSort'] is not None):
+                topKSort = sortConvert(req['topKSort'])
+                orderBy = f'ORDER BY y_axis {topKSort}, {x_axis} ASC'
+            else:
+                orderBy = f'ORDER BY {x_axis} ASC'
+
+
+            limitResult = ""
+            if (req['topKLimit'] is not None):
+                topKLimit = req['topKLimit']
+                limitResult = f'LIMIT {topKLimit}'
+            else:
+                limitResult = ""
+
+            sql = f'SELECT {x_axis}, {aggre}({y_axis}) as y_axis FROM {dataset} {conditions} GROUP BY {x_axis} {orderBy} {limitResult}'
+
+            print(sql)
+
+
+            # if len(filters) == 0:
+            #     sql = f'SELECT {x_axis}, {aggre}({y_axis}) as y_axis FROM {dataset} GROUP BY {x_axis} ORDER BY {x_axis} ASC'
+            #     returnSQL = db.engine.execute(sql)
+
+            # else:
+            #     conditions = "WHERE "
+            #     for f in filters:
+            #         conditions += f['column'] + " " + f['condition'] + " '" + f['value'] + "' AND "
+
+            #     conditions = conditions[0: len(conditions) - 4]
+
+            #     sql = f'SELECT {x_axis}, {aggre}({y_axis}) as y_axis FROM {dataset} {conditions} GROUP BY {x_axis} ORDER BY {x_axis} ASC'
 
             returnSQL = db.engine.execute(sql)
             returnDict = {}
             returnDict["xaxis"] = []
             returnDict["yaxis"] = []
             for row in returnSQL:
-                returnDict["xaxis"].append(row[0])
+                returnDict["xaxis"].append(str(row[0]))
                 returnDict["yaxis"].append(float(row[1]))
             
             if len(returnDict["xaxis"]) == 0 or len(returnDict["yaxis"]) == 0:
