@@ -118,6 +118,7 @@ def suggest_headers(path, valid_headers, header_types):
                 column_vec = word2vec(column)
                 ranked_headers = []
                 type_to_get = checked_headers[column]
+                temp_valid_headers = []
                 if type_to_get == None:
                     temp_valid_headers = valid_headers
                 else:
@@ -191,6 +192,7 @@ def suggest_headers(path, valid_headers, header_types):
                 column_vec = word2vec(column)
                 ranked_headers = []
                 type_to_get = checked_headers[column]
+                temp_valid_headers =[]
                 if type_to_get == None:
                     temp_valid_headers = valid_headers
                 else:

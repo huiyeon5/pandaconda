@@ -1,0 +1,24 @@
+.datasetpc {
+    width:100%;
+    height:45px;
+    border:1px solid black;
+    margin-top:10px;
+    display:flex;
+    align-items:center;
+    position:relative;
+    cursor: pointer;
+}
+
+.datasetindexpc {
+    position:absolute;
+    top:50%;
+    left:10%;
+    transform:translate(-20%, -50%);
+}
+
+.datasetnamepc {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+}

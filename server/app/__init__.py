@@ -387,6 +387,11 @@ def create_app(config_name):
         df.drop(columns=to_drop, axis=1, inplace=True)
         df.rename(columns=rename_dict, inplace=True)
 
+        date_columns = list(df.select_dtypes(include=['object']).columns)
+
+        for column in date_columns:
+            df[column] = pd.to_datetime(df[column], format = "%d/%m/%y")
+
         df.to_sql(name = filename[0:len(filename)-4]+"_"+str(current_user.id), con=db.engine, index=False)
 
         userData = UserData(data_name=filename[0:len(filename)-4]+"_"+str(current_user.id), user_id=current_user.id, upload_date=datetime.datetime.now())
@@ -467,14 +472,18 @@ def create_app(config_name):
             g_id = current_user.group_id
             ds_names = UserData.query.filter_by(user_id=c_id).order_by(UserData.upload_date.desc()).all()
             gds_names = GroupDataset.query.filter_by(group_id=g_id).order_by(GroupDataset.upload_date.desc()).all()
-            returnList =[]
+            yourList =[]
+            gList = []
             for dd in range(len(ds_names)):
                 d = ds_names[dd]
-                temp = {}
-                temp["id"] = f'dataset-name-{dd+1}'
-                temp["name"] = d.data_name[0: d.data_name.rfind("_")]
-                returnList.append(temp)
-            return jsonify({'datasetNames':returnList})
+                yourList.append(d.data_name[0: d.data_name.rfind("_")])
+
+            for dd in range(len(gds_names)):
+                d = gds_names[dd]
+                gList.append(d.data_name)
+
+            print({'yourData':yourList,'groupData':gList})
+            return jsonify({'yourData':yourList,'groupData':gList})
         else:
             return jsonify({'status':400})
 
