@@ -118,6 +118,13 @@
   background: white;
 }
 
+.popup-table-header-pc{
+    background:#000000;
+    color:#fefdfd;
+    line-height:20px;
+    font-size: 12px;
+}
+
 #close-pc {
   position: absolute;
   background: red;

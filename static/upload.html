@@ -62,7 +62,7 @@
         alert("Data has been successfully uploaded!");
         window.location = "/visualisation";
       } else {
-        alert("error")
+        alert("Data headers are not correct, please correct them in the next page")
         window.location = "/upload/edit_table";
       }
     };
@@ -102,7 +102,10 @@
     dropzone.ondrop = function(event) {
       event.preventDefault();
       this.className = "dropzone-pc";
-      fileList = event.dataTransfer.files;
+      var fileList = event.dataTransfer.files;
+      if(files.length>=1){
+        files=[]
+      }
       files.push(fileList[fileList.length - 1]);
 
       loadFile(fileList[fileList.length - 1]);
@@ -123,8 +126,10 @@
 
     uploaded.onchange = function(event) {
       var fileList = uploaded.files;
+      if(files.length>=1){
+        files=[]
+      }
       files.push(fileList[fileList.length - 1]);
-      console.log(files);
       loadFile(fileList[fileList.length - 1]);
     };
   })();
