@@ -56,11 +56,11 @@ def suggest_headers(path, valid_headers, header_types):
                 data_str = str(data)
                 if '.' in data_str:
                     temp_header_dict = header_dict[header]
-                    if 'float' in temp_header_dict:
-                        value = temp_header_dict['float'] + 1
-                        temp_header_dict['float'] = value
+                    if 'double' in temp_header_dict:
+                        value = temp_header_dict['double'] + 1
+                        temp_header_dict['double'] = value
                     else:
-                        temp_header_dict['float'] = 1
+                        temp_header_dict['double'] = 1
                     header_dict[header] = temp_header_dict
                 else:
                     temp_header_dict = header_dict[header]
@@ -72,11 +72,11 @@ def suggest_headers(path, valid_headers, header_types):
                     header_dict[header] = temp_header_dict
             except:
                 temp_header_dict = header_dict[header]
-                if 'datetime' in temp_header_dict:
-                    value = temp_header_dict['datetime'] + 1
-                    temp_header_dict['datetime'] = value
+                if 'date' in temp_header_dict:
+                    value = temp_header_dict['date'] + 1
+                    temp_header_dict['date'] = value
                 else:
-                    temp_header_dict['datetime'] = 1
+                    temp_header_dict['date'] = 1
                 header_dict[header] = temp_header_dict
 
     for header in columns:
