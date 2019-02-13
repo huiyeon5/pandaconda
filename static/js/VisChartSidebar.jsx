@@ -2,6 +2,7 @@ import React from "react";
 import VisChartSidebarSelection from "./VisChartSidebarSelection";
 import VisChartSidebarButton from "./VisChartSidebarButton";
 import VisChartSidebarFilter from "./VisChartSidebarFilter";
+import VisChartSidebarTopKToggle from "./VisChartSidebarTopKToggle";
 
 export default class VisChartSidebar extends React.Component {
   constructor(props) {
@@ -23,12 +24,14 @@ export default class VisChartSidebar extends React.Component {
           updateSpecificFilterObject={this.props.updateSpecificFilterObject}
           key={prevState.filterChildren.length}
           filterIndex={prevState.filterChildren.length}
-        //   filterValueSelection={this.props.filterValueSelection}
-         uniqueValues={this.props.uniqueValues}
+          //   filterValueSelection={this.props.filterValueSelection}
+          uniqueValues={this.props.uniqueValues}
         />
       ]
     }));
   }
+
+  toggleTopK() {}
 
   render() {
     return (
@@ -58,6 +61,13 @@ export default class VisChartSidebar extends React.Component {
             alignItems: "center"
           }}
         >
+          <VisChartSidebarTopKToggle
+            topKTog={this.props.topKTog}
+            plotlyType={this.props.plotlyType}
+            toggleTopK={this.props.toggleTopK}
+            updateTopKSort={this.props.updateTopKSort}
+            updateTopKLimit={this.props.updateTopKLimit}
+          />
           <button
             onClick={() => this.appendFilter()}
             style={{ margin: "25px" }}

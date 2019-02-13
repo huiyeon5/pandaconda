@@ -24,30 +24,18 @@ export default class VisualisationContent extends React.Component {
       chartTypes: [
         {
           id: "scatter",
-          name: "Line Chart"
+          name: "Line Chart (Time Series Analysis)"
         },
         {
           id: "bar",
-          name: "Bar Chart"
-        },
-        {
-          id: "stacked-bar-chart",
-          name: "Stacked Bar Chart"
-        },
-        {
-          id: "synchronised-line-chart",
-          name: "Synchronised Line Chart"
+          name: "Bar Chart (Top K Analysis)"
         },
         {
           id: "scatter-chart",
           name: "Scatter Chart"
-        },
-        {
-          id: "box-plot",
-          name: "Box Plot"
         }
       ],
-      test: true,
+      test: true
     };
     this.callBackendAPI = this.callBackendAPI.bind(this);
     this.postData = this.postData.bind(this);
@@ -66,18 +54,18 @@ export default class VisualisationContent extends React.Component {
       });
   }
 
-    async postData(url, bodyObj) {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(bodyObj)
-        });
-        const body = await response.json();
-        return body;
-    }
+  async postData(url, bodyObj) {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(bodyObj)
+    });
+    const body = await response.json();
+    return body;
+  }
 
   // GET METHOD CALL
   async callBackendAPI(url) {
