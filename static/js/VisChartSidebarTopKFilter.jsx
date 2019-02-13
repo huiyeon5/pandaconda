@@ -10,7 +10,7 @@ export default class VisChartSidebarTopKFilter extends React.Component {
   render() {
     if (this.props.topKTog) {
       return (
-        <div>
+        <div className="vis-select-filter-box">
           <VisChartSidebarSelection
             selectionTitle="Sort: "
             dropdownValues={["ascending", "descending"]}

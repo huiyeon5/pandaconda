@@ -286,7 +286,7 @@ def create_app(config_name):
         else:
             return jsonify({'status':400})
 
-    
+
     @app.route('/get_headers_api', methods=['POST'])
     def get_headers_api():
         if current_user.is_authenticated:
@@ -529,6 +529,7 @@ def create_app(config_name):
     def push_to_group():
         d = request.get_json()
         dsname = d['data_name']+"_" + str(current_user.id)
+        print(dsname)
         has = GroupDataset.query.filter_by(data_name=dsname).first()
         if has is None:
             g_id = current_user.group_id
