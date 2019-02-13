@@ -7,6 +7,7 @@
     align-items:center;
     position:relative;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .datasetindexpc {
@@ -14,6 +15,7 @@
     top:50%;
     left:10%;
     transform:translate(-20%, -50%);
+    background: transparent;
 }
 
 .datasetnamepc {
@@ -21,4 +23,10 @@
     top:50%;
     left:50%;
     transform:translate(-50%, -50%);
+    background: transparent;
+}
+
+.dsactive {
+    color:white;
+    background:#d2002e;
 }

@@ -281,6 +281,7 @@ def create_app(config_name):
                 temp["id"] = f'dataset-name-{dd+1}'
                 temp["name"] = d.data_name[0: d.data_name.rfind("_")]
                 returnList.append(temp)
+                print(returnList)
             return jsonify({'datasetNames':returnList})
         else:
             return jsonify({'status':400})
@@ -480,10 +481,24 @@ def create_app(config_name):
 
             for dd in range(len(gds_names)):
                 d = gds_names[dd]
-                gList.append(d.data_name)
+                gList.append(d.data_name[0:d.data_name.rfind("_")])
 
             print({'yourData':yourList,'groupData':gList})
             return jsonify({'yourData':yourList,'groupData':gList})
+        else:
+            return jsonify({'status':400})
+
+    @app.route('/push_to_group', methods=["post"])
+    def push_to_group():
+        d = request.get_json()
+        dsname = d['data_name']+"_" + str(current_user.id)
+        has = GroupDataset.query.filter_by(data_name=dsname).first()
+        if has is None:
+            g_id = current_user.group_id
+            groudDS = GroupDataset(group_id=g_id,data_name=dsname, upload_date=datetime.datetime.now())
+            db.session.add(groudDS)
+            db.session.commit()
+            return jsonify({'status':200})
         else:
             return jsonify({'status':400})
 
