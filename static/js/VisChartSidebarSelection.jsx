@@ -11,7 +11,7 @@ export default class VisChartSidebarSelection extends React.Component {
         {this.props.selectionTitle}
         <select onChange={e => this.props.update(e.target.value)}>
           <option selected disabled hidden style={{ color: `gray` }}>
-            -
+            {this.props.default}
           </option>
           {this.props.dropdownValues.map(function(value, i) {
             return (

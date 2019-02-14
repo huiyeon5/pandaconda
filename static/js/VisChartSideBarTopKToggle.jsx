@@ -11,7 +11,14 @@ export default class VisChartSidebarTopKToggle extends React.Component {
     if (this.props.plotlyType === "bar") {
       console.log(this.props.topKTog);
       return (
-        <div>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
+          }}
+        >
           <button
             onClick={() => this.props.toggleTopK()}
             style={{ margin: "25px" }}

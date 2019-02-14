@@ -20,7 +20,7 @@ export default class VisualisationContent extends React.Component {
     super();
     this.state = {
       currentPage: "selection",
-      datasetNames: [],
+      datasetNames: {},
       chartTypes: [
         {
           id: "scatter",
@@ -45,9 +45,19 @@ export default class VisualisationContent extends React.Component {
   }
 
   componentDidMount() {
-    this.callBackendAPI("/get_all_dataset_api")
+    // this.callBackendAPI("/get_all_dataset_api")
+    //   .then(res => {
+    //     this.setState({ datasetNames: res.datasetNames });
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
+
+    this.callBackendAPI("/get_group_user_dataset")
       .then(res => {
-        this.setState({ datasetNames: res.datasetNames });
+        console.log("get call: datasetNames");
+        console.log(res);
+        this.setState({ datasetNames: res });
       })
       .catch(err => {
         console.log(err);
@@ -96,7 +106,7 @@ export default class VisualisationContent extends React.Component {
       return (
         <VisSelection
           handler={this.navPageHandler}
-          datasetItems={this.state.datasetNames}
+          datasetNames={this.state.datasetNames}
           chartTypes={this.state.chartTypes}
           selectDatasetHandler={this.selectDatasetHandler}
           selectChartTypeHandler={this.selectChartTypeHandler}
