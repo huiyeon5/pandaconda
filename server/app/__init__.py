@@ -540,6 +540,17 @@ def create_app(config_name):
         else:
             return jsonify({'status':400})
 
+    @app.route('/get_all_groups')
+    def get_all_groups():
+        groups = Group.query.all()
+        returnList = []
+        for data in groups:
+            temp = {}
+            temp['id'] = data.id
+            temp['manager_id'] = data.manager_id
+            returnList.append(temp)
+
+        return jsonify({'data':returnList, 'status':200})
 
 
 # ========================================================= API END HERE ================================================
