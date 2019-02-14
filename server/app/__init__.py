@@ -323,7 +323,19 @@ def create_app(config_name):
                 "descending": "DESC"
             }[direction]
         
+        def fixDate(dateStr):
+            dateObj = { 'Jan' : 1, 'Feb' : 2, 'Mar' : 3, 'Apr' : 4, 'May' : 5, 'Jun' : 6, 'Jul' : 7, 'Aug' : 8, 'Sep' : 9, 'Oct' : 10, 'Nov' : 11, 'Dec' : 12}
+            dateList = dateStr.split(" ")
+            date = datetime.date(int(dateList[3]), int(dateObj[dateList[2]]), int(dateList[1]))
+            return date
+
+        
         if current_user.is_authenticated:
+            valid = GroupValidHeaders.query.filter_by(group_id=current_user.group_id).all()
+            header_types ={}
+            for row in valid:
+                header_types[row.header_name] = row.data_type
+
             req = request.get_json()
 
             dataset = req['selectedData'] + "_" + str(current_user.id)
@@ -336,7 +348,12 @@ def create_app(config_name):
             if len(filters) > 0:
                 conditions = "WHERE "
                 for f in filters:
-                    conditions += f['column'] + " " + f['condition'] + " '" + f['value'] + "' AND "
+                    if header_types[f['column']] == 'date':
+                        val = fixDate(f['value'])
+                        print(val)
+                        conditions += f['column'] + " " + f['condition'] + " '" + str(val) + "' AND "
+                    else:
+                        conditions += f['column'] + " " + f['condition'] + " '" + f['value'] + "' AND "
                 conditions = conditions[0: len(conditions) - 4]
             else:
                 conditions = ""
@@ -358,22 +375,6 @@ def create_app(config_name):
                 limitResult = ""
 
             sql = f'SELECT {x_axis}, {aggre}({y_axis}) as y_axis FROM {dataset} {conditions} GROUP BY {x_axis} {orderBy} {limitResult}'
-
-            print(sql)
-
-
-            # if len(filters) == 0:
-            #     sql = f'SELECT {x_axis}, {aggre}({y_axis}) as y_axis FROM {dataset} GROUP BY {x_axis} ORDER BY {x_axis} ASC'
-            #     returnSQL = db.engine.execute(sql)
-
-            # else:
-            #     conditions = "WHERE "
-            #     for f in filters:
-            #         conditions += f['column'] + " " + f['condition'] + " '" + f['value'] + "' AND "
-
-            #     conditions = conditions[0: len(conditions) - 4]
-
-            #     sql = f'SELECT {x_axis}, {aggre}({y_axis}) as y_axis FROM {dataset} {conditions} GROUP BY {x_axis} ORDER BY {x_axis} ASC'
 
             returnSQL = db.engine.execute(sql)
             returnDict = {}
