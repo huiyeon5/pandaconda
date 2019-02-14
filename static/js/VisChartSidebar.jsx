@@ -31,7 +31,10 @@ export default class VisChartSidebar extends React.Component {
     }));
   }
 
-  toggleTopK() {}
+  removeAllFilters() {
+    this.setState({ filterChildren: [] });
+    this.props.removeFilterObjects();
+  }
 
   render() {
     return (
@@ -68,12 +71,26 @@ export default class VisChartSidebar extends React.Component {
             updateTopKSort={this.props.updateTopKSort}
             updateTopKLimit={this.props.updateTopKLimit}
           />
-          <button
-            onClick={() => this.appendFilter()}
-            style={{ margin: "25px" }}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between"
+            }}
           >
-            Add Filter
-          </button>
+            <button
+              onClick={() => this.appendFilter()}
+              style={{ margin: "25px", textAlign: "center" }}
+            >
+              Add Filter Condition
+            </button>
+            <button
+              onClick={() => this.removeAllFilters()}
+              style={{ margin: "25px", textAlign: "center" }}
+            >
+              Remove All Filters
+            </button>
+          </div>
           {this.state.filterChildren.map(filterChild => filterChild)}
         </div>
         <VisChartSidebarButton onClick={this.props.runQuery} />

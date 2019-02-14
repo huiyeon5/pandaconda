@@ -12,10 +12,13 @@ export default class VisChartSidebarButton extends React.Component {
         style={{
           display: `flex`,
           justifyContent: `center`,
-          alignItems: `center`
+          alignItems: `center`,
+          backgroundColor: `#ff7f50`,
+          width: `100%`,
+          color: `white`
         }}
       >
-        Run
+        RUN QUERY
       </button>
     );
   }

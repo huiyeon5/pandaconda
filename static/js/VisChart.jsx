@@ -35,6 +35,7 @@ export default class VisChart extends React.Component {
     this.postData = this.postData.bind(this);
     this.runQuery = this.runQuery.bind(this);
     this.saveViz = this.saveViz.bind(this);
+    this.removeFilterObjects = this.removeFilterObjects.bind(this);
   }
 
   componentDidMount() {
@@ -109,6 +110,10 @@ export default class VisChart extends React.Component {
     } else {
       alert("Please make all the necessary Selections to run the charts!");
     }
+  }
+
+  removeFilterObjects() {
+    this.setState({ filter: [] });
   }
 
   saveViz() {
@@ -206,6 +211,7 @@ export default class VisChart extends React.Component {
           toggleTopK={this.toggleTopK}
           updateTopKSort={this.updateTopKSort}
           updateTopKLimit={this.updateTopKLimit}
+          removeFilterObjects={this.removeFilterObjects}
         />
         <VisChartDisplay
           dataset={this.props.dataset}
