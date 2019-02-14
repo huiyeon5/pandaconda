@@ -413,12 +413,15 @@ def create_app(config_name):
         filename = session.get('fileName')
 
         df = pd.read_csv(filePath)
+
+        print("Header")
+        print(headers_dict)
         
         to_drop = []
         rename_dict = {}
 
         for key, value in headers_dict.items():
-            if value == None:
+            if len(value) == 0:
                 to_drop.append(key)
             else:
                 rename_dict[key] = value

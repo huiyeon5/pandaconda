@@ -1,7 +1,6 @@
 import React from "react";
 import "../css/EditTable.css";
-import EditTablePopup from './EditTablePopup' 
-
+import EditTablePopup from "./EditTablePopup";
 
 export default class EditTable extends React.Component {
   constructor() {
@@ -9,7 +8,7 @@ export default class EditTable extends React.Component {
     this.state = {
       obj: null,
       showPopup: false,
-      data : null
+      data: null
     };
     //this.loadTable = this.loadTable.bind(this);
     //this.postData = this.postData.bind(this);
@@ -24,23 +23,18 @@ export default class EditTable extends React.Component {
       .then(res => {
         console.log(res);
         if (res["status"] == 500) {
-          alert("error")
+          alert("error");
         } else {
-          this.setState({ data : res.data },
-            () => {
-              this.setState({
-                showPopup: !this.state.showPopup
-              });
+          this.setState({ data: res.data }, () => {
+            this.setState({
+              showPopup: !this.state.showPopup
             });
+          });
         }
       })
       .catch(err => {
         console.log(err);
       });
-
-    
-
-
   }
 
   componentDidMount() {
@@ -87,7 +81,7 @@ export default class EditTable extends React.Component {
     var totalDataRows = this.state.obj.data;
     for (i = 0; i < totalDataRows.length; i = i + 1) {
       var data = totalDataRows[i];
-      console.log(data)
+      console.log(data);
       //First Column
       var newRow = document.createElement("TR");
       newRow.classList.add("tr");
@@ -143,7 +137,6 @@ export default class EditTable extends React.Component {
           className.substring(className.indexOf("-") + 1, className.length)
         );
         var row = document.querySelector(`.tr${index} > .td2 > select`);
-        console.log(row);
         if (row.disabled) {
           row.disabled = false;
         } else {
@@ -181,8 +174,10 @@ export default class EditTable extends React.Component {
       var new_header;
       //result = result + (old_header_list[i].innerHTML)
       var row = document.getElementsByClassName("tr tr" + (i + 1));
-      if (document.querySelector(`.tr${i + 1} > .td4`).checked) {
-        new_header = null;
+      console.log(document.querySelector(`.tr${i + 1} > .td4 > input`).checked);
+      if (document.querySelector(`.tr${i + 1} > .td4 > input`).checked) {
+        new_header = "";
+        old_header = document.querySelector(`.tr${i + 1} > .td1`).innerHTML;
       } else {
         old_header = document.querySelector(`.tr${i + 1} > .td1`).innerHTML;
 
@@ -198,6 +193,7 @@ export default class EditTable extends React.Component {
       var key = old_header;
       obj[key] = new_header;
     }
+    console.log(obj);
     this.postData("/finalize_headers_api", obj)
       .then(res => {
         if (res["status"] === 400) {
@@ -211,8 +207,6 @@ export default class EditTable extends React.Component {
         console.log(err);
       });
   }
-
-  
 
   async postData(url, bodyObj) {
     const response = await fetch(url, {
@@ -237,11 +231,10 @@ export default class EditTable extends React.Component {
     return (
       <div>
         <div className="align-right-pc">
-        <button onClick={this.togglePopup.bind(this)}>Show Data</button>
-        
+          <button onClick={this.togglePopup.bind(this)}>Show Data</button>
         </div>
-        <br/>
-         
+        <br />
+
         <div className="table-container-pc">
           <table className="table" id="table">
             <tbody className="tBody">
@@ -259,14 +252,12 @@ export default class EditTable extends React.Component {
             Change
           </button>
 
-         
-            {this.state.showPopup ? 
-              <EditTablePopup
-                data={this.state.data}
-                closePopup={this.togglePopup.bind(this)}
-              />
-              : null
-            }
+          {this.state.showPopup ? (
+            <EditTablePopup
+              data={this.state.data}
+              closePopup={this.togglePopup.bind(this)}
+            />
+          ) : null}
         </div>
       </div>
     );

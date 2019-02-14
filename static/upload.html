@@ -19,22 +19,23 @@
     <button type="button" onclick="upload()">UPkoad</button>
   </form> -->
 
-  
   <br />
   <div class="dropzone-pc" id="dropzone">
-      <div class="center-pc">
-          <img
-          src="{{ url_for('site.static', filename='images/folder.png') }}"
-          alt="Upload Icon" height=100 width=100
-        />
-      </div>
+    <div class="center-pc">
+      <img
+        src="{{ url_for('site.static', filename='images/folder.png') }}"
+        alt="Upload Icon"
+        height="100"
+        width="100"
+      />
+    </div>
     <div class="center-pc">
       <span class="drag-text-pc">Drag and drop files here</span>
     </div>
     <span class="manual-upload-pc">
       <div class="center-pc">
-        <input type="file" name="file" id="uploaded-btn" class="inputfile-pc"/>
-        <label class = "labelinput-pc" for="uploaded-btn">Choose File</label>
+        <input type="file" name="file" id="uploaded-btn" class="inputfile-pc" />
+        <label class="labelinput-pc" for="uploaded-btn">Choose File</label>
       </div>
     </span>
     <div class="center-pc">
@@ -51,7 +52,7 @@
 
 <script>
   var files = [];
-  
+
   function upload() {
     var formData = new FormData();
     formData.append("file", files[0]);
@@ -62,7 +63,9 @@
         alert("Data has been successfully uploaded!");
         window.location = "/visualisation";
       } else {
-        alert("Data headers are not correct, please correct them in the next page")
+        alert(
+          "Data headers are not correct, please correct them in the next page"
+        );
         window.location = "/upload/edit_table";
       }
     };
@@ -71,13 +74,12 @@
     console.log("Sent");
     xhr.send(formData);
   }
-  handleFiles(files)
-  function handleFiles(files){
-    if(window.FileReader){
-      console.log("file reader supported")
-    }
-    else{
-      console.log("not supported")
+  handleFiles(files);
+  function handleFiles(files) {
+    if (window.FileReader) {
+      console.log("file reader supported");
+    } else {
+      console.log("not supported");
     }
   }
 
@@ -103,15 +105,15 @@
       event.preventDefault();
       this.className = "dropzone-pc";
       var fileList = event.dataTransfer.files;
-      if(files.length>=1){
-        files=[]
+      if (files.length >= 1) {
+        files = [];
       }
       files.push(fileList[fileList.length - 1]);
 
       loadFile(fileList[fileList.length - 1]);
 
       loadFile(event.dataTransfer.files);
-      files = files.push(event.dataTransfer.files);
+      files.push(event.dataTransfer.files);
     };
 
     dropzone.ondragover = function() {
@@ -126,8 +128,8 @@
 
     uploaded.onchange = function(event) {
       var fileList = uploaded.files;
-      if(files.length>=1){
-        files=[]
+      if (files.length >= 1) {
+        files = [];
       }
       files.push(fileList[fileList.length - 1]);
       loadFile(fileList[fileList.length - 1]);
