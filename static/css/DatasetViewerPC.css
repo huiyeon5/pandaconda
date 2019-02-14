@@ -9,6 +9,17 @@
     cursor: pointer;
     transition: all 0.3s ease;
 }
+.datasetpcs {
+    width:100%;
+    height:45px;
+    border:1px solid black;
+    margin-top:10px;
+    display:flex;
+    align-items:center;
+    position:relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
 .datasetindexpc {
     position:absolute;

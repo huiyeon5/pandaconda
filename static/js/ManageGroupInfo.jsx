@@ -45,7 +45,7 @@ class ManageGroupInfo extends React.Component {
 
     
     async postData(url, bodyObj) {
-        console.log(bodyObj)
+        // console.log(bodyObj)
         const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -68,7 +68,7 @@ class ManageGroupInfo extends React.Component {
     }
 
     handleClick(name) {
-        console.log(name)
+        // console.log(name)
         this.setState({selectedDataset:name})
     }
 
