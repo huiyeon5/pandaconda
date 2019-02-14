@@ -102,6 +102,15 @@ export default class VisualisationContent extends React.Component {
   }
 
   render() {
+    if(localStorage.getItem('viz') !== null) {
+        return (
+            <VisChart
+              handler={this.navPageHandler}
+              dataset={this.state.selectedDataset}
+              chart={this.state.selectedChartType}
+            />
+        );
+    }
     if (this.state.currentPage === "selection") {
       return (
         <VisSelection

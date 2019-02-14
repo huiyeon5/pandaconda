@@ -1,6 +1,6 @@
 import React from "react";
 import HomeVizCard from "./HomeVizCard";
-import { Redirect } from "react-router";
+import { Redirect, BrowserRouter } from "react-router-dom";
 
 require("../css/fullstack.css");
 require("../css/HomeContent.css");
@@ -10,13 +10,17 @@ export default class HomeContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      saveViz: []
+      saveViz: [],
+      selectedIndex:-1,
+      go:false
     };
 
     this.callBackendAPI = this.callBackendAPI.bind(this);
+    this.selectViz = this.selectViz.bind(this);
   }
 
   componentDidMount() {
+    localStorage.removeItem("viz")
     var saveViz = [];
     this.callBackendAPI("/get_all_saved_viz").then(res => {
       var datas = res.data;
@@ -34,6 +38,13 @@ export default class HomeContent extends React.Component {
     });
   }
 
+  selectViz(index) {
+    this.setState({
+        selectedIndex:index,
+        go:true
+    })
+  }
+
   async callBackendAPI(url) {
     const response = await fetch(url);
     const body = await response.json();
@@ -44,9 +55,14 @@ export default class HomeContent extends React.Component {
   }
 
   render() {
+    if(this.state.go) {
+        localStorage.setItem('viz', JSON.stringify(this.state.saveViz[this.state.selectedIndex]))
+        console.log(localStorage.getItem('viz'))
+        window.location = "/visualisation";
+    }
     return (
       <div>
-        <HomeVizCard title="Saved Visualizations" list={this.state.saveViz} />
+        <HomeVizCard title="Saved Visualizations" list={this.state.saveViz} selectViz={this.selectViz}/>
       </div>
     );
   }

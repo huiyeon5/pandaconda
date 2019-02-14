@@ -16,6 +16,7 @@ class Manage extends React.Component {
     }
 
     componentDidMount() {
+        localStorage.removeItem("viz")
         this.callBackendAPI('/has_group')
         .then(res => {
             if(res.status === 200) {
