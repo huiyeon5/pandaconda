@@ -23,7 +23,7 @@ export default class VisChartSidebarTopKToggle extends React.Component {
             onClick={() => this.props.toggleTopK()}
             style={{ margin: "25px" }}
           >
-            Toggle Top-K
+            Enable/Disable Top-K Filter
           </button>
           <VisChartSidebarTopKFilter
             topKTog={this.props.topKTog}

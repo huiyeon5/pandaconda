@@ -17,7 +17,7 @@ export default class VisChart extends React.Component {
       headersUniqueValues: {},
       data: null,
       filter: [],
-      topKTog: true,
+      topKTog: false,
       topKSort: null,
       topKLimit: null
     };
@@ -117,7 +117,10 @@ export default class VisChart extends React.Component {
         selectedData: this.props.dataset,
         headers: [this.state.xaxis, this.state.yaxis],
         aggregate: this.state.aggregate,
-        filter: this.state.filter
+        filter: this.state.filter,
+        topKTog: this.state.topKTog,
+        topKLimit: this.state.topKLimit,
+        topKSort: this.state.topKSort
       };
       this.postData("/save_visualization", queryObj).then(res => {
         if (res.status === 200) {
