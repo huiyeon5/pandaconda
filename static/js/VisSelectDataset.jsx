@@ -52,12 +52,16 @@ export default class VisSelectDataSet extends React.Component {
         style={{ display: "grid", gridTemplateRows: "80px 30px 1fr" }}
       >
         <div className="vis-card-title">Select Your Dataset</div>
-        <VisChartSidebarSelection
-          selectionTitle="Dataset Type: "
-          dropdownValues={["personal", "group"]}
-          default="-"
-          update={this.updateDatasetType}
-        />
+        <div
+          style={{ width: `100%`, display: `flex`, justifyContent: `center` }}
+        >
+          <VisChartSidebarSelection
+            selectionTitle="Dataset Type: "
+            dropdownValues={["personal", "group"]}
+            default="-"
+            update={this.updateDatasetType}
+          />
+        </div>
         <form className="form">{datasetItemComponents}</form>
       </div>
     );
