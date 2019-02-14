@@ -153,13 +153,16 @@ export default class VisChart extends React.Component {
             plotlyType: this.props.chart.id,
             chartTitle:this.props.chart.chartName
         };
+        console.log("SAVING -- 1")
         this.postData("/save_visualization", queryObj).then(res => {
             if (res.status === 200) {
-            alert("Visualization Saved!");
+                alert("Visualization Saved!");
             }
+            localStorage.removeItem("viz")
+            window.location ="/"
+        }).catch(err => {
+            console.log(err)
         });
-        localStorage.removeItem("viz")
-        window.location ="/"
         } else {
         alert("Please make all the necessary Selections to run the charts!");
         }
@@ -178,13 +181,16 @@ export default class VisChart extends React.Component {
             plotlyType: obj.plotlyType,
             chartTitle: obj.chartTitle
         };
+        console.log("SAVING -- 2")
         this.postData("/save_visualization", queryObj).then(res => {
             if (res.status === 200) {
-            alert("Visualization Saved!");
+                alert("Visualization Saved!");
             }
+            localStorage.removeItem("viz")
+            window.location ="/"
+        }).catch(err => {
+            console.log(err)
         });
-        localStorage.removeItem("viz")
-        window.location ="/"
         } else {
         alert("Please make all the necessary Selections to run the charts!");
         }
