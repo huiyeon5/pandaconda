@@ -169,12 +169,10 @@ def create_app(config_name):
     @app.route('/upload_api', methods=['GET', 'POST'])  # API for upload
     def upload_file():
         # if current_user.is_authenticated:
-        print("here2")
         if 'editData' in session:
             session.pop('editData')
         if request.method == 'POST':
             # check if the post request has the file part
-            print(request.files)
             if 'file' not in request.files:
                 # flash('No file part')
                 return jsonify({'status':402, 'error':'No File Part'})
@@ -195,18 +193,15 @@ def create_app(config_name):
                 for row in valid:
                     valid_headers.append(row.header_name)
                     header_types[row.header_name] = row.data_type
-                print(filename)
                 value = json.loads(check_headers.suggest_headers('app/uploads/' + filename, valid_headers, header_types))
-                # print("==VALUE OUPUT==")
-                # print(value)
+
                 if value['status'] == 400:
                     session['editData'] = value
                     return jsonify(value)
                 else:
                     f = filename[0:len(filename) - 4]+ "_" +str(current_user.id)
                     has = UserData.query.filter_by(data_name=f).first()
-                    # print("==HAS VALUE==")
-                    # print(has)
+
                     if has is None:
                         header = "("
                         headerNoType ="("
@@ -281,7 +276,7 @@ def create_app(config_name):
                 temp["id"] = f'dataset-name-{dd+1}'
                 temp["name"] = d.data_name[0: d.data_name.rfind("_")]
                 returnList.append(temp)
-                print(returnList)
+                # print(returnList)
             return jsonify({'datasetNames':returnList})
         else:
             return jsonify({'status':400})
@@ -350,7 +345,7 @@ def create_app(config_name):
                 for f in filters:
                     if header_types[f['column']] == 'date':
                         val = fixDate(f['value'])
-                        print(val)
+                        # print(val)
                         conditions += f['column'] + " " + f['condition'] + " '" + str(val) + "' AND "
                     else:
                         conditions += f['column'] + " " + f['condition'] + " '" + f['value'] + "' AND "
@@ -392,7 +387,7 @@ def create_app(config_name):
     
     @app.route("/update_api")
     def update_api():
-        print("here")
+        # print("here")
         if 'editData' not in session or session['editData'] == None:
             return jsonify({"status":500})
         else:
@@ -413,9 +408,6 @@ def create_app(config_name):
         filename = session.get('fileName')
 
         df = pd.read_csv(filePath)
-
-        print("Header")
-        print(headers_dict)
         
         to_drop = []
         rename_dict = {}
@@ -474,7 +466,6 @@ def create_app(config_name):
         userID = current_user.id
         res = UserVisualization.query.filter_by(user_id=userID).order_by(UserVisualization.upload_date.desc()).all()
         returnList = []
-        print(res)
         for item in res:
             temp = {}
             temp[str(item.upload_date)] = item.configs
@@ -492,7 +483,6 @@ def create_app(config_name):
             members = GroupMember.query.filter_by(group_id=current_user.group_id).all()
             returnObj['numMember'] = len(members)
             returnObj['group_id'] = current_user.group_id
-            print(returnObj)
             return jsonify(returnObj)
         return jsonify({'status':400})
 
@@ -524,7 +514,6 @@ def create_app(config_name):
                 d = gds_names[dd]
                 gList.append(d.data_name[0:d.data_name.rfind("_")])
 
-            print({'yourData':yourList,'groupData':gList})
             return jsonify({'yourData':yourList,'groupData':gList})
         else:
             return jsonify({'status':400})
@@ -533,7 +522,6 @@ def create_app(config_name):
     def push_to_group():
         d = request.get_json()
         dsname = d['data_name']+"_" + str(current_user.id)
-        print(dsname)
         has = GroupDataset.query.filter_by(data_name=dsname).first()
         if has is None:
             g_id = current_user.group_id
