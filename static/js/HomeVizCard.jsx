@@ -1,6 +1,6 @@
 import React from "react";
 
-const HomeVizCard = ({ title, list }) => (
+const HomeVizCard = ({ title, list,selectViz }) => (
   <div
     style={{
       background: `white`,
@@ -48,6 +48,7 @@ const HomeVizCard = ({ title, list }) => (
             cursor: `pointer`
           }}
           className="SavedVizCardItem"
+          onClick={() => selectViz(i)}
         >
           <span style={{ textAlign: `center` }}>{i + 1}</span>
           <span style={{ textAlign: `center` }}>{item[0]}</span>
