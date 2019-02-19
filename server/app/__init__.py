@@ -475,15 +475,27 @@ def create_app(config_name):
 
     @app.route('/has_group')
     def has_group():
-        if(current_user.group_id is not None):
-            returnObj = {}
-            returnObj['status'] = 200
-            group = Group.query.filter_by(id=current_user.group_id).one()
-            returnObj['managerId'] = group.manager_id
-            members = GroupMember.query.filter_by(group_id=current_user.group_id).all()
-            returnObj['numMember'] = len(members)
-            returnObj['group_id'] = current_user.group_id
-            return jsonify(returnObj)
+        if current_user.isManager == 1:
+            if current_user.group_id is not None:
+                return jsonify({
+                    'status': 300,
+                    'group_id': current_user.group_id,
+                    'managerId': current_user.id
+                })
+            else:
+                return jsonify({
+                    'status': 301,
+                })
+        else:
+            if(current_user.group_id is not None):
+                returnObj = {}
+                returnObj['status'] = 200
+                group = Group.query.filter_by(id=current_user.group_id).one()
+                returnObj['managerId'] = group.manager_id
+                members = GroupMember.query.filter_by(group_id=current_user.group_id).all()
+                returnObj['numMember'] = len(members)
+                returnObj['group_id'] = current_user.group_id
+                return jsonify(returnObj)
         return jsonify({'status':400})
 
     @app.route('/get_manager_info',methods=["POST"])
@@ -544,6 +556,32 @@ def create_app(config_name):
 
         return jsonify({'data':returnList, 'status':200})
 
+    @app.route('/create_groups', methods=["POST"])
+    def create_groups():
+        req = request.get_json()
+        g_name = req['groupname']
+        has = Group.query.filter_by(group_name=g_name).first()
+        if has:
+            return jsonify({'status': 400})
+        
+        group = Group(group_name=g_name, manager_id=current_user.id)
+        db.session.add(group)
+        db.session.commit()
+
+        g_id = Group.query.filter_by(group_name=g_name).first()
+        print(g_id)
+        datas = req['data']
+        print(datas)
+        for data in datas:
+            print(data)
+            vh = GroupValidHeaders(group_id = g_id.id, header_name = data['header'], data_type = data['type'])
+            db.session.add(vh)
+            db.session.commit()
+
+        db.engine.execute(text(f"UPDATE `user` SET group_id = {g_id.id} where id={current_user.id}"))
+        return jsonify({
+            'status' : 200
+        })
 
 # ========================================================= API END HERE ================================================
 

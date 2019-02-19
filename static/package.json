@@ -44,6 +44,9 @@
     "webpack-dev-server": ">=3.1.11"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.15",
+    "@fortawesome/free-solid-svg-icons": "^5.7.2",
+    "@fortawesome/react-fontawesome": "^0.1.4",
     "babel-polyfill": "^6.26.0",
     "html-loader": "^0.5.5",
     "plotly.js": "^1.44.0",

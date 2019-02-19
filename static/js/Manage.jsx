@@ -1,14 +1,17 @@
 import React from 'react'
 import ApplyGroup from './ApplyGroup'
 import ManageGroupInfo from './ManageGroupInfo'
+import ManagerManage from './ManagerManage'
 
 class Manage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             hasGroup:null,
+            isManager:false,
             managerId:null,
             groupId:null,
+            group_name:null,
             numMember:0
         }
         
@@ -19,7 +22,19 @@ class Manage extends React.Component {
         localStorage.removeItem("viz")
         this.callBackendAPI('/has_group')
         .then(res => {
-            if(res.status === 200) {
+            if(res.status === 301) {
+                this.setState({
+                    isManager:true,
+                    hasGroup:false
+                })
+            } else if(res.status === 300) {
+                this.setState({
+                    isManager: true,
+                    hasGroup: true,
+                    groupId: res.group_id,
+                    managerId: res.managerId
+                })
+            } else if(res.status === 200) {
                 this.setState({
                     hasGroup:true,
                     managerId: res.managerId,
@@ -29,6 +44,8 @@ class Manage extends React.Component {
             } else {
                 this.setState({hasGroup:false})
             }
+        }).catch(err => {
+            console.log(err)
         })
     }
 
@@ -43,8 +60,8 @@ class Manage extends React.Component {
 
     render() {
         return (
-            <div>
-                {this.state.hasGroup === null ? null : this.state.hasGroup ? <ManageGroupInfo manager={this.state.managerId} numMember={this.state.numMember} groupId={this.state.groupId}/> : <ApplyGroup />}
+            <div style={{width:`100%`, height:`100%`}}>
+                {this.state.hasGroup === null ? null : this.state.isManager ? <ManagerManage groupId={this.state.groupId} managerId={this.state.managerId}/> : this.state.hasGroup ? <ManageGroupInfo manager={this.state.managerId} numMember={this.state.numMember} groupId={this.state.groupId}/> : <ApplyGroup />}
             </div>
         )
     }
