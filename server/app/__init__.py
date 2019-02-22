@@ -281,7 +281,7 @@ def create_app(config_name):
                 d = ds_names[dd]
                 temp = {}
                 temp["id"] = f'dataset-name-{dd+1}'
-                temp["name"] = d.data_name[0: d.data_name.rfind("_")]
+                temp["name"] = d.data_name[0: d.data_name]
                 returnList.append(temp)
                 # print(returnList)
             return jsonify({'datasetNames':returnList})
@@ -293,7 +293,7 @@ def create_app(config_name):
     def get_headers_api():
         if current_user.is_authenticated:
             req = request.get_json()
-            dataset = req['selectedData'] + "_" + str(current_user.id)
+            dataset = req['selectedData']
             headers = db.engine.execute(f'Show columns from {dataset}')
             head_list = [row[0] for row in headers]
             return jsonify({'status':200, 'headers': head_list})
@@ -304,7 +304,7 @@ def create_app(config_name):
         if current_user.is_authenticated:      
             req = request.get_json()
             # print("Request", req)
-            dataset = req['dataset'] + "_" + str(current_user.id)
+            dataset = req['dataset']
             # print("DATASET::: ", dataset)
             col = req['column']
             # print("COLUMN::: ", col)
@@ -340,7 +340,7 @@ def create_app(config_name):
 
             req = request.get_json()
 
-            dataset = req['selectedData'] + "_" + str(current_user.id)
+            dataset = req['selectedData']
             x_axis = req['headers'][0]
             y_axis = req['headers'][1]
             aggre = req['aggregate']
@@ -527,11 +527,11 @@ def create_app(config_name):
             gList = []
             for dd in range(len(ds_names)):
                 d = ds_names[dd]
-                yourList.append(d.data_name[0: d.data_name.rfind("_")])
+                yourList.append(d.data_name[0: d.data_name])
 
             for dd in range(len(gds_names)):
                 d = gds_names[dd]
-                gList.append(d.data_name[0:d.data_name.rfind("_")])
+                gList.append(d.data_name[0:d.data_name])
 
             return jsonify({'yourData':yourList,'groupData':gList})
         else:
@@ -540,7 +540,7 @@ def create_app(config_name):
     @app.route('/push_to_group', methods=["post"])
     def push_to_group():
         d = request.get_json()
-        dsname = d['data_name']+"_" + str(current_user.id)
+        dsname = d['data_name']
         has = GroupDataset.query.filter_by(data_name=dsname).first()
         if has is None:
             g_id = current_user.group_id

@@ -58,8 +58,6 @@ export default class VisualisationContent extends React.Component {
 
     this.callBackendAPI("/get_group_user_dataset")
       .then(res => {
-        console.log("get call: datasetNames");
-        console.log(res);
         this.setState({ datasetNames: res });
       })
       .catch(err => {
@@ -91,7 +89,6 @@ export default class VisualisationContent extends React.Component {
   }
 
   navPageHandler(value) {
-    console.log("clicked " + value);
     this.setState({ currentPage: value });
   }
 
@@ -100,7 +97,6 @@ export default class VisualisationContent extends React.Component {
   }
 
   selectChartTypeHandler(value) {
-    console.log("Change state of 'selectedChartType' to " + value);
     this.setState({ selectedChartType: value });
   }
 
