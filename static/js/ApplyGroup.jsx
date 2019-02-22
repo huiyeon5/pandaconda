@@ -10,6 +10,7 @@ class ApplyGroup extends React.Component{
         this.callBackendAPI = this.callBackendAPI.bind(this)
         this.handleClick = this.handleClick.bind(this)
         this.update = this.update.bind(this)
+        this.postData = this.postData.bind(this)
     }
 
     componentDidMount() {
@@ -23,6 +24,19 @@ class ApplyGroup extends React.Component{
         })
     }
 
+    async postData(url, bodyObj) {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(bodyObj)
+        });
+        const body = await response.json();
+        return body;
+    }
+
     async callBackendAPI(url) {
         const response = await fetch(url);
         const body = await response.json();
@@ -34,7 +48,13 @@ class ApplyGroup extends React.Component{
 
     handleClick() {
         if(this.state.selectedGroup === -1) {
-            
+            alert("Please select a group to Apply for!")
+        } else {
+            this.postData('/apply_to_group', {group_name: this.state.selectedGroup})
+            .then(res => {
+                alert(`You are now in Group: ${this.state.selectedGroup}`)
+                window.location.reload()
+            })
         }
     }
 

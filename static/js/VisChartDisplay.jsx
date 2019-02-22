@@ -19,6 +19,8 @@ export default class VisChartDisplay extends React.Component {
               mode={this.props.mode}
               x={this.props.data.xaxis}
               y={this.props.data.yaxis}
+              xtitle={this.props.xaxis}
+              ytitle={this.props.yaxis}
             />
           ) : null
         ) : null}
