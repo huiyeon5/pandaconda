@@ -9,6 +9,7 @@ class Visual extends React.Component {
           {
             x: this.props.x,
             y: this.props.y,
+            mode: this.props.mode,
             type: this.props.plotlyType,
             // mode: "lines+markers",
             marker: { color: "red" }

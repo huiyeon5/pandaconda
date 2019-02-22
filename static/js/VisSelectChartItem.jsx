@@ -16,7 +16,8 @@ export default class VisSelectChartItem extends React.Component {
           onChange={() =>
             this.props.selectChartTypeHandler({
               id: this.props.id,
-              chartName: this.props.name
+              mode: this.props.mode,
+              chartName: this.props.name,
             })
           }
         />

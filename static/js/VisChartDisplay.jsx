@@ -16,6 +16,7 @@ export default class VisChartDisplay extends React.Component {
           this.props.data ? (
             <Visual
               plotlyType={this.props.plotlyType}
+              mode={this.props.mode}
               x={this.props.data.xaxis}
               y={this.props.data.yaxis}
             />

@@ -85,6 +85,13 @@ def create_app(config_name):
         else:
             return render_template('manage.html')
 
+    @app.route("/datasets/")
+    def datasets():
+        if not current_user.is_authenticated:
+            return redirect(url_for('login_r'))
+        else:
+            return render_template('datasets.html')
+
     @app.route('/signup')
     def signup_r():
         return render_template('signup.html')

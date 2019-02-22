@@ -2,12 +2,13 @@ import React from "react";
 import "../css/VisualisationPage";
 import VisSelectDatasetItem from "./VisSelectDatasetItem";
 import VisChartSidebarSelection from "./VisChartSidebarSelection";
+import { faDirections } from "@fortawesome/free-solid-svg-icons";
 
 export default class VisSelectDataSet extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      datasetType: "personal",
+      datasetType: "",
       data: []
     };
     this.updateDatasetType = this.updateDatasetType.bind(this);
@@ -24,7 +25,7 @@ export default class VisSelectDataSet extends React.Component {
         datasetType: value
       },
       () => {
-        if (this.state.datasetType === "personal") {
+        if (this.state.datasetType === "Your Uploaded Datasets") {
           this.setState({ data: this.props.datasetNames["yourData"] });
         } else {
           this.setState({ data: this.props.datasetNames["groupData"] });
@@ -35,7 +36,7 @@ export default class VisSelectDataSet extends React.Component {
 
   render() {
     const selectDatasetHandler = this.props.selectDatasetHandler;
-    const datasetItemComponents = this.state.data.map(function(datasetItem, i) {
+    let datasetItemComponents = this.state.data.map(function(datasetItem, i) {
       return (
         <VisSelectDatasetItem
           id={i}
@@ -45,6 +46,9 @@ export default class VisSelectDataSet extends React.Component {
         />
       );
     });
+    if (datasetItemComponents.length == 0) {
+      datasetItemComponents = undefined;
+    }
 
     return (
       <div
@@ -56,13 +60,13 @@ export default class VisSelectDataSet extends React.Component {
           style={{ width: `100%`, display: `flex`, justifyContent: `center` }}
         >
           <VisChartSidebarSelection
-            selectionTitle="Dataset Type: "
-            dropdownValues={["personal", "group"]}
+            selectionTitle="Please choose the dataset to be visualised: "
+            dropdownValues={["Your Uploaded Datasets", "Group's Uploaded Datasets"]}
             default="-"
             update={this.updateDatasetType}
           />
         </div>
-        <form className="form">{datasetItemComponents}</form>
+        <form className="form" style={{display: `flex`, flexDirection: `column`}}>{(this.state.datasetType == "" || datasetItemComponents !== undefined) ? datasetItemComponents : <div style={{display: `flex`, flexDirection: `column`, alignItems: `center`, justifyContent: `center`}}>No dataset found</div>}</form>
       </div>
     );
   }

@@ -18,7 +18,7 @@ export default class VisChartSidebarButton extends React.Component {
           color: `white`
         }}
       >
-        RUN QUERY
+        SUBMIT
       </button>
     );
   }

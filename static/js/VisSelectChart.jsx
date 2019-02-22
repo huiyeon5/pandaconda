@@ -14,6 +14,7 @@ export default class VisSelectChart extends React.Component {
         <VisSelectChartItem
           key={chartType.id}
           id={chartType.id}
+          mode={chartType.mode}
           name={chartType.name}
           selectChartTypeHandler={selectChartTypeHandler}
         />

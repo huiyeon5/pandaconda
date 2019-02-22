@@ -24,14 +24,17 @@ export default class VisualisationContent extends React.Component {
       chartTypes: [
         {
           id: "scatter",
+          mode: "lines",
           name: "Line Chart"
         },
         {
           id: "bar",
+          mode: "",
           name: "Bar Chart & Top K Analysis"
         },
         {
           id: "scatter-chart",
+          mode: "markers",
           name: "Scatter Plot"
         }
       ],

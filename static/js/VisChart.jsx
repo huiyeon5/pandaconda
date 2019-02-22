@@ -368,6 +368,7 @@ export default class VisChart extends React.Component {
           dataset={this.props.dataset}
           plotlyType={this.props.chart.id}
           chartTitle={this.props.chart.chartName}
+          mode={this.props.chart.mode}
           data={this.state.data}
         />
         <VisNavBackButton handler={this.props.handler} />

@@ -7,6 +7,7 @@ import VisualisationContent from "./VisualisationContent";
 import Signup from "./Signup";
 import EditTable from "./EditTable"
 import Manage from "./Manage"
+import Datasets from "./Datasets"
 import 'babel-polyfill';
 
 
@@ -43,4 +44,9 @@ if (tablePage) {
 const managePage = document.getElementById("managePage");
 if (managePage) {
   ReactDOM.render(<Manage />, managePage);
+}
+
+const datasetsPage = document.getElementById("datasetsPage");
+if (datasetsPage) {
+  ReactDOM.render(<Datasets />, datasetsPage);
 }

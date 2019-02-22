@@ -199,7 +199,7 @@ export default class EditTable extends React.Component {
         if (res["status"] === 400) {
         } else {
           console.log(res);
-          window.location = "/";
+          window.location = "/visualisation";
         }
         // }
       })
