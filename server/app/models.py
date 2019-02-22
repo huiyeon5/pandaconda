@@ -8,7 +8,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     fullname = db.Column(db.String(80), nullable=False)
-    group_id = db.Column(db.Integer, default=0)
+    group_id = db.Column(db.Integer)
     isManager = db.Column(db.Boolean, default=False)
 
     @property
@@ -71,6 +71,7 @@ class GroupValidHeaders(db.Model):
 
 class UserVisualization(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    viz_name = db.Column(db.String(120), nullable=False)
     upload_date = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, nullable=False)
     configs = db.Column(db.JSON, nullable=False)

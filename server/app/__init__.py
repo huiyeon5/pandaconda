@@ -463,7 +463,7 @@ def create_app(config_name):
     @app.route('/save_visualization', methods=["POST"])
     def save_visualization():
         userID = current_user.id
-        userViz = UserVisualization(upload_date=datetime.datetime.now(), configs=request.get_json(),user_id=userID)
+        userViz = UserVisualization(upload_date=datetime.datetime.now(), configs=request.get_json(),user_id=userID, viz_name=request.get_json()['vizName'])
         db.session.add(userViz)
         db.session.commit()
         return jsonify({'status':200})
@@ -475,7 +475,7 @@ def create_app(config_name):
         returnList = []
         for item in res:
             temp = {}
-            temp[str(item.upload_date)] = item.configs
+            temp[str(item.viz_name)] = item.configs
             returnList.append(temp)
         
         return jsonify({'data':returnList, 'status': 200})
@@ -497,7 +497,7 @@ def create_app(config_name):
             if(current_user.group_id is not None):
                 returnObj = {}
                 returnObj['status'] = 200
-                group = Group.query.filter_by(id=current_user.group_id).one()
+                group = Group.query.filter_by(id=current_user.group_id).first()
                 returnObj['managerId'] = group.manager_id
                 members = GroupMember.query.filter_by(group_id=current_user.group_id).all()
                 returnObj['numMember'] = len(members)
