@@ -359,7 +359,7 @@ export default class VisChart extends React.Component {
                     data={this.state.data}
                 />
                 <VisNavBackButton handler={this.props.handler} />
-                <VisNavNextButton handler={this.props.handler} />
+                {/* <VisNavNextButton handler={this.props.handler} /> */}
                 <VisSaveButton onClick={this.showSaveViz} />
                 <div style={{position:`fixed`, top:`30%`, left:`50%`, transform:`translate(-50%, -50%)`, boxShadow:`0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)`, background:`white`, width: 500, height:250, padding:`10px 10px 0px`, borderRadius:20, display:`none`}}>
                     <h3>Save Visualization</h3>
@@ -406,7 +406,7 @@ export default class VisChart extends React.Component {
           yaxis={this.state.yaxis}
         />
         <VisNavBackButton handler={this.props.handler} />
-        <VisNavNextButton handler={this.props.handler} />
+        {/* <VisNavNextButton handler={this.props.handler} /> */}
         <VisSaveButton onClick={this.showSaveViz} />
         {this.state.showSaveName ? (
             <div style={{position:`fixed`, top:`30%`, left:`50%`, transform:`translate(-50%, -50%)`, boxShadow:`0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)`, background:`white`, width: 500, height:250, padding:`10px 10px 0px`, borderRadius:20}}>
