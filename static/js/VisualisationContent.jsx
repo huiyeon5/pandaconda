@@ -39,6 +39,8 @@ export default class VisualisationContent extends React.Component {
         }
       ],
       test: true,
+      selectedDataset: null,
+      selectedChartType: null,
     };
     this.callBackendAPI = this.callBackendAPI.bind(this);
     this.postData = this.postData.bind(this);
@@ -118,6 +120,8 @@ export default class VisualisationContent extends React.Component {
           chartTypes={this.state.chartTypes}
           selectDatasetHandler={this.selectDatasetHandler}
           selectChartTypeHandler={this.selectChartTypeHandler}
+          selectedDataset={this.state.selectedDataset}
+          selectedChartType={this.state.selectedChartType}
         />
       );
     } else if (this.state.currentPage === "chart") {

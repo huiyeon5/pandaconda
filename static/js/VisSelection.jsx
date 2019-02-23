@@ -22,7 +22,11 @@ export default class VisSelection extends React.Component {
           selectChartTypeHandler={this.props.selectChartTypeHandler}
         />
         <VisNavBackButton handler={this.props.handler} />
-        <VisNavNextButton handler={this.props.handler} />
+        <VisNavNextButton 
+          handler={this.props.handler} 
+          selectedDataset={this.props.selectedDataset}
+          selectedChartType={this.props.selectedChartType}
+        />
       </div>
     );
   }
