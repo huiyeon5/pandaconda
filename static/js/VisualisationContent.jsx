@@ -38,7 +38,7 @@ export default class VisualisationContent extends React.Component {
           name: "Scatter Plot"
         }
       ],
-      test: true
+      test: true,
     };
     this.callBackendAPI = this.callBackendAPI.bind(this);
     this.postData = this.postData.bind(this);
