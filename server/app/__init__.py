@@ -281,7 +281,7 @@ def create_app(config_name):
                 d = ds_names[dd]
                 temp = {}
                 temp["id"] = f'dataset-name-{dd+1}'
-                temp["name"] = d.data_name[0: d.data_name]
+                temp["name"] = d.data_name
                 returnList.append(temp)
                 # print(returnList)
             return jsonify({'datasetNames':returnList})
@@ -540,11 +540,11 @@ def create_app(config_name):
             gList = []
             for dd in range(len(ds_names)):
                 d = ds_names[dd]
-                yourList.append(d.data_name[0: d.data_name])
+                yourList.append(d.data_name)
 
             for dd in range(len(gds_names)):
                 d = gds_names[dd]
-                gList.append(d.data_name[0:d.data_name])
+                gList.append(d.data_name)
 
             return jsonify({'yourData':yourList,'groupData':gList})
         else:
@@ -602,7 +602,7 @@ def create_app(config_name):
         return jsonify({
             'status' : 200
         })
-
+    
     @app.route('/apply_to_group', methods=['POST'])
     def apply_to_group():
         data = request.get_json()
@@ -613,7 +613,6 @@ def create_app(config_name):
         db.session.add(groupMember)
         db.session.commit()
         return jsonify({'status':200})
-
 # ========================================================= API END HERE ================================================
 
     return app
