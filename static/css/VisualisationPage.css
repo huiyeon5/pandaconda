@@ -295,6 +295,11 @@ button.back:after {
   border-radius: 5px 0 0 5px;
 }
 
+button:disabled,
+button[disabled]{
+  filter: grayscale(100%);
+}
+
 /* General Button CSS */
 
 button.general {
