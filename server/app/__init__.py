@@ -402,10 +402,23 @@ def create_app(config_name):
             return jsonify(value)
 
     def convertToDate(i):
-        dateList = i.split("/")
+        dateList = []
+        date = ""
+        if(re.match("(^(((0[1-9]|1[0-9]|2[0-8])[\/\-\.](0[1-9]|1[012]))|((29|30|31)[\/\-\.](0[13578]|1[02]))|((29|30)[\/\-\.](0[4,6,9]|11)))[\/\-\.](19|[2-9][0-9])\d\d$)|(^29[\/\-\.]02[\/\-\.](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)",i)):
+            if("-" in i):
+                dateList = i.split("-")
+            elif("/" in i):
+                dateList = i.split("/")
+            date = datetime.date(int(dateList[2]), int(dateList[1]), int(dateList[0]))
+        elif(re.match("^\d{4}[\-\/\s]?((((0[13578])|(1[02]))[\-\/\s]?(([0-2][0-9])|(3[01])))|(((0[469])|(11))[\-\/\s]?(([0-2][0-9])|(30)))|(02[\-\/\s]?[0-2][0-9]))$",i)):
+            if("-" in i):
+                dateList = i.split("-")
+            elif("/" in i):
+                dateList = i.split("/")
+            date = datetime.date(int(dateList[0]), int(dateList[1]), int(dateList[2]))
         if len(dateList) != 3:
             return None
-        date = datetime.date(int(dateList[2]), int(dateList[1]), int(dateList[0]))
+        
         return date
 
     @app.route('/finalize_headers_api', methods=['POST'])  # API for the final headers
@@ -557,7 +570,7 @@ def create_app(config_name):
         returnList = []
         for data in groups:
             temp = {}
-            temp['id'] = data.id
+            temp['id'] = data.group_name
             temp['manager_id'] = data.manager_id
             returnList.append(temp)
 
@@ -589,6 +602,17 @@ def create_app(config_name):
         return jsonify({
             'status' : 200
         })
+
+    @app.route('/apply_to_group', methods=['POST'])
+    def apply_to_group():
+        data = request.get_json()
+        groupName = data['group_name']
+        groupId = Group.query.filter_by(group_name=groupName).first()
+        db.engine.execute(text(f"UPDATE `user` SET group_id = {groupId.id} where id={current_user.id}"))
+        groupMember =GroupMember(group_id=groupId.id, user_id=current_user.id)
+        db.session.add(groupMember)
+        db.session.commit()
+        return jsonify({'status':200})
 
 # ========================================================= API END HERE ================================================
 
