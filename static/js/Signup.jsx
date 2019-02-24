@@ -7,6 +7,16 @@ export default class Signup extends React.Component {
     this.checkForm = this.checkForm.bind(this);
     this.handleSignup = this.handleSignup.bind(this);
   }
+
+  componentDidMount(){
+    document.getElementById("password").addEventListener("keyup", function(event) {
+      event.preventDefault();
+      if (event.keyCode === 13) {
+        document.getElementsByClassName("signup-button-pc")[0].click();
+      }
+    });
+  }
+
   checkForm() {
     var obj = {
       firstName: document.getElementById("firstName").value,
