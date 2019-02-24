@@ -91,7 +91,15 @@ export default class VisualisationContent extends React.Component {
   }
 
   navPageHandler(value) {
-    this.setState({ currentPage: value });
+    let inputSet = {
+      currentPage: value
+    }
+    if (value === "selection") {
+      inputSet.selectedDataset = null;
+      inputSet.selectedChartType = null;
+    }
+    console.log(inputSet)
+    this.setState(inputSet);
   }
 
   selectDatasetHandler(value) {
