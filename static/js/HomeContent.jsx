@@ -12,7 +12,8 @@ export default class HomeContent extends React.Component {
     this.state = {
       saveViz: [],
       selectedIndex:-1,
-      go:false
+      go:false,
+      hasGroup: null
     };
 
     this.callBackendAPI = this.callBackendAPI.bind(this);
@@ -22,20 +23,29 @@ export default class HomeContent extends React.Component {
   componentDidMount() {
     localStorage.removeItem("viz")
     var saveViz = [];
-    this.callBackendAPI("/get_all_saved_viz").then(res => {
-      var datas = res.data;
-      datas.forEach(data => {
-        var keys = Object.keys(data);
-        keys.forEach(key => {
-          var temp = [];
-          temp.push(key);
-          temp.push(data[key]);
-          saveViz.push(temp);
-        });
-      });
-
-      this.setState({ saveViz });
-    });
+    this.callBackendAPI("/has_group")
+    .then(result => {
+        if(result.status === 200 || result.status === 300) {
+            this.callBackendAPI("/get_all_saved_viz").then(res => {
+                var datas = res.data;
+                datas.forEach(data => {
+                  var keys = Object.keys(data);
+                  keys.forEach(key => {
+                    var temp = [];
+                    temp.push(key);
+                    temp.push(data[key]);
+                    saveViz.push(temp);
+                  });
+                });
+          
+                this.setState({ saveViz, hasGroup:true });
+            });
+        } else {
+            this.setState({hasGroup:false})
+        }
+    }).catch(err => {
+        console.log(err);
+    })
   }
 
   selectViz(index) {
@@ -61,8 +71,16 @@ export default class HomeContent extends React.Component {
         window.location = "/visualisation";
     }
     return (
-      <div>
-        <HomeVizCard title="Saved Visualizations" list={this.state.saveViz} selectViz={this.selectViz}/>
+      <div style={this.state.hasGroup ? {} : {width:`100%`, height:`100%`, position:`relative`}}>
+        {this.state.hasGroup === null ? 
+            null : 
+            this.state.hasGroup ? 
+                <HomeVizCard title="Saved Visualizations" list={this.state.saveViz} selectViz={this.selectViz}/>
+            : <div style={{position:`absolute`, top:`45%`, left:`50%`, transform:`translate(-50%, -50%)`, display:`flex`, flexDirection:`column`, alignItems:`center`, justifyContent:`center`}}>
+                Please apply for a group to use the application!
+                <button style={{width:200,  display:`flex`, justifyContent:`center`, alignItems:`center`, marginTop:30}} onClick={() => window.location = "/manage"}>Apply for Group</button>
+            </div>
+        }
       </div>
     );
   }

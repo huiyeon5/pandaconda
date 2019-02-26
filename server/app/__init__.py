@@ -69,7 +69,10 @@ def create_app(config_name):
         if not current_user.is_authenticated:
             return redirect(url_for('login_r'))
         else:
-            return render_template('upload.html')
+            if current_user.group_id is not None:
+                return render_template('upload.html')
+            else:
+                return render_template('upload_nogroup.html')
 
     @app.route("/visualisation/")
     def visualisation():

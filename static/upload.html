@@ -2,17 +2,14 @@
 <script type="text/javascript" src="../dist/bundle.js"></script>
 
 <head>
-  <script
-    type="text/javascript"
-    src="{{ url_for('site.static', filename='js/Layout.js') }}"
-  ></script>
+  
   <link
     rel="stylesheet"
     href="{{ url_for('site.static', filename='css/Upload.css') }}"
   />
 </head>
 
-<body>
+<body id="uploadPage">
   <!-- <form enctype="multipart/form-data">
     Select file to upload:
     <input type="file" name="file" id="fileToUpload" />
@@ -20,7 +17,7 @@
   </form> -->
 
   <br />
-  <div class="dropzone-pc" id="dropzone">
+  <div class="dropzone-pc" id="dropzone" >
     <div class="center-pc">
       <img
         src="{{ url_for('site.static', filename='images/folder.png') }}"
@@ -48,8 +45,6 @@
   <div class="align-right-pc">
     <button class="upload-btn-pc" onclick="upload()">Upload</button>
   </div>
-</body>
-
 <script>
   var files = [];
 
@@ -137,4 +132,10 @@
     };
   })();
 </script>
+<script
+    type="text/javascript"
+    src="{{ url_for('site.static', filename='js/Layout.js') }}"
+></script>
+</body>
+
 {% endblock content %}
