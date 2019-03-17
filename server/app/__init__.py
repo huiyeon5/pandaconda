@@ -549,7 +549,7 @@ def create_app(config_name):
                 d = gds_names[dd]
                 gList.append(d.data_name)
 
-            return jsonify({'yourData':yourList,'groupData':gList})
+            return jsonify({'yourData':yourList,'groupData':gList, 'status':200})
         else:
             return jsonify({'status':400})
 
@@ -616,6 +616,19 @@ def create_app(config_name):
         db.session.add(groupMember)
         db.session.commit()
         return jsonify({'status':200})
+
+    @app.route('/get_valid_headers')
+    def get_valid_headers():
+        valid = GroupValidHeaders.query.filter_by(group_id=current_user.group_id).all()
+        toRet = [[row.header_name, row.data_type] for row in valid]
+        return jsonify({'data':toRet})
+
+    @app.route('/get_num_group_members')
+    def get_num_group_members():
+        members = GroupMember.query.filter_by(group_id=current_user.group_id).all()
+        return jsonify({'member': len(members)})
+
+    
 # ========================================================= API END HERE ================================================
 
     return app

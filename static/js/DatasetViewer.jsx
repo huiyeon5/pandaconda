@@ -43,7 +43,6 @@ class DatasetViewer extends React.Component {
             return (
                 <div style={this.props.select ? {background:`white`, maxWidth:`100%`, height:`100%`, overflowY:`scroll`, padding:10, borderRadius:`5px`, boxShadow:`0 4px 4px -2px gray`,gridColumn:`1/3`, zIndex:1000} : {background:`white`, maxWidth:`100%`, height:`100%`, overflowY:`scroll`, padding:10, borderRadius:`5px`, boxShadow:`0 4px 4px -2px gray`, zIndex:1000}}>
                     <h2 style={{marginBottom:0}}>{this.props.title}</h2>
-                    {this.props.select ? <h4 style={{fontSize:11, fontStyle:`italic`, marginTop:0}}>(Click on the dataset to push to group level)</h4> :null}
                     <div>
                         {this.props.data.map((d, i) => {
                             return (
