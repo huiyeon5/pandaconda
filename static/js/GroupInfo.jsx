@@ -1,7 +1,7 @@
 import React from 'react';
 
 const GroupInfo = ({manager, numMember, managerName, managerEmail, groupId}) => (
-    <div style={{background:`white`,padding:`5px 20px 5px`, width:`100%`, height:`100%`}}>
+    <div style={{background:`white`,padding:`5px 20px 5px`, width:`100%`, height:`100%`, gridColumn:`1/2`}}>
         <h1>Group: {groupId}</h1>
         <div>
             <div>

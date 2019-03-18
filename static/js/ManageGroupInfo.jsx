@@ -80,6 +80,7 @@ class ManageGroupInfo extends React.Component {
             this.postData('/push_to_group', {data_name:this.state.selectedDataset})
             .then(res => {
                 if(res.status === 200) {
+                    alert("Dataset is now at Group Level!")
                     self.callBackendAPI('/get_group_user_dataset')
                     .then(r => {
                         if(r.status !== 400) {
@@ -103,11 +104,13 @@ class ManageGroupInfo extends React.Component {
     render() {
         
         return (
-            <div style={{display:`grid`, gridTemplateColumns:`1fr 1fr`, gridTemplateRows:`1fr 1fr`, gridGap:`20px`, position:`relative`}}>
-                <GroupInfo manager={this.props.manager} numMember={this.props.numMember} managerName={this.state.managerName} managerEmail={this.state.managerEmail} groupId={this.props.groupId}/>
-                {this.state.groupData === null ? null : <DatasetViewer title="Group Datasets" data={this.state.groupData}/>}
-                {this.state.yourData === null ? null : <DatasetViewer title="Your Datasets" data={this.state.yourData} select={true} onClick={this.handleClick}/>}
-                <ManagePushButtons onClick={this.pushToGroup}/>
+            <div style={{ width:`100%`, height:`100%`}}>
+                <div style={{display:`grid`, gridTemplateColumns:`1fr 1fr`, gridTemplateRows:`1fr 1fr 50px`, position:`relative`, width:`100%`, height:`100%`, gridGap:20}}>
+                    <GroupInfo manager={this.props.manager} numMember={this.props.numMember} managerName={this.state.managerName} managerEmail={this.state.managerEmail} groupId={this.props.groupId}/>
+                    {this.state.groupData === null ? null : <DatasetViewer title="Group Datasets" data={this.state.groupData}/>}
+                    {this.state.yourData === null ? null : <DatasetViewer title="Your Datasets" data={this.state.yourData} select={true} onClick={this.handleClick}/>}
+                    <ManagePushButtons onClick={this.pushToGroup}/>
+                </div>
             </div>
         )
     }

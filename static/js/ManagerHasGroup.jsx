@@ -84,6 +84,20 @@ class ManagerHasGroup extends React.Component {
                         <li><b>Number of Valid Headers:</b> {this.state.headers ? this.state.headers.length : 0}</li>
                     </ul>
                 </div>
+                <div style={{background:`white`, borderRadius:5, boxShadow:`gray 0px 4px 4px -2px`, width:`100%`, height:`100%`}}>
+                    <h1 style={{textAlign:`center`}}>Group Info:</h1>
+                    <ul style={{textAlign:`center`, listStyle:`none`}}>
+                        <li><b>Manager Name:</b> {this.state.name}</li>
+                        <br/>
+                        <li><b>Manager Email:</b> {this.state.email}</li>
+                        <br/>
+                        <li><b>Number of Group Datasets:</b> {this.state.groupData ? this.state.groupData.length : 0}</li>
+                        <br/>
+                        <li><b>Number of Members:</b> {this.state.numMembers}</li>
+                        <br/>
+                        <li><b>Number of Valid Headers:</b> {this.state.headers ? this.state.headers.length : 0}</li>
+                    </ul>
+                </div>
             </div>
         )
     }
