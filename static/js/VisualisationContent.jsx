@@ -41,6 +41,7 @@ export default class VisualisationContent extends React.Component {
       test: true,
       selectedDataset: null,
       selectedChartType: null,
+      hasGroup:null
     };
     this.callBackendAPI = this.callBackendAPI.bind(this);
     this.postData = this.postData.bind(this);
@@ -50,21 +51,24 @@ export default class VisualisationContent extends React.Component {
   }
 
   componentDidMount() {
-    // this.callBackendAPI("/get_all_dataset_api")
-    //   .then(res => {
-    //     this.setState({ datasetNames: res.datasetNames });
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-
-    this.callBackendAPI("/get_group_user_dataset")
-      .then(res => {
-        this.setState({ datasetNames: res });
-      })
-      .catch(err => {
+    this.callBackendAPI("/has_group")
+      .then(result => {
+        if(result.status === 200 || result.status === 300) {
+            this.callBackendAPI("/get_group_user_dataset")
+            .then(res => {
+                this.setState({ datasetNames: res, hasGroup:true });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        } else {
+            this.setState({hasGroup:false})
+        }
+      }).catch(err => {
         console.log(err);
-      });
+    });
+
+    
   }
 
   async postData(url, bodyObj) {
@@ -111,35 +115,48 @@ export default class VisualisationContent extends React.Component {
   }
 
   render() {
-    if(localStorage.getItem('viz') !== null) {
-        return (
+    if(this.state.hasGroup) {
+        if(localStorage.getItem('viz') !== null) {
+            return (
+                <VisChart
+                  handler={this.navPageHandler}
+                  dataset={this.state.selectedDataset}
+                  chart={this.state.selectedChartType}
+                />
+            );
+        }
+        if (this.state.currentPage === "selection") {
+          return (
+            <VisSelection
+              handler={this.navPageHandler}
+              datasetNames={this.state.datasetNames}
+              chartTypes={this.state.chartTypes}
+              selectDatasetHandler={this.selectDatasetHandler}
+              selectChartTypeHandler={this.selectChartTypeHandler}
+              selectedDataset={this.state.selectedDataset}
+              selectedChartType={this.state.selectedChartType}
+            />
+          );
+        } else if (this.state.currentPage === "chart") {
+          return (
             <VisChart
               handler={this.navPageHandler}
               dataset={this.state.selectedDataset}
               chart={this.state.selectedChartType}
             />
-        );
-    }
-    if (this.state.currentPage === "selection") {
-      return (
-        <VisSelection
-          handler={this.navPageHandler}
-          datasetNames={this.state.datasetNames}
-          chartTypes={this.state.chartTypes}
-          selectDatasetHandler={this.selectDatasetHandler}
-          selectChartTypeHandler={this.selectChartTypeHandler}
-          selectedDataset={this.state.selectedDataset}
-          selectedChartType={this.state.selectedChartType}
-        />
-      );
-    } else if (this.state.currentPage === "chart") {
-      return (
-        <VisChart
-          handler={this.navPageHandler}
-          dataset={this.state.selectedDataset}
-          chart={this.state.selectedChartType}
-        />
-      );
+          );
+        }
+    } else if(this.state.hasGroup === false){
+        return (
+            <div style={{position:`absolute`, top:`45%`, left:`50%`, transform:`translate(-50%, -50%)`, display:`flex`, flexDirection:`column`, alignItems:`center`, justifyContent:`center`}}>
+                Please apply for a group to use the application!
+                <button style={{width:200,  display:`flex`, justifyContent:`center`, alignItems:`center`, marginTop:30}} onClick={() => window.location = "/manage"}>Apply for Group</button>
+            </div>
+        )
+    } else{
+        return (
+            <div></div>
+        )
     }
   }
 }

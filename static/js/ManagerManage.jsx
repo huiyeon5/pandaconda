@@ -13,7 +13,6 @@ class ManagerManage extends React.Component {
         } else {
             return (
                 <div style={{height:`100%`}}>
-                    <h1>Manager Manage</h1>
                     <ManagerHasGroup managerId={this.props.managerId}/>
                 </div>
             );

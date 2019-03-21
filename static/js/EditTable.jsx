@@ -21,7 +21,6 @@ export default class EditTable extends React.Component {
   togglePopup() {
     this.callBackendAPI("/view_data_api")
       .then(res => {
-        console.log(res);
         if (res["status"] == 500) {
           alert("error");
         } else {
@@ -40,7 +39,6 @@ export default class EditTable extends React.Component {
   componentDidMount() {
     this.callBackendAPI("/update_api")
       .then(res => {
-        console.log(res);
         if (res["status"] == 500) {
           // window.location='/uploa
         } else {
@@ -81,7 +79,6 @@ export default class EditTable extends React.Component {
     var totalDataRows = this.state.obj.data;
     for (i = 0; i < totalDataRows.length; i = i + 1) {
       var data = totalDataRows[i];
-      console.log(data);
       //First Column
       var newRow = document.createElement("TR");
       newRow.classList.add("tr");
@@ -174,7 +171,6 @@ export default class EditTable extends React.Component {
       var new_header;
       //result = result + (old_header_list[i].innerHTML)
       var row = document.getElementsByClassName("tr tr" + (i + 1));
-      console.log(document.querySelector(`.tr${i + 1} > .td4 > input`).checked);
       if (document.querySelector(`.tr${i + 1} > .td4 > input`).checked) {
         new_header = "";
         old_header = document.querySelector(`.tr${i + 1} > .td1`).innerHTML;
@@ -193,13 +189,12 @@ export default class EditTable extends React.Component {
       var key = old_header;
       obj[key] = new_header;
     }
-    console.log(obj);
     this.postData("/finalize_headers_api", obj)
       .then(res => {
         if (res["status"] === 400) {
         } else {
-          console.log(res);
-          window.location = "/visualisation";
+          alert("Your Data has been successfully uploaded!")
+          window.location = "/";
         }
         // }
       })

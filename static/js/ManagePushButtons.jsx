@@ -4,7 +4,7 @@ class ManagePushButtons extends React.Component {
 
 
     render() {
-        return (<button style={{position:`absolute`, top:`100%`, left:`50%`, transform:`translate(-50%,0%)`, marginTop:5, width:300, display:`flex`, justifyContent:`center`, alignItems:`center`}} onClick={this.props.onClick}>Push to Group Level!</button>)
+        return (<button style={{margin:`auto`, width:300, display:`flex`, justifyContent:`center`, alignItems:`center`, gridColumn:`1/3`}} onClick={this.props.onClick}>Push to Group Level!</button>)
     }
 }
 
