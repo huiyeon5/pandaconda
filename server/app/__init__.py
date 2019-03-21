@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 from . import check_headers
 import datetime
 import pandas as pd
+import re
 
 # local imports
 from config import app_config
