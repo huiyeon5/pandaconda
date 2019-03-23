@@ -319,6 +319,12 @@ def create_app(config_name):
                 result.append(row[0])
             return jsonify({'status':200, 'data': result})
         return jsonify({'status':400})
+        
+    def fixDate(dateStr):
+        dateObj = { 'Jan' : 1, 'Feb' : 2, 'Mar' : 3, 'Apr' : 4, 'May' : 5, 'Jun' : 6, 'Jul' : 7, 'Aug' : 8, 'Sep' : 9, 'Oct' : 10, 'Nov' : 11, 'Dec' : 12}
+        dateList = dateStr.split(" ")
+        date = datetime.date(int(dateList[3]), int(dateObj[dateList[2]]), int(dateList[1]))
+        return date
     
     @app.route('/viz_filter_api', methods=["POST"])
     def viz_filter_api():
@@ -636,14 +642,20 @@ def create_app(config_name):
         headers = db.engine.execute(f'Show columns from {ds}')
         head_list = [row[0] for row in headers]
         sql = db.engine.execute(text(f'SELECT * FROM {ds}'))
-        data = {}
+        data = []
+        data.append(head_list)
         s= [row for row in sql]
         i = 0
-        for head in head_list:
-            data[head] = [row[i] for row in s]
-            i+=1
+        for row in s:
+            temp = []
+            for val in row:
+                if isinstance(val, datetime.datetime):
+                    val = str(val)
+                temp.append(val)
+            data.append(temp)
+        return jsonify({'data':data,'status':200})
+        
 
-        return jsonify({'headers':head_list, 'data': data})
 
     
 # ========================================================= API END HERE ================================================
