@@ -628,6 +628,22 @@ def create_app(config_name):
         members = GroupMember.query.filter_by(group_id=current_user.group_id).all()
         return jsonify({'member': len(members)})
 
+    @app.route('/get_data_for_export', methods=['POST'])
+    def get_data_for_export():
+        dic = request.get_json()
+        ds = dic['dataset']
+        headers = db.engine.execute(f'Show columns from {ds}')
+        head_list = [row[0] for row in headers]
+        sql = db.engine.execute(text(f'SELECT * FROM {ds}'))
+        data = {}
+        s= [row for row in sql]
+        i = 0
+        for head in head_list:
+            data[head] = [row[i] for row in s]
+            i+=1
+
+        return jsonify({'headers':head_list, 'data': data})
+
     
 # ========================================================= API END HERE ================================================
 
