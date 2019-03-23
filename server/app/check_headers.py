@@ -30,7 +30,6 @@ def clean_headers(headers):
 
 
 def suggest_headers(path, valid_headers, header_types):
-    print(valid_headers, header_types)
     df = pd.read_csv(path)
     columns = list(df.columns)
     returned_list = []

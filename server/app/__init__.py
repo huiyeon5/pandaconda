@@ -220,24 +220,24 @@ def create_app(config_name):
                         dateIndex = []
                         d = 0
                         for k,v in value['headers'].items():
-                            header = header + k + " "
-                            headerNoType += k + ","
-                            headerOrder.append(k)
+                            head = k.replace(" ", "_")
+                            header = header + head + " "
+                            headerNoType += head + ","
+                            headerOrder.append(head)
+                            print(headerOrder)
                             if(v == 'int'):
                                 header = header + "INT"
                             elif(v == 'string'):
-                                header = header + "VARCHAR(MAX)"
+                                header = header + "TEXT"
                             elif(v == 'date'):
                                 header = header + "DATETIME"
                                 dateIndex.append(d)
-                            elif(v == 'double'):
+                            elif(v == 'double' or v == 'float'):
                                 header = header + "FLOAT"
                             header = header + ','
                             d = d + 1
                         header = header[0:len(header)-1] +')'
-
                         sql = f'CREATE TABLE {filename[0:len(filename)-4]+"_"+str(current_user.id)} {header}'
-
                         insertSQL = f'INSERT INTO {filename[0:len(filename)-4]+"_"+str(current_user.id)} {headerNoType[0: len(headerNoType) - 1] + ")"} VALUES '
                         v=""
                         for item in json.loads(value['data']):
@@ -426,6 +426,9 @@ def create_app(config_name):
             elif("/" in i):
                 dateList = i.split("/")
             date = datetime.date(int(dateList[0]), int(dateList[1]), int(dateList[2]))
+        else:
+            dateList = i.split('/')
+            date = datetime.date(int(dateList[2]), int(dateList[1]), int(dateList[0]))
         if len(dateList) != 3:
             return None
         
@@ -454,7 +457,7 @@ def create_app(config_name):
         date_columns = list(df.select_dtypes(include=['object']).columns)
 
         for column in date_columns:
-            df[column] = pd.to_datetime(df[column], format = "%d/%m/%y")
+            df[column] = pd.to_datetime(df[column], format = "%d/%m/%Y")
 
         df.to_sql(name = filename[0:len(filename)-4]+"_"+str(current_user.id), con=db.engine, index=False)
 
@@ -599,11 +602,8 @@ def create_app(config_name):
         db.session.commit()
 
         g_id = Group.query.filter_by(group_name=g_name).first()
-        print(g_id)
         datas = req['data']
-        print(datas)
         for data in datas:
-            print(data)
             vh = GroupValidHeaders(group_id = g_id.id, header_name = data['header'], data_type = data['type'])
             db.session.add(vh)
             db.session.commit()
@@ -654,8 +654,57 @@ def create_app(config_name):
                 temp.append(val)
             data.append(temp)
         return jsonify({'data':data,'status':200})
+
+
+    @app.route('/get_entities_from_dataset_api', methods=['POST'])
+    def get_entities_from_dataset_api():
+        dic = request.get_json()
+        ds = dic['dataset']
+        headers = db.engine.execute(f'Show columns from {ds}')
+        head_list = [row[0] for row in headers]
+        valid = GroupValidHeaders.query.filter_by(group_id=current_user.group_id).all()
+        validHeaders= []
+        for row in valid:
+            if row.isCategory == True:
+                validHeaders.append(row.header_name)
+
+        validHeaders = set(validHeaders)
+        toRet = []
+        for head in head_list:
+            if head in validHeaders:
+                toRet.append(head)
+        
+        return jsonify({'data': toRet, 'status': 200})
+
+    @app.route('/get_prebuilt_analysis', methods=['POST'])
+    def get_prebuilt_analysis():
+        req = request.get_json()
+        dataset = req['dataset']
+        entity = req['entity']
+        analysis = req['analysis']
+        headers = db.engine.execute(f'Show columns from {dataset}')
+        head_list = [row[0] for row in headers]
+        valid = GroupValidHeaders.query.filter_by(group_id=current_user.group_id).all()
+        validHeaders= []
+        for row in valid:
+            if row.isCategory == False and (row.data_type == 'int' or row.data_type == 'float'):
+                validHeaders.append(row.header_name)
+
+        validHeaders = set(validHeaders)
+        values = []
+        for head in head_list:
+            if head in validHeaders:
+                values.append(head)
+
+        data = {}
+        for item in values:
+            sql = db.engine.execute(text(f'SELECT {item}, {entity} FROM {dataset} ORDER BY {item} DESC LIMIT 10'))
+            data[item] = [(row[1], row[0]) for row in sql]
+
+        return jsonify({'headers': values, 'values':data})
         
 
+        
 
     
 # ========================================================= API END HERE ================================================
