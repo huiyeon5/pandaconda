@@ -18,8 +18,9 @@
     display:flex;
     align-items:center;
     position:relative;
+    cursor: pointer;
     transition: all 0.3s ease;
-    user-select: none;
+    z-index: 100;
 }
 
 .datasetindexpc {

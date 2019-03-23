@@ -13,6 +13,7 @@ class ManageGroupInfo extends React.Component {
             yourData:null,
             groupData:null,
             selectedDataset: null,
+            selectedGroupDataset: null
         }
         this.postData = this.postData.bind(this)
         this.callBackendAPI = this.callBackendAPI.bind(this)
@@ -113,7 +114,6 @@ class ManageGroupInfo extends React.Component {
                     var dataToExport = res.data;
                     var lineArray = [];
                     dataToExport.forEach(function (infoArray, index) {
-                        console.log(infoArray)
                         var line = infoArray.join(",");
                         lineArray.push(index == 0 ? "data:text/csv;charset=utf-8," + line : line);
                     });
@@ -135,12 +135,12 @@ class ManageGroupInfo extends React.Component {
         
         return (
             <div style={{ width:`100%`, height:`100%`}}>
-                <div style={{display:`grid`, gridTemplateColumns:`1fr 1fr 1fr 1fr`, gridTemplateRows:`1fr 1fr 50px`, position:`relative`, width:`100%`, height:`100%`, gridGap:20}}>
+                <div style={{display:`grid`, gridTemplateColumns:`1fr 1fr 1fr 1fr`, gridTemplateRows:`1fr 250px 50px`, position:`relative`, width:`100%`, height:`100%`, gridGap:20}}>
                     <GroupInfo manager={this.props.manager} numMember={this.props.numMember} managerName={this.state.managerName} managerEmail={this.state.managerEmail} groupId={this.props.groupId}/>
-                    {this.state.groupData === null ? null : <DatasetViewer title="Group Datasets" data={this.state.groupData}/>}
+                    {this.state.groupData === null ? null : <DatasetViewer title="Group Datasets" data={this.state.groupData} onClick={this.handleClick}/>}
                     {this.state.yourData === null ? null : <DatasetViewer title="Your Datasets" data={this.state.yourData} select={true} onClick={this.handleClick}/>}
                     <ManagePushButtons onClick={this.pushToGroup}/>
-                    <ManageExportButton onClick={this.exportData} disable={this.state.selectedDataset === null}/>
+                    <ManageExportButton onClick={this.exportData} disable={this.state.selectedDataset === null && this.state.selectedGroupDataset === null}/>
                 </div>
             </div>
         )
