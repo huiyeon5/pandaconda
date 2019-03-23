@@ -12,7 +12,7 @@ class DatasetViewer extends React.Component {
         this.removeClass();
         var el = document.querySelector(`.data${i + 1}`);
         el.classList.add("dsactive");
-        var selected = e.target.classList[1];
+        var selected = el.classList[1];
         this.props.onClick(document.querySelector("."+selected + " .datasetnamepc").innerText)
     }
 
@@ -26,7 +26,7 @@ class DatasetViewer extends React.Component {
     render() {
         if(this.props.select) {
             return (
-                <div style={this.props.select ? {background:`white`, maxWidth:`100%`, height:`100%`, overflowY:`scroll`, padding:10, borderRadius:`5px`, boxShadow:`0 4px 4px -2px gray`,gridColumn:`1/3`, zIndex:1000, gridRow:`2/3`} : {background:`white`, maxWidth:`100%`, height:`100%`, overflowY:`scroll`, padding:10, borderRadius:`5px`, boxShadow:`0 4px 4px -2px gray`, zIndex:1000}}>
+                <div style={this.props.select ? {background:`white`, maxWidth:`100%`, height:`100%`, overflowY:`scroll`, padding:10, borderRadius:`5px`, boxShadow:`0 4px 4px -2px gray`,gridColumn:`1/5`, zIndex:1000, gridRow:`2/3`} : {background:`white`, maxWidth:`100%`, height:`100%`, overflowY:`scroll`, padding:10, borderRadius:`5px`, boxShadow:`0 4px 4px -2px gray`, zIndex:1000}}>
                     <h2 style={{marginBottom:0}}>{this.props.title}</h2>
                     {this.props.select ? <h4 style={{fontSize:11, fontStyle:`italic`, marginTop:0}}>(Click on the dataset to push to group level)</h4> :null}
                     <div>
@@ -40,7 +40,7 @@ class DatasetViewer extends React.Component {
             )
         } else {
             return (
-                <div style={this.props.select ? {background:`white`, maxWidth:`100%`, height:`100%`, overflowY:`scroll`, padding:10, borderRadius:`5px`, boxShadow:`0 4px 4px -2px gray`,gridColumn:`1/3`, zIndex:1000} : {background:`white`, maxWidth:`100%`, height:`100%`, overflowY:`scroll`, padding:10, borderRadius:`5px`, boxShadow:`0 4px 4px -2px gray`, zIndex:1000, gridRow:`1/2`, gridColumnStart:`2`}}>
+                <div style={this.props.select ? {background:`white`, maxWidth:`100%`, height:`100%`, overflowY:`scroll`, padding:10, borderRadius:`5px`, boxShadow:`0 4px 4px -2px gray`,gridColumn:`1/3`, zIndex:1000} : {background:`white`, maxWidth:`100%`, height:`100%`, overflowY:`scroll`, padding:10, borderRadius:`5px`, boxShadow:`0 4px 4px -2px gray`, zIndex:1000, gridRow:`1/2`, gridColumn:`3/5`}}>
                     <h2 style={{marginBottom:0}}>{this.props.title}</h2>
                     <div>
                         {this.props.data.map((d, i) => {

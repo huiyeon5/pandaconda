@@ -2,6 +2,7 @@ import React from 'react';
 import GroupInfo from './GroupInfo'
 import DatasetViewer from './DatasetViewer'
 import ManagePushButtons from './ManagePushButtons'
+import ManageExportButton from './ManageExportButton'
 
 class ManageGroupInfo extends React.Component {
     constructor(props) {
@@ -11,12 +12,13 @@ class ManageGroupInfo extends React.Component {
             managerEmail:null,
             yourData:null,
             groupData:null,
-            selectedDataset: null
+            selectedDataset: null,
         }
         this.postData = this.postData.bind(this)
         this.callBackendAPI = this.callBackendAPI.bind(this)
         this.handleClick = this.handleClick.bind(this)
         this.pushToGroup = this.pushToGroup.bind(this)
+        this.exportData = this.exportData.bind(this)
     }
 
     componentDidMount() {
@@ -101,15 +103,44 @@ class ManageGroupInfo extends React.Component {
         }
     }
 
+    exportData() {
+        if(this.state.selectedDataset === null) {
+            alert("Please Select a Dataset to export!");
+        } else {
+            this.postData('/get_data_for_export', {dataset: this.state.selectedDataset})
+            .then(res => {
+                if(res.status === 200) {
+                    var dataToExport = res.data;
+                    var lineArray = [];
+                    dataToExport.forEach(function (infoArray, index) {
+                        console.log(infoArray)
+                        var line = infoArray.join(",");
+                        lineArray.push(index == 0 ? "data:text/csv;charset=utf-8," + line : line);
+                    });
+                    var csvContent = lineArray.join("\n");
+                    var encodedUri = encodeURI(csvContent);
+                    var link = document.createElement("a");
+                    link.setAttribute("href", encodedUri);
+                    link.setAttribute("download", this.state.selectedDataset + ".csv");
+                    document.body.appendChild(link); // Required for FF
+                    link.click(); 
+                } else {
+                    alert("There seems to be an error!")
+                }
+            })
+        }
+    }
+
     render() {
         
         return (
             <div style={{ width:`100%`, height:`100%`}}>
-                <div style={{display:`grid`, gridTemplateColumns:`1fr 1fr`, gridTemplateRows:`1fr 1fr 50px`, position:`relative`, width:`100%`, height:`100%`, gridGap:20}}>
+                <div style={{display:`grid`, gridTemplateColumns:`1fr 1fr 1fr 1fr`, gridTemplateRows:`1fr 1fr 50px`, position:`relative`, width:`100%`, height:`100%`, gridGap:20}}>
                     <GroupInfo manager={this.props.manager} numMember={this.props.numMember} managerName={this.state.managerName} managerEmail={this.state.managerEmail} groupId={this.props.groupId}/>
                     {this.state.groupData === null ? null : <DatasetViewer title="Group Datasets" data={this.state.groupData}/>}
                     {this.state.yourData === null ? null : <DatasetViewer title="Your Datasets" data={this.state.yourData} select={true} onClick={this.handleClick}/>}
                     <ManagePushButtons onClick={this.pushToGroup}/>
+                    <ManageExportButton onClick={this.exportData} disable={this.state.selectedDataset === null}/>
                 </div>
             </div>
         )
