@@ -21,7 +21,7 @@ export default class VisChartSidebarTopKToggle extends React.Component {
         >
           <button
             onClick={() => this.props.toggleTopK()}
-            style={{ margin: "25px", textAlign: "center" }}
+            style={{ margin: "25px", textAlign: "center", fontSize: "12px" }}
           >
             Sort
           </button>

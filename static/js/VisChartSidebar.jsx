@@ -80,13 +80,13 @@ export default class VisChartSidebar extends React.Component {
           >
             <button
               onClick={() => this.appendFilter()}
-              style={{ margin: "25px", textAlign: "center" }}
+              style={{ margin: "25px", textAlign: "center", fontSize: "12px" }}
             >
-              Add Filter Condition
+              Add Filter
             </button>
             <button
               onClick={() => this.removeAllFilters()}
-              style={{ margin: "25px", textAlign: "center" }}
+              style={{ margin: "25px", textAlign: "center", fontSize: "12px" }}
             >
               Remove All Filters
             </button>

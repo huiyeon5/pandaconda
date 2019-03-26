@@ -698,8 +698,17 @@ def create_app(config_name):
 
         data = {}
         for item in values:
-            sql = db.engine.execute(text(f'SELECT AVG({item}), {entity} FROM {dataset} GROUP BY {entity} ORDER BY AVG({item}) DESC LIMIT 10'))
-            data[item] = [(row[1], row[0]) for row in sql]
+            returnSQL = db.engine.execute(text(f'SELECT AVG({item}), {entity} FROM {dataset} GROUP BY {entity} ORDER BY AVG({item}) DESC LIMIT 10'))
+            
+            returnDict = {}
+            returnDict["xaxis"] = []
+            returnDict["yaxis"] = []
+            
+            for row in returnSQL:
+                returnDict["xaxis"].append(str(row[1]))
+                returnDict["yaxis"].append(float(row[0]))
+            
+            data[item] = returnDict
 
         return jsonify({'headers': values, 'values':data})
         
