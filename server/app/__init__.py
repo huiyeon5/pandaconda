@@ -698,7 +698,7 @@ def create_app(config_name):
 
         data = {}
         for item in values:
-            sql = db.engine.execute(text(f'SELECT {item}, {entity} FROM {dataset} ORDER BY {item} DESC LIMIT 10'))
+            sql = db.engine.execute(text(f'SELECT AVG({item}), {entity} FROM {dataset} GROUP BY {entity} ORDER BY AVG({item}) DESC LIMIT 10'))
             data[item] = [(row[1], row[0]) for row in sql]
 
         return jsonify({'headers': values, 'values':data})

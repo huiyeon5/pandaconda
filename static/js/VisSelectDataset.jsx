@@ -14,12 +14,14 @@ export default class VisSelectDataSet extends React.Component {
     this.updateDatasetType = this.updateDatasetType.bind(this);
   }
 
-  // componentDidMount() {
-  //   this.setState({ data: this.props.datasetNames["yourData"] });
-  // }
-
   updateDatasetType(value) {
     console.log("value: " + value);
+    console.log("query selector")
+    var items = document.querySelectorAll(".inputGroup input");
+    items.forEach(item => {
+      item.checked = false;
+    })
+    this.props.selectDatasetHandler(null);
     this.setState(
       {
         datasetType: value
@@ -53,7 +55,7 @@ export default class VisSelectDataSet extends React.Component {
     return (
       <div
         className="vis-select-dataset vis-card-grid"
-        style={{ display: "grid", gridTemplateRows: "80px 30px 1fr" }}
+        style={{ display: "grid", gridTemplateRows: "80px auto 1fr" }}
       >
         <div className="vis-card-title">Select Your Dataset</div>
         <div
