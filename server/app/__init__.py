@@ -454,11 +454,18 @@ def create_app(config_name):
         df.drop(columns=to_drop, axis=1, inplace=True)
         df.rename(columns=rename_dict, inplace=True)
 
+        sql = f'SELECT header_name FROM group_valid_headers WHERE data_type="date"'
+        result = db.engine.execute(text(sql))
+
         #HOW TO QUERY WHICH ARE THE DATE COLUMNS INSTEAD?
-        date_columns = list(df.select_dtypes(include=['object']).columns)
+        date_columns = []
+
+        for row in result:
+            date_columns.append(row['header_name'])
 
         for column in date_columns:
-            df[column] = [dateparser.parse(x) for x in df[column]]
+            if column in df.columns:
+                df[column] = [dateparser.parse(x) for x in df[column]]
 
         df.to_sql(name = filename[0:len(filename)-4]+"_"+str(current_user.id), con=db.engine, index=False)
 

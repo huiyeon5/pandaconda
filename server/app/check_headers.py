@@ -5,7 +5,6 @@ import json
 from collections import Counter
 from math import sqrt
 from Levenshtein import distance
-import time
 import dateparser
 
 def word2vec(word):
@@ -54,8 +53,6 @@ def suggest_headers(path, valid_headers, header_types):
     for header in columns:
         header_dict[header] = {} #create a dictionary as the value for this key which is column name
     
-    start = time.time()
-
     #iterate through the dataframe
     for index, row in df.iterrows():
         for header in columns: #for each header name in the dataframe
@@ -80,13 +77,6 @@ def suggest_headers(path, valid_headers, header_types):
                         temp_header_dict['int'] = 1
                     header_dict[header] = temp_header_dict
             except: #if it's not an integer then it's a date
-                #temp_header_dict = header_dict[header]
-                # if 'date' in temp_header_dict:
-                #     value = temp_header_dict['date'] + 1
-                #     temp_header_dict['date'] = value
-                # else:
-                #     temp_header_dict['date'] = 1
-                # header_dict[header] = temp_header_dict
                 data_type = dateparser.parse(data)
 
                 if data_type is None:
@@ -106,11 +96,6 @@ def suggest_headers(path, valid_headers, header_types):
                         temp_header_dict['date'] = 1
                     header_dict[header] = temp_header_dict
 
-
-    end = time.time()
-
-    print("TIME TAKEN: " + (end - start))
-
     for header in columns:
         temp_dict = header_dict[header] #loop through the columns stored as keys in header_dict
         for k, v in temp_dict.items(): #loop through the key value pairs for the dictionary stored in a header name
@@ -122,7 +107,7 @@ def suggest_headers(path, valid_headers, header_types):
             checked_headers[header] = None
     
     #if index is present and must be dropped
-    if columns[0] == 'Unnamed: 0' and df[columns[0]].dtype == 'int64':
+    if columns[0] == 'Unnamed:_0' and df[columns[0]].dtype == 'int64':
         returned_list.append({'col_header' : columns[0], 'imported_as': valid_headers.sort(), 'drop' : True, 'cosine' : 'NA'})
         
         #loop through remaining headers
