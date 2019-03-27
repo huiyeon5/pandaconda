@@ -14,7 +14,7 @@ export default class VisRecAnalysisItem extends React.Component {
           <div class="card-header text-white font-weight-bold bg-warning" style={{fontSize: `20px`}}>Top {this.props.xTitle} by {this.props.yTitle} (Limit 10)</div>
           <div class="card-body">
             <Plot 
-              data={[{type: 'bar', x: this.props.xAxis, y: this.props.yAxis, marker: { color: "orange" }}]} 
+              data={[{type: 'bar', x: this.props.xAxis, y: this.props.yAxis, marker: { color: "#ff7f50" }}]} 
               layout={{
                 xaxis: { type: "category", title: this.props.xTitle }, yaxis: { title: this.props.yTitle },
                 width: 530, height: 400,
