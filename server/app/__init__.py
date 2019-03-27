@@ -9,6 +9,7 @@ from . import check_headers
 import datetime
 import pandas as pd
 import re
+import dateparser
 
 # local imports
 from config import app_config
@@ -438,6 +439,7 @@ def create_app(config_name):
         filename = session.get('fileName')
 
         df = pd.read_csv(filePath)
+        df.columns = df.columns.str.replace(' ', '_')
         
         to_drop = []
         rename_dict = {}
@@ -451,10 +453,11 @@ def create_app(config_name):
         df.drop(columns=to_drop, axis=1, inplace=True)
         df.rename(columns=rename_dict, inplace=True)
 
+        #HOW TO QUERY WHICH ARE THE DATE COLUMNS INSTEAD?
         date_columns = list(df.select_dtypes(include=['object']).columns)
 
         for column in date_columns:
-            df[column] = pd.to_datetime(df[column], format = "%d/%m/%y")
+            df[column] = [dateparser.parse(x) for x in df[column]]
 
         df.to_sql(name = filename[0:len(filename)-4]+"_"+str(current_user.id), con=db.engine, index=False)
 
