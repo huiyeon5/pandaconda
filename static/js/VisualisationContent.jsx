@@ -1,16 +1,8 @@
 import React from "react";
 import "../css/VisualisationPage";
 import VisSelection from "./VisSelection";
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend
-} from "recharts";
+import VisRecAnalysis from "./VisRecAnalysis";
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import VisChart from "./VisChart";
 
 var $ = require("jquery");
@@ -19,8 +11,23 @@ export default class VisualisationContent extends React.Component {
   constructor() {
     super();
     this.state = {
+      // Current page var
       currentPage: "selection",
+      // User info var
+      hasGroup:null,
       datasetNames: {},
+      // Select dataset var
+      selectedDataset: null,
+      selectedDatasetEntities: [],
+      // Select chart var
+      selectedChartType: null,
+      // Select entity recommended analysis var
+      selectedEntity: null,
+      selectedAnalysis: null,
+      selectedEntityVariableData: null,
+      // Select next page
+      selectedNextPage: null,
+      // Hard-coded chart types
       chartTypes: [
         {
           id: "scatter",
@@ -38,18 +45,17 @@ export default class VisualisationContent extends React.Component {
           name: "Scatter Plot"
         }
       ],
-      test: true,
-      selectedDataset: null,
-      selectedChartType: null,
-      hasGroup:null
+      
     };
     this.callBackendAPI = this.callBackendAPI.bind(this);
     this.postData = this.postData.bind(this);
     this.navPageHandler = this.navPageHandler.bind(this);
     this.selectDatasetHandler = this.selectDatasetHandler.bind(this);
     this.selectChartTypeHandler = this.selectChartTypeHandler.bind(this);
+    this.selectEntityHandler = this.selectEntityHandler.bind(this);
   }
 
+  /*Check if the user has a group, if have, get all the user's datasets and update "datasetNames" in state*/
   componentDidMount() {
     this.callBackendAPI("/has_group")
       .then(result => {
@@ -67,10 +73,9 @@ export default class VisualisationContent extends React.Component {
       }).catch(err => {
         console.log(err);
     });
-
-    
   }
 
+  /*Post API call template*/
   async postData(url, bodyObj) {
     const response = await fetch(url, {
       method: "POST",
@@ -84,7 +89,7 @@ export default class VisualisationContent extends React.Component {
     return body;
   }
 
-  // GET METHOD CALL
+  /* Get API call template */
   async callBackendAPI(url) {
     const response = await fetch(url);
     const body = await response.json();
@@ -94,24 +99,105 @@ export default class VisualisationContent extends React.Component {
     return body;
   }
 
+  /* Change the current page, triggered when click "next" or "back" button */
+  // TODO: need to edit this to account for "rec" page
   navPageHandler(value) {
     let inputSet = {
       currentPage: value
     }
     if (value === "selection") {
+      // Reset dataset var
       inputSet.selectedDataset = null;
+      inputSet.selectedDatasetEntities = [];
+      // Reset chart var
       inputSet.selectedChartType = null;
+      // Reset rec var
+      inputSet.selectedEntity = null;
+      inputSet.selectedAnalysis = null;
+      inputSet.selectedEntityVariableData = null;
     }
     console.log(inputSet)
     this.setState(inputSet);
   }
 
+  /*  Handler triggered when a dataset is selected
+      - Update state "selectedDataset"
+      - Call API to get entities of the selected dataset
+      - Update state "selectedDatasetEntities"
+  */
   selectDatasetHandler(value) {
-    this.setState({ selectedDataset: value });
+    this.setState(
+      { selectedDataset: value },
+      () => {
+        if (this.state.selectedDataset) {
+          this.postData(
+            "/get_entities_from_dataset_api", 
+            {dataset: this.state.selectedDataset}
+          ).then(res => {
+            if (res.status === 200 && res.data) {
+              this.setState({ selectedDatasetEntities : res.data })
+            }
+          }) 
+        }
+      }
+    )
   }
 
+  /*  Handler triggered when a Chart Type is selected
+      - Update state "selectedChartType"
+      - Reset state "selectedEntity"
+  */
+ // TODO: might need to clear the selection option here?
   selectChartTypeHandler(value) {
-    this.setState({ selectedChartType: value });
+    if (value) { 
+      this.setState({ 
+        selectedChartType: value, 
+        selectedEntity: null, 
+        selectedEntityVariableData: null, 
+        selectedAnalysis: null,
+        selectedNextPage: "chart",
+      });
+    } else {
+      this.setState({ 
+        selectedChartType: null,
+        selectedNextPage: null,
+      });
+    }
+  }
+
+  /*  Handler triggered when an Entity Analysis is selected 
+      - Update both "selectedEntity" and "selectedAnalysis" in state
+      - Call API to get the analysis data based on the selection
+      - Update state of the data
+  */
+  selectEntityHandler(value, analysis) {
+    console.log("selectEntityHandler")
+    if (value && analysis) {
+      this.setState(
+        { selectedEntity: value,
+          selectedAnalysis: analysis,
+          selectedNextPage: "rec",
+        },
+        () => {
+          this.postData("/get_prebuilt_analysis", {
+            dataset: this.state.selectedDataset,
+            entity: this.state.selectedEntity,
+            analysis: this.state.selectedAnalysis
+          }).then (res => {
+            console.log(res)
+            if (res.headers && res.values) {
+              this.setState({ selectedEntityVariableData: res})
+            }
+          })
+        }
+      );
+    }else {
+      this.setState({ 
+        selectedEntity: null,
+        selectedAnalysis: null,
+        selectedNextPage: null,
+      })
+    }
   }
 
   render() {
@@ -125,24 +211,49 @@ export default class VisualisationContent extends React.Component {
                 />
             );
         }
+        /* Go to selection page */
         if (this.state.currentPage === "selection") {
           return (
             <VisSelection
+              // Page navigation handler
               handler={this.navPageHandler}
+              // Dataset
               datasetNames={this.state.datasetNames}
-              chartTypes={this.state.chartTypes}
               selectDatasetHandler={this.selectDatasetHandler}
+              // Chart
+              chartTypes={this.state.chartTypes}
               selectChartTypeHandler={this.selectChartTypeHandler}
+              // Entity
+              selectedDatasetEntities={this.state.selectedDatasetEntities}
+              selectEntityHandler={this.selectEntityHandler}
+              // Check "Enable/Disable" Next Button
               selectedDataset={this.state.selectedDataset}
               selectedChartType={this.state.selectedChartType}
+              selectedAnalysis={this.state.selectedAnalysis}
+              selectedEntity={this.state.selectedEntity}
+              selectedEntityVariableData={this.state.selectedEntityVariableData}
+              // Page navigation Next Button
+              selectedNextPage={this.state.selectedNextPage}
             />
           );
+        /* Go to chart page */
         } else if (this.state.currentPage === "chart") {
           return (
             <VisChart
               handler={this.navPageHandler}
               dataset={this.state.selectedDataset}
               chart={this.state.selectedChartType}
+            />
+          );
+        /* Go to rec page */
+        } else if (this.state.currentPage === "rec") {
+          console.log("Go to rec page")
+          return (
+            <VisRecAnalysis 
+              selectedEntity={this.state.selectedEntity}
+              selectedDataset={this.state.selectedDataset}
+              selectedAnalysis={this.state.selectedAnalysis}
+              selectedEntityVariableData={this.state.selectedEntityVariableData}
             />
           );
         }
