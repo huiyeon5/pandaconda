@@ -6,6 +6,7 @@ from collections import Counter
 from math import sqrt
 from Levenshtein import distance
 import dateparser
+import math
 
 def word2vec(word):
     # count the characters in word
@@ -34,7 +35,10 @@ def suggest_headers(path, valid_headers, header_types):
     print(valid_headers, header_types)
     df = pd.read_csv(path) #df -> dataframe that loads the uploaded csv
     df.columns = df.columns.str.replace(' ', '_')
+    df = df.applymap(str)
     columns = list(df.columns) #columns -> list of headers of the uploaded csv
+
+    print("Done converting to string the df")
 
     returned_list = [] #list that will be returned to front end as json
     threshold = -0.5 #threshold used for the suggesting of headers based on their cosine similarity value
@@ -55,6 +59,7 @@ def suggest_headers(path, valid_headers, header_types):
     
     #iterate through the dataframe
     for index, row in df.iterrows():
+        print("INDEX IS " + str(index))
         for header in columns: #for each header name in the dataframe
             data = row[header] #get the value of the current row with specific column
             try:
@@ -77,7 +82,10 @@ def suggest_headers(path, valid_headers, header_types):
                         temp_header_dict['int'] = 1
                     header_dict[header] = temp_header_dict
             except: #if it's not an integer then it's a date
-                data_type = dateparser.parse(data)
+                if data != 'NaN':
+                    data_type = dateparser.parse(data)
+                else:
+                    data_type = None
 
                 if data_type is None:
                     temp_header_dict = header_dict[header]
@@ -96,6 +104,8 @@ def suggest_headers(path, valid_headers, header_types):
                         temp_header_dict['date'] = 1
                     header_dict[header] = temp_header_dict
 
+    print("Done checking for data type")
+
     for header in columns:
         temp_dict = header_dict[header] #loop through the columns stored as keys in header_dict
         for k, v in temp_dict.items(): #loop through the key value pairs for the dictionary stored in a header name
@@ -106,6 +116,8 @@ def suggest_headers(path, valid_headers, header_types):
         else:
             checked_headers[header] = None
     
+    print("Checking for column headers")
+
     #if index is present and must be dropped
     if columns[0] == 'Unnamed:_0' and df[columns[0]].dtype == 'int64':
         returned_list.append({'col_header' : columns[0], 'imported_as': valid_headers.sort(), 'drop' : True, 'cosine' : 'NA'})
@@ -269,6 +281,9 @@ def suggest_headers(path, valid_headers, header_types):
                 "headers" : return_header_types,
                 "data" : df.to_json(orient='records')
             })
+
+    print("Done checking headers")
+
     return json.dumps({'data':returned_list, "status":400})
 
     def get_header_type(header):

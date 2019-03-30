@@ -10,6 +10,7 @@ import datetime
 import pandas as pd
 import re
 import dateparser
+import math
 
 # local imports
 from config import app_config
@@ -465,7 +466,7 @@ def create_app(config_name):
 
         for column in date_columns:
             if column in df.columns:
-                df[column] = [dateparser.parse(x) for x in df[column]]
+                df[column] = [dateparser.parse(x) for x in df[column] if x != 'NaN']
 
         df.to_sql(name = filename[0:len(filename)-4]+"_"+str(current_user.id), con=db.engine, index=False)
 
