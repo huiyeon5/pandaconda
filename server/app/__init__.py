@@ -206,7 +206,7 @@ def create_app(config_name):
                 for row in valid:
                     valid_headers.append(row.header_name)
                     header_types[row.header_name] = row.data_type
-                value = json.loads(check_headers.suggest_headers('app/uploads/' + filename, valid_headers, header_types))
+                value = json.loads(check_headers.suggest_headers('app/uploads/' + filename, valid_headers, header_types, filename))
 
                 if value['status'] == 400:
                     session['editData'] = value
@@ -228,7 +228,7 @@ def create_app(config_name):
                             if(v == 'int'):
                                 header = header + "INT"
                             elif(v == 'string'):
-                                header = header + "VARCHAR(MAX)"
+                                header = header + "TEXT"
                             elif(v == 'date'):
                                 header = header + "DATETIME"
                                 dateIndex.append(d)
@@ -456,17 +456,29 @@ def create_app(config_name):
         df.rename(columns=rename_dict, inplace=True)
 
         sql = f'SELECT header_name FROM group_valid_headers WHERE data_type="date"'
-        result = db.engine.execute(text(sql))
+        result_date = db.engine.execute(text(sql))
+
+        sql2 = f'SELECT header_name FROM group_valid_headers WHERE data_type="float"'
+        result_float = db.engine.execute(text(sql2))
 
         #HOW TO QUERY WHICH ARE THE DATE COLUMNS INSTEAD?
         date_columns = []
 
-        for row in result:
+        for row in result_date:
             date_columns.append(row['header_name'])
 
         for column in date_columns:
             if column in df.columns:
                 df[column] = [dateparser.parse(x) for x in df[column] if x != 'NaN']
+
+        float_columns = []
+
+        for row in result_float:
+            float_columns.append(row['header_name'])
+
+        for column in float_columns:
+            if column in df.columns:
+                df[column] = [round(x,2) for x in df[column]]
 
         df.to_sql(name = filename[0:len(filename)-4]+"_"+str(current_user.id), con=db.engine, index=False)
 

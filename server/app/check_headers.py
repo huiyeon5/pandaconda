@@ -7,6 +7,7 @@ from math import sqrt
 from Levenshtein import distance
 import dateparser
 import math
+import numpy as np
 
 def word2vec(word):
     # count the characters in word
@@ -31,7 +32,7 @@ def clean_headers(headers):
     return re.sub('[^a-zA-Z]+', '', headers)
 
 
-def suggest_headers(path, valid_headers, header_types):
+def suggest_headers(path, valid_headers, header_types, filename):
     print(valid_headers, header_types)
     df = pd.read_csv(path) #df -> dataframe that loads the uploaded csv
     df.columns = df.columns.str.replace(' ', '_')
@@ -63,15 +64,16 @@ def suggest_headers(path, valid_headers, header_types):
         for header in columns: #for each header name in the dataframe
             data = row[header] #get the value of the current row with specific column
             try:
-                temp_data = int(data) #try if data can be converted to an int
+                temp_data = float(data) #try if data can be converted to an int
                 data_str = str(data) #data is an integer so convert into a string
                 if '.' in data_str: #does data have a decimal?
                     temp_header_dict = header_dict[header] #get the dictionary for the current column
-                    if 'double' in temp_header_dict: #if double is part of the dict
-                        value = temp_header_dict['double'] + 1 #add one more into the double count
-                        temp_header_dict['double'] = value #set the value to the key double again
+                    df.at[index, header] = round(float(data),2)
+                    if 'float' in temp_header_dict: #if double is part of the dict
+                        value = temp_header_dict['float'] + 1 #add one more into the double count
+                        temp_header_dict['float'] = value #set the value to the key double again
                     else:
-                        temp_header_dict['double'] = 1 #if double is not yet a key, set value to 1
+                        temp_header_dict['float'] = 1 #if double is not yet a key, set value to 1
                     header_dict[header] = temp_header_dict #set the dictionary value for the key of column name
                 else: #since there is no decimal it is an integer
                     temp_header_dict = header_dict[header]
@@ -82,6 +84,7 @@ def suggest_headers(path, valid_headers, header_types):
                         temp_header_dict['int'] = 1
                     header_dict[header] = temp_header_dict
             except: #if it's not an integer then it's a date
+                print("EXCEPT")
                 if data != 'NaN':
                     data_type = dateparser.parse(data)
                 else:
@@ -104,7 +107,16 @@ def suggest_headers(path, valid_headers, header_types):
                         temp_header_dict['date'] = 1
                     header_dict[header] = temp_header_dict
 
+                # if 'text' in temp_header_dict:
+                #     value = temp_header_dict['text'] + 1
+                #     temp_header_dict['text'] = value
+                # else:
+                #     temp_header_dict['text'] = 1
+                #     header_dict[header] = temp_header_dict
+
     print("Done checking for data type")
+
+    df = df.replace('nan', np.NaN)
 
     for header in columns:
         temp_dict = header_dict[header] #loop through the columns stored as keys in header_dict
@@ -283,6 +295,8 @@ def suggest_headers(path, valid_headers, header_types):
             })
 
     print("Done checking headers")
+
+    df.to_csv(filename, index=False)
 
     return json.dumps({'data':returned_list, "status":400})
 
