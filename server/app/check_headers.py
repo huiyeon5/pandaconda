@@ -7,6 +7,7 @@ from math import sqrt
 from Levenshtein import distance
 import dateparser
 import math
+import time
 
 def word2vec(word):
     # count the characters in word
