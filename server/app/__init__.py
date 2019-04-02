@@ -28,8 +28,7 @@ def create_app(config_name):
     app.config.from_pyfile('config.cfg', silent=True)
     # app.config["CUSTOM_STATIC_PATH"] = "../../static"
 
-    blueprint = Blueprint(
-        'site', __name__, static_folder='../../static', template_folder='../../static')
+    blueprint = Blueprint('site', __name__, static_folder='../../static', template_folder='../../static')
     app.register_blueprint(blueprint)
 
     # Database Setup
@@ -214,7 +213,7 @@ def create_app(config_name):
                 else:
                     f = filename[0:len(filename) - 4]+ "_" +str(current_user.id)
                     has = UserData.query.filter_by(data_name=f).first()
-
+                    print(value)
                     if has is None:
                         header = "("
                         headerNoType ="("
@@ -227,7 +226,7 @@ def create_app(config_name):
                             headerOrder.append(k)
                             if(v == 'int'):
                                 header = header + "INT"
-                            elif(v == 'string'):
+                            elif(v == 'text'):
                                 header = header + "TEXT"
                             elif(v == 'date'):
                                 header = header + "DATETIME"
@@ -287,7 +286,7 @@ def create_app(config_name):
                 temp["id"] = f'dataset-name-{dd+1}'
                 temp["name"] = d.data_name
                 returnList.append(temp)
-                # print(returnList)
+                # # print(returnList)
             return jsonify({'datasetNames':returnList})
         else:
             return jsonify({'status':400})
@@ -307,14 +306,14 @@ def create_app(config_name):
     def get_headers_unique_values_api():
         if current_user.is_authenticated:      
             req = request.get_json()
-            # print("Request", req)
+            # # print("Request", req)
             dataset = req['dataset']
-            # print("DATASET::: ", dataset)
+            # # print("DATASET::: ", dataset)
             col = req['column']
-            # print("COLUMN::: ", col)
+            # # print("COLUMN::: ", col)
             sql_data = db.engine.execute(f'Select distinct {col} from {dataset} ORDER BY {col} ASC')
             result = []
-            # print("DATA::: ", sql_data)
+            # # print("DATA::: ", sql_data)
             for row in sql_data:
                 result.append(row[0])
             return jsonify({'status':200, 'data': result})
@@ -362,7 +361,7 @@ def create_app(config_name):
                 for f in filters:
                     if header_types[f['column']] == 'date':
                         val = fixDate(f['value'])
-                        # print(val)
+                        # # print(val)
                         conditions += f['column'] + " " + f['condition'] + " '" + str(val) + "' AND "
                     else:
                         conditions += f['column'] + " " + f['condition'] + " '" + f['value'] + "' AND "
@@ -404,7 +403,7 @@ def create_app(config_name):
     
     @app.route("/update_api")
     def update_api():
-        # print("here")
+        # # print("here")
         if 'editData' not in session or session['editData'] == None:
             return jsonify({"status":500})
         else:
@@ -485,7 +484,7 @@ def create_app(config_name):
         userData = UserData(data_name=filename[0:len(filename)-4]+"_"+str(current_user.id), user_id=current_user.id, upload_date=datetime.datetime.now())
         db.session.add(userData)
         db.session.commit()
-
+        os.remove(filepath)
         return jsonify({'status':200})
 
     @app.route('/view_data_api', methods=["GET"])

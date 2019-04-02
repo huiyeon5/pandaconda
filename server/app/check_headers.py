@@ -33,13 +33,13 @@ def clean_headers(headers):
 
 
 def suggest_headers(path, valid_headers, header_types, filename):
-    print(valid_headers, header_types)
+    # print(valid_headers, header_types)
     df = pd.read_csv(path) #df -> dataframe that loads the uploaded csv
     df.columns = df.columns.str.replace(' ', '_')
     df = df.applymap(str)
     columns = list(df.columns) #columns -> list of headers of the uploaded csv
 
-    print("Done converting to string the df")
+    # print("Done converting to string the df")
 
     returned_list = [] #list that will be returned to front end as json
     threshold = -0.5 #threshold used for the suggesting of headers based on their cosine similarity value
@@ -60,7 +60,8 @@ def suggest_headers(path, valid_headers, header_types, filename):
     
     #iterate through the dataframe
     for index, row in df.iterrows():
-        print("INDEX IS " + str(index))
+        # print("INDEX IS " + str(index))
+        date_count = {}
         for header in columns: #for each header name in the dataframe
             data = row[header] #get the value of the current row with specific column
             try:
@@ -84,11 +85,18 @@ def suggest_headers(path, valid_headers, header_types, filename):
                         temp_header_dict['int'] = 1
                     header_dict[header] = temp_header_dict
             except: #if it's not an integer then it's a date
-                print("EXCEPT")
+                data_type = None
+                # print("EXCEPT")
                 if data != 'NaN':
-                    data_type = dateparser.parse(data)
-                else:
-                    data_type = None
+                    chars = set(':/-,')
+                    if any((c in chars) for c in data):
+                        data_type = dateparser.parse(data)
+                        
+                        if header in date_count:
+                            value = date_count[header] + 1
+                            date_count[header] = value
+                        else:
+                            date_count[header] = 1
 
                 if data_type is None:
                     temp_header_dict = header_dict[header]
@@ -107,6 +115,11 @@ def suggest_headers(path, valid_headers, header_types, filename):
                         temp_header_dict['date'] = 1
                     header_dict[header] = temp_header_dict
 
+                if header in date_count:
+                    if date_count[header] == 10:
+                        columns.remove(header)
+
+
                 # if 'text' in temp_header_dict:
                 #     value = temp_header_dict['text'] + 1
                 #     temp_header_dict['text'] = value
@@ -114,7 +127,7 @@ def suggest_headers(path, valid_headers, header_types, filename):
                 #     temp_header_dict['text'] = 1
                 #     header_dict[header] = temp_header_dict
 
-    print("Done checking for data type")
+    # print("Done checking for data type")
 
     df = df.replace('nan', np.NaN)
 
@@ -128,10 +141,13 @@ def suggest_headers(path, valid_headers, header_types, filename):
         else:
             checked_headers[header] = None
     
-    print("Checking for column headers")
+    # print("Checking for column headers")
+
+    # print(df[columns[0]].dtype)
 
     #if index is present and must be dropped
-    if columns[0] == 'Unnamed:_0' and df[columns[0]].dtype == 'int64':
+    if columns[0] == 'Unnamed:_0':
+        # print("***Unnamed is present***")
         returned_list.append({'col_header' : columns[0], 'imported_as': valid_headers.sort(), 'drop' : True, 'cosine' : 'NA'})
         
         #loop through remaining headers
@@ -172,41 +188,43 @@ def suggest_headers(path, valid_headers, header_types, filename):
                 #header has cosine similarity score of 1.0 but they are not the same words, it's just that they are composed of the same letters.
                 
                 if len(ranked_headers) == 0 or len(ranked_headers[0]) == 0:
-                    if len(temp_valid_headers) == 0:
-                        return json.dumps({'data':None, "status":600})
-                    
-                    returned_list.append({'col_header' : column, 'imported_as': temp_valid_headers, 'drop' : False, 'cosine' : 'low'})
-                    return json.dumps({'data':returned_list, "status":400})
+                    returned_list.append({'col_header' : column, 'imported_as': valid_headers.sort(), 'drop' : True, 'cosine' : 'NA'})
 
-                if ranked_headers[0][1] == 1.0 and ranked_headers[0][0] != column:
-                    lev_ranked_headers = []
-                    for valid_header in temp_valid_headers:
-                        edit_distance = distance(column, valid_header)
-                        lev_ranked_headers.append([valid_header, 1/edit_distance])
-                    lev_ranked_headers = sorted(lev_ranked_headers, key = lambda x: (x[1], x[0]))
-                    #edit distance has a low score
-                    if lev_ranked_headers[0][1] < threshold:
+                    # if len(temp_valid_headers) == 0:
+                    #     return json.dumps({'data':None, "status":600})
+                    
+                    # returned_list.append({'col_header' : column, 'imported_as': temp_valid_headers, 'drop' : False, 'cosine' : 'low'})
+                    # return json.dumps({'data':returned_list, "status":400})
+                else:
+                    if ranked_headers[0][1] == 1.0 and ranked_headers[0][0] != column:
+                        lev_ranked_headers = []
+                        for valid_header in temp_valid_headers:
+                            edit_distance = distance(column, valid_header)
+                            lev_ranked_headers.append([valid_header, 1/edit_distance])
+                        lev_ranked_headers = sorted(lev_ranked_headers, key = lambda x: (x[1], x[0]))
+                        #edit distance has a low score
+                        if lev_ranked_headers[0][1] < threshold:
+                            toReturn = []
+                            for temp in lev_ranked_headers:
+                                toReturn.append(temp[0])
+                            returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'low'})
+                        else:
+                            toReturn = []
+                            for temp in lev_ranked_headers:
+                                toReturn.append(temp[0])
+                            returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'high'})                   
+                    #header has low cosine similarity score
+                    elif ranked_headers[0][1] < threshold:
                         toReturn = []
-                        for temp in lev_ranked_headers:
+                        for temp in ranked_headers:
                             toReturn.append(temp[0])
                         returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'low'})
+                    #header has relatively high cosine similarity score so display the highest suggested header
                     else:
                         toReturn = []
-                        for temp in lev_ranked_headers:
+                        for temp in ranked_headers:
                             toReturn.append(temp[0])
                         returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'high'})                   
-                #header has low cosine similarity score
-                elif ranked_headers[0][1] < threshold:
-                    toReturn = []
-                    for temp in ranked_headers:
-                        toReturn.append(temp[0])
-                    returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'low'})
-                #header has relatively high cosine similarity score so display the highest suggested header
-                else:
-                    toReturn = []
-                    for temp in ranked_headers:
-                        toReturn.append(temp[0])
-                    returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'high'})                   
         # if not all_correct:
         #     return json.dumps({
         #         "status": 200,
@@ -253,40 +271,41 @@ def suggest_headers(path, valid_headers, header_types, filename):
                 ranked_headers = sorted(ranked_headers, key = lambda x: (x[1], x[0]))
 
                 if len(ranked_headers) == 0 or len(ranked_headers[0]) == 0:
-                    if len(temp_valid_headers) == 0:
-                        return json.dumps({'data':None, "status":600})
+                    returned_list.append({'col_header' : column, 'imported_as': valid_headers.sort(), 'drop' : True, 'cosine' : 'NA'})
+                    # if len(temp_valid_headers) == 0:
+                    #     return json.dumps({'data':None, "status":600})
                     
-                    returned_list.append({'col_header' : column, 'imported_as': temp_valid_headers, 'drop' : False, 'cosine' : 'low'})
-                    return json.dumps({'data':returned_list, "status":400})
-                
-                #header has cosine similarity score of 1.0 but they are not the same words
-                if ranked_headers[0][1] == 1.0 and ranked_headers[0][0] != column:
-                    lev_ranked_headers = []
-                    for valid_header in temp_valid_headers:
-                        edit_distance = distance(column, valid_header)
-                        lev_ranked_headers.append([valid_header, 1/edit_distance])
-                    lev_ranked_headers = sorted(lev_ranked_headers, key = lambda x: (x[1], x[0]))
-                    #edit distance has a low score
-                    if lev_ranked_headers[0][1] < threshold:
+                    # returned_list.append({'col_header' : column, 'imported_as': temp_valid_headers, 'drop' : False, 'cosine' : 'low'})
+                    # return json.dumps({'data':returned_list, "status":400})
+                else:
+                    #header has cosine similarity score of 1.0 but they are not the same words
+                    if ranked_headers[0][1] == 1.0 and ranked_headers[0][0] != column:
+                        lev_ranked_headers = []
+                        for valid_header in temp_valid_headers:
+                            edit_distance = distance(column, valid_header)
+                            lev_ranked_headers.append([valid_header, 1/edit_distance])
+                        lev_ranked_headers = sorted(lev_ranked_headers, key = lambda x: (x[1], x[0]))
+                        #edit distance has a low score
+                        if lev_ranked_headers[0][1] < threshold:
+                            toReturn = []
+                            for temp in lev_ranked_headers:
+                                toReturn.append(temp[0])
+                            returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'low'})
+                        else:
+                            toReturn = []
+                            for temp in lev_ranked_headers:
+                                toReturn.append(temp[0])
+                            returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'high'})                   
+                    elif ranked_headers[0][1] < threshold:
                         toReturn = []
-                        for temp in lev_ranked_headers:
+                        for temp in ranked_headers:
                             toReturn.append(temp[0])
                         returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'low'})
                     else:
                         toReturn = []
-                        for temp in lev_ranked_headers:
+                        for temp in ranked_headers:
                             toReturn.append(temp[0])
-                        returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'high'})                   
-                elif ranked_headers[0][1] < threshold:
-                    toReturn = []
-                    for temp in ranked_headers:
-                        toReturn.append(temp[0])
-                    returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'low'})
-                else:
-                    toReturn = []
-                    for temp in ranked_headers:
-                        toReturn.append(temp[0])
-                    returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'high'}) 
+                        returned_list.append({'col_header' : column, 'imported_as': toReturn, 'drop' : False, 'cosine' : 'high'}) 
         if all_correct:
             return json.dumps({
                 "status" : 200,
@@ -294,7 +313,7 @@ def suggest_headers(path, valid_headers, header_types, filename):
                 "data" : df.to_json(orient='records')
             })
 
-    print("Done checking headers")
+    # print("Done checking headers")
 
     df.to_csv(filename, index=False)
 
