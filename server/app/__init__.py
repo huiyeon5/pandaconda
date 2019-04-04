@@ -625,7 +625,7 @@ def create_app(config_name):
         g_id = Group.query.filter_by(group_name=g_name).first()
         datas = req['data']
         for data in datas:
-            vh = GroupValidHeaders(group_id = g_id.id, header_name = data['header'], data_type = data['type'])
+            vh = GroupValidHeaders(group_id = g_id.id, header_name = data['header'], data_type = data['type'], isCategory=0)
             db.session.add(vh)
             db.session.commit()
 
@@ -650,6 +650,18 @@ def create_app(config_name):
         valid = GroupValidHeaders.query.filter_by(group_id=current_user.group_id).all()
         toRet = [[row.header_name, row.data_type] for row in valid]
         return jsonify({'data':toRet})
+
+    @app.route('/change_valid_header', methods=["POST"])
+    def change_valid_header():
+        req = request.get_json()
+        headers = req['headers']
+        for k,v in headers.items():
+            if v[0] is None or v[1] is None or v[2] is None:
+                return jsonify({'status': 400})
+            else: 
+                db.engine.execute(text(f"UPDATE `group_valid_headers` SET header_name='{v[1]}' where header_name='{v[0]}' AND group_id={current_user.group_id} AND data_type='{v[2]}'"))
+
+        return jsonify({'status':200})
 
     @app.route('/get_num_group_members')
     def get_num_group_members():
