@@ -468,6 +468,7 @@ def create_app(config_name):
 
         for column in date_columns:
             if column in df.columns:
+                df[column] = df[column].astype(str)
                 df[column] = [dateparser.parse(x) for x in df[column] if x != 'NaN']
 
         float_columns = []
@@ -484,7 +485,7 @@ def create_app(config_name):
         userData = UserData(data_name=filename[0:len(filename)-4]+"_"+str(current_user.id), user_id=current_user.id, upload_date=datetime.datetime.now())
         db.session.add(userData)
         db.session.commit()
-        os.remove(filepath)
+        os.remove(filePath)
         return jsonify({'status':200})
 
     @app.route('/view_data_api', methods=["GET"])
