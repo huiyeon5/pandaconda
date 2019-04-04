@@ -250,6 +250,7 @@ export default class VisualisationContent extends React.Component {
           console.log("Go to rec page")
           return (
             <VisRecAnalysis 
+              handler={this.navPageHandler}
               selectedEntity={this.state.selectedEntity}
               selectedDataset={this.state.selectedDataset}
               selectedAnalysis={this.state.selectedAnalysis}

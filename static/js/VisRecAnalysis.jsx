@@ -2,6 +2,7 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import Plot from "react-plotly.js";
 import VisRecAnalysisItem from "./VisRecAnalysisItem";
+import VisNavBackButton from "./VisNavBackButton";
 
 export default class VisRecAnalysis extends React.Component {
   constructor(props) {
@@ -32,9 +33,17 @@ export default class VisRecAnalysis extends React.Component {
     }
     console.log(visRecAnalysisComponents)
     return (
-      <div className="container-fluid">
-        <div className="row">
-          {visRecAnalysisComponents.map(component => component)}
+      <div style={{display: `flex`, flexDirection:`column`}}>
+        <div style={{display: `flex`, justifyContent: `flex-start`}}>
+          <button style={{marginLeft: `15px`}} onClick={() => this.props.handler("selection")}>
+            Back
+          </button>
+          <div style={{marginLeft: `370px`, fontSize: `25px`, fontWeight: `bolder`, color: `#ff7f50`}}>RECOMMENDED ANALYSIS</div>
+        </div>
+        <div className="container-fluid">
+          <div className="row">
+            {visRecAnalysisComponents.map(component => component)}
+          </div>
         </div>
       </div>
     );

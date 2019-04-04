@@ -9,10 +9,10 @@ export default class VisRecAnalysisItem extends React.Component {
 
   render() {
     return (
-      <div class="col-sm-6 py-2">
-        <div class="card h-100 text-center">
-          <div class="card-header text-white font-weight-bold bg-warning" style={{fontSize: `20px`}}>Top {this.props.xTitle} by {this.props.yTitle} (Limit 10)</div>
-          <div class="card-body">
+      <div className="col-sm-6 py-2">
+        <div className="card h-100 text-center">
+          <div className="card-header text-white font-weight-bold bg-warning" style={{fontSize: `20px`}}>Top {this.props.xTitle} by {this.props.yTitle} (Limit 10)</div>
+          <div className="card-body">
             <Plot 
               data={[{type: 'bar', x: this.props.xAxis, y: this.props.yAxis, marker: { color: "#ff7f50" }}]} 
               layout={{
@@ -20,7 +20,7 @@ export default class VisRecAnalysisItem extends React.Component {
                 width: 530, height: 400,
               }} 
             />
-            <p class="card-text"><small class="text-muted font-italic">Dataset Name  :  {this.props.selectedDataset}</small></p>
+            <p className="card-text"><small className="text-muted font-italic">Dataset Name  :  {this.props.selectedDataset}</small></p>
           </div>
         </div>
       </div>
