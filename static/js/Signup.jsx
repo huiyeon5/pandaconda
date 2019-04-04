@@ -39,10 +39,12 @@ export default class Signup extends React.Component {
       password === ""
     ) {
       alert("You have a blank field.");
+      return false;
     }
 
     if (!email.includes("@")) {
       alert("Please enter a valid email.")
+      return false;
     }
 
     // if (password.length < 8) {
@@ -63,20 +65,22 @@ export default class Signup extends React.Component {
   handleSignup(e) {
     var obj = this.checkForm();
     //checking for valid email & password
-    console.log(obj);
-    this.postData("/register_api", obj)
-      .then(res => {
-        if (res["status"] === 400) {
-          alert("You have entered an invalid username or password");
-        } else {
-          console.log(res);
-          window.location = "/";
-        }
-        // }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    if(obj !== false) {
+        console.log(obj);
+        this.postData("/register_api", obj)
+          .then(res => {
+            if (res["status"] === 400) {
+              alert("You have entered an invalid username or password");
+            } else {
+              console.log(res);
+              window.location = "/";
+            }
+            // }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+    }
   }
   async postData(url, bodyObj) {
     console.log(JSON.stringify(bodyObj));
