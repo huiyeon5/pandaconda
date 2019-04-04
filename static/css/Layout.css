@@ -143,6 +143,5 @@ li a:active {
 
 .logout-align-right{
   display:flex;
-  align-content: right;
-  justify-content: right;
+  justify-content: flex-end;
 }
