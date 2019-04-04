@@ -16,6 +16,7 @@ export default class EditTable extends React.Component {
     this.callBackendAPI = this.callBackendAPI.bind(this);
     this.result = this.result.bind(this);
     this.postData = this.postData.bind(this);
+    this.handler = this.handler.bind(this);
   }
 
   togglePopup() {
@@ -147,6 +148,11 @@ export default class EditTable extends React.Component {
     }
   }
 
+  handler(e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
   result() {
     var obj = {};
 
@@ -161,6 +167,10 @@ export default class EditTable extends React.Component {
             }
         */
 
+    
+    document.querySelector('.grey').style.display = 'block';
+    document.querySelector('.spinner').style.display = 'block';
+    document.addEventListener("click",handler,true);
     var i;
     var totalDataRows = this.state.obj.data;
 
@@ -192,7 +202,13 @@ export default class EditTable extends React.Component {
     this.postData("/finalize_headers_api", obj)
       .then(res => {
         if (res["status"] === 400) {
+            document.querySelector('.grey').style.display = 'none';
+            document.querySelector('.spinner').style.display = 'none';
+            document.removeEventListener("click",handler);
         } else {
+            document.querySelector('.grey').style.display = 'none';
+            document.querySelector('.spinner').style.display = 'none';
+            document.removeEventListener("click",handler);
           alert("Your Data has been successfully uploaded!")
           window.location = "/";
         }
@@ -225,6 +241,14 @@ export default class EditTable extends React.Component {
   render() {
     return (
       <div>
+          <div class="grey"></div>
+            <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
         <div className="align-right-pc">
           <button onClick={this.togglePopup.bind(this)}>Show Data</button>
         </div>

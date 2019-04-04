@@ -45,24 +45,46 @@
   <div class="align-right-pc">
     <button class="upload-btn-pc" onclick="upload()">Upload</button>
   </div>
+
+  <div class="grey"></div>
+  <div class="spinner">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
+  </div>
 <script>
   var files = [];
+  
+
+    function handler(e){
+        e.stopPropagation();
+        e.preventDefault();
+    }
 
   function upload() {
     var formData = new FormData();
     formData.append("file", files[0]);
+    document.querySelector('.grey').style.display = 'block';
+    document.querySelector('.spinner').style.display = 'block';
+    document.addEventListener("click",handler,true);
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
-      var data = JSON.parse(this.responseText);
-      if (data["status"] == 200) {
-        alert("Data has been successfully uploaded!");
-        window.location = "/visualisation";
-      } else {
-        alert(
-          "Data headers are not correct, please correct them in the next page"
-        );
-        window.location = "/upload/edit_table";
-      }
+        var data = JSON.parse(this.responseText);
+        if (data["status"] == 200) {
+            document.querySelector('.grey').style.display = 'none';
+            document.querySelector('.spinner').style.display = 'none';
+            document.removeEventListener("click",handler);
+            alert("Data has been successfully uploaded!");
+            window.location = "/visualisation";
+        } else {
+            document.querySelector('.grey').style.display = 'none';
+            document.querySelector('.spinner').style.display = 'none';
+            document.removeEventListener("click",handler);
+            alert("Data headers are not correct, please correct them in the next page");
+            window.location = "/upload/edit_table";
+        }
     };
 
     xhr.open("post", "/upload_api");
