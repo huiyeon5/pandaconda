@@ -625,7 +625,12 @@ def create_app(config_name):
         g_id = Group.query.filter_by(group_name=g_name).first()
         datas = req['data']
         for data in datas:
-            vh = GroupValidHeaders(group_id = g_id.id, header_name = data['header'], data_type = data['type'], isCategory=0)
+            head = data['header']
+            if head.lower() == 'site_name' or head.lower() == 'product_name' or head.lower() == 'customer':
+                vh = GroupValidHeaders(group_id = g_id.id, header_name = data['header'], data_type = data['type'], isCategory=1)
+            else:
+                vh = GroupValidHeaders(group_id = g_id.id, header_name = data['header'], data_type = data['type'], isCategory=0)
+
             db.session.add(vh)
             db.session.commit()
 
