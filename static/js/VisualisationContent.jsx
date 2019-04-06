@@ -38,11 +38,6 @@ export default class VisualisationContent extends React.Component {
           id: "bar",
           mode: "",
           name: "Bar Chart & Top K Analysis"
-        },
-        {
-          id: "scatter-chart",
-          mode: "markers",
-          name: "Scatter Plot"
         }
       ],
       
@@ -243,6 +238,7 @@ export default class VisualisationContent extends React.Component {
               handler={this.navPageHandler}
               dataset={this.state.selectedDataset}
               chart={this.state.selectedChartType}
+              selectedDatasetEntities={this.state.selectedDatasetEntities}
             />
           );
         /* Go to rec page */

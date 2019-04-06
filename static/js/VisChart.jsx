@@ -23,12 +23,9 @@ export default class VisChart extends React.Component {
       alreadyUpdate: false,
       showSaveName:false
     };
-    this.updateSelectedAggregate = this.updateSelectedAggregate.bind(this);
     this.updateSelectedFilter = this.updateSelectedFilter.bind(this);
     this.addFilterObject = this.addFilterObject.bind(this);
-    this.updateSpecificFilterObject = this.updateSpecificFilterObject.bind(
-      this
-    );
+    this.updateSpecificFilterObject = this.updateSpecificFilterObject.bind(this);
     this.toggleTopK = this.toggleTopK.bind(this);
     this.updateTopKSort = this.updateTopKSort.bind(this);
     this.updateTopKLimit = this.updateTopKLimit.bind(this);
@@ -43,7 +40,6 @@ export default class VisChart extends React.Component {
   }
 
   componentDidMount() {
-      console.log("mount")
     if (this.props.dataset) {
       this.postData("/get_headers_api", { selectedData: this.props.dataset })
         .then(res => {
@@ -98,9 +94,9 @@ export default class VisChart extends React.Component {
     return body;
   }
 
-  runQuery(selectedXAxis, selectedYAxis) {
+  runQuery(selectedXAxis, selectedYAxis, selectedAggregate) {
     this.setState(
-      {xaxis: selectedXAxis, yaxis: selectedYAxis},
+      {xaxis: selectedXAxis, yaxis: selectedYAxis, aggregate: selectedAggregate},
       () => {
         if(localStorage.getItem('viz') === null) {
           if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
@@ -221,10 +217,6 @@ export default class VisChart extends React.Component {
     }
   }
 
-  updateSelectedAggregate(value) {
-    this.setState({ aggregate: value });
-  }
-
   updateSelectedFilter(value) {
     this.setState(prevState => ({
       filter: [...prevState.filter, value]
@@ -330,12 +322,11 @@ export default class VisChart extends React.Component {
             <div className="vis-display-container" style={{ position: `relative` }}>
                 <VisChartSidebar
                     dataset={obj.selectedData}
-                    updateSelectedAggregate={this.updateSelectedAggregate}
-                    //   updateSelectedFilter={this.updateSelectedFilter}
                     uniqueValues={this.state.headersUniqueValues}
                     updateSpecificFilterObject={this.updateSpecificFilterObject}
                     addFilterObject={this.addFilterObject}
                     headers={this.state.headers}
+                    selectedDatasetEntities={this.props.selectedDatasetEntities}
                     runQuery={this.runQuery}
                     topKTog={this.state.topKTog}
                     plotlyType={obj.plotlyType}
@@ -357,8 +348,6 @@ export default class VisChart extends React.Component {
         <VisChartSidebar
           dataset={this.props.dataset}
           chart={this.props.chart}
-          updateSelectedAggregate={this.updateSelectedAggregate}
-          //   updateSelectedFilter={this.updateSelectedFilter}
           uniqueValues={this.state.headersUniqueValues}
           updateSpecificFilterObject={this.updateSpecificFilterObject}
           addFilterObject={this.addFilterObject}
@@ -370,9 +359,11 @@ export default class VisChart extends React.Component {
           updateTopKSort={this.updateTopKSort}
           updateTopKLimit={this.updateTopKLimit}
           removeFilterObjects={this.removeFilterObjects}
+          selectedDatasetEntities={this.props.selectedDatasetEntities}
         />
         <VisChartDisplay
           dataset={this.props.dataset}
+          aggregate={this.state.aggregate}
           plotlyType={this.props.chart.id}
           chartTitle={this.props.chart.chartName}
           mode={this.props.chart.mode}
@@ -381,7 +372,6 @@ export default class VisChart extends React.Component {
           yaxis={this.state.yaxis}
         />
         <VisNavBackButton handler={this.props.handler} />
-        {/* <VisNavNextButton handler={this.props.handler} /> */}
         <VisSaveButton onClick={this.showSaveViz} />
         {this.state.showSaveName ? (
             <div style={{position:`fixed`, top:`30%`, left:`50%`, transform:`translate(-50%, -50%)`, boxShadow:`0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)`, background:`white`, width: 500, height:250, padding:`10px 10px 0px`, borderRadius:20}}>

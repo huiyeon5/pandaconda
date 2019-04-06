@@ -22,9 +22,9 @@ class Visual extends React.Component {
               title: this.props.xtitle
           },
           yaxis: {
-            title: this.props.ytitle
+            title: this.props.aggregate + "(" + this.props.ytitle + ")"
           },
-          title: "Visualisation",
+          title: "Visualisation of " + this.props.aggregate + "(" +this.props.ytitle + ") by " + this.props.xtitle,
           autosize: true,
         }}
         useResizeHandler= {true}
