@@ -23,8 +23,6 @@ export default class VisChart extends React.Component {
       alreadyUpdate: false,
       showSaveName:false
     };
-    this.updateSelectedXAxis = this.updateSelectedXAxis.bind(this);
-    this.updateSelectedYAxis = this.updateSelectedYAxis.bind(this);
     this.updateSelectedAggregate = this.updateSelectedAggregate.bind(this);
     this.updateSelectedFilter = this.updateSelectedFilter.bind(this);
     this.addFilterObject = this.addFilterObject.bind(this);
@@ -100,27 +98,30 @@ export default class VisChart extends React.Component {
     return body;
   }
 
-  runQuery() {
-    if(localStorage.getItem('viz') === null) {
-        if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
-          var queryObj = {
-            selectedData: this.props.dataset,
-            headers: [this.state.xaxis, this.state.yaxis],
-            aggregate: this.state.aggregate,
-            filter: this.state.filter,
-            topKSort: this.state.topKSort,
-            topKLimit: this.state.topKLimit
-          };
-          this.postData("/viz_filter_api", queryObj).then(res => {
-            this.setState({ data: res.data });
-          });
+  runQuery(selectedXAxis, selectedYAxis) {
+    this.setState(
+      {xaxis: selectedXAxis, yaxis: selectedYAxis},
+      () => {
+        if(localStorage.getItem('viz') === null) {
+          if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
+            var queryObj = {
+              selectedData: this.props.dataset,
+              headers: [this.state.xaxis, this.state.yaxis],
+              aggregate: this.state.aggregate,
+              filter: this.state.filter,
+              topKSort: this.state.topKSort,
+              topKLimit: this.state.topKLimit
+            };
+            this.postData("/viz_filter_api", queryObj).then(res => {
+              this.setState({ data: res.data });
+            });
+          } else {
+            alert("Please make all the necessary Selections to run the charts!");
+          }
         } else {
-          alert("Please make all the necessary Selections to run the charts!");
-        }
-    } else {
-        var item = localStorage.getItem("viz")
-        var obj = JSON.parse(item)[1]
-        if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
+          var item = localStorage.getItem("viz")
+          var obj = JSON.parse(item)[1]
+          if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
             var queryObj = {
             selectedData: obj.selectedData,
             headers: [this.state.xaxis, this.state.yaxis],
@@ -133,10 +134,12 @@ export default class VisChart extends React.Component {
             this.postData("/viz_filter_api", queryObj).then(res => {
             this.setState({ data: res.data });
             });
-        } else {
-            alert("Please make all the necessary Selections to run the charts!");
+          } else {
+              alert("Please make all the necessary Selections to run the charts!");
+          }
         }
-    }
+      }
+    )
   }
 
   removeFilterObjects() {
@@ -216,14 +219,6 @@ export default class VisChart extends React.Component {
     }   else {
         alert("Please add the name!")
     }
-  }
-
-  updateSelectedXAxis(value) {
-    this.setState({ xaxis: value });
-  }
-
-  updateSelectedYAxis(value) {
-    this.setState({ yaxis: value });
   }
 
   updateSelectedAggregate(value) {
@@ -335,8 +330,6 @@ export default class VisChart extends React.Component {
             <div className="vis-display-container" style={{ position: `relative` }}>
                 <VisChartSidebar
                     dataset={obj.selectedData}
-                    updateSelectedXAxis={this.updateSelectedXAxis}
-                    updateSelectedYAxis={this.updateSelectedYAxis}
                     updateSelectedAggregate={this.updateSelectedAggregate}
                     //   updateSelectedFilter={this.updateSelectedFilter}
                     uniqueValues={this.state.headersUniqueValues}
@@ -349,8 +342,6 @@ export default class VisChart extends React.Component {
                     toggleTopK={this.toggleTopK}
                     updateTopKSort={this.updateTopKSort}
                     updateTopKLimit={this.updateTopKLimit}
-                    // alreadySelectedX={obj}
-                    // alreadySelectedY={obj}
                 />
                 <VisChartDisplay
                     dataset={obj.selectedData}
@@ -366,8 +357,6 @@ export default class VisChart extends React.Component {
         <VisChartSidebar
           dataset={this.props.dataset}
           chart={this.props.chart}
-          updateSelectedXAxis={this.updateSelectedXAxis}
-          updateSelectedYAxis={this.updateSelectedYAxis}
           updateSelectedAggregate={this.updateSelectedAggregate}
           //   updateSelectedFilter={this.updateSelectedFilter}
           uniqueValues={this.state.headersUniqueValues}

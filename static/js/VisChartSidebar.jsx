@@ -8,9 +8,13 @@ export default class VisChartSidebar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterChildren: []
+      filterChildren: [],
+      xaxis: null,
+      yaxis: null,
     };
     this.appendFilter = this.appendFilter.bind(this);
+    this.updateSelectedXAxis = this.updateSelectedXAxis.bind(this);
+    this.updateSelectedYAxis = this.updateSelectedYAxis.bind(this);
   }
 
   appendFilter() {
@@ -36,6 +40,14 @@ export default class VisChartSidebar extends React.Component {
     this.props.removeFilterObjects();
   }
 
+  updateSelectedXAxis(value) {
+    this.setState({ xaxis: value });
+  }
+
+  updateSelectedYAxis(value) {
+    this.setState({ yaxis: value });
+  }
+
   render() {
     return (
       <div className="vis-display-sidebar vis-card-grid-config">
@@ -44,12 +56,12 @@ export default class VisChartSidebar extends React.Component {
           <VisChartSidebarSelection
             selectionTitle="X-Axis: "
             dropdownValues={this.props.headers}
-            update={this.props.updateSelectedXAxis}
+            update={this.updateSelectedXAxis}
           />
           <VisChartSidebarSelection
             selectionTitle="Y-Axis: "
             dropdownValues={this.props.headers}
-            update={this.props.updateSelectedYAxis}
+            update={this.updateSelectedYAxis}
           />
           <VisChartSidebarSelection
             selectionTitle="Aggregate Method: "
@@ -93,7 +105,7 @@ export default class VisChartSidebar extends React.Component {
           </div>
           {this.state.filterChildren.map(filterChild => filterChild)}
         </div>
-        <VisChartSidebarButton onClick={this.props.runQuery} />
+        <VisChartSidebarButton onClick={() => this.props.runQuery(this.state.xaxis, this.state.yaxis)} />
       </div>
     );
   }
