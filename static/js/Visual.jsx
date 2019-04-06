@@ -12,7 +12,7 @@ class Visual extends React.Component {
             mode: this.props.mode,
             type: this.props.plotlyType,
             // mode: "lines+markers",
-            marker: { color: "red" }
+            marker: { color: "#ff7f50" }
           }
           //   {type: 'bar', x: [1, 2, 3], y: [2, 5, 3]},
         ]}
@@ -24,10 +24,11 @@ class Visual extends React.Component {
           yaxis: {
             title: this.props.ytitle
           },
-          width: 800,
-          height: 500,
-          title: "Visualisation"
+          title: "Visualisation",
+          autosize: true,
         }}
+        useResizeHandler= {true}
+        style= {{width: "100%", height: "100%"}}
       />
     );
   }
