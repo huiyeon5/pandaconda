@@ -170,7 +170,7 @@ export default class EditTable extends React.Component {
     
     document.querySelector('.grey').style.display = 'block';
     document.querySelector('.spinner').style.display = 'block';
-    document.addEventListener("click",handler,true);
+    document.addEventListener("click",this.handler,true);
     var i;
     var totalDataRows = this.state.obj.data;
 
@@ -204,11 +204,11 @@ export default class EditTable extends React.Component {
         if (res["status"] === 400) {
             document.querySelector('.grey').style.display = 'none';
             document.querySelector('.spinner').style.display = 'none';
-            document.removeEventListener("click",handler);
+            document.removeEventListener("click",this.handler);
         } else {
             document.querySelector('.grey').style.display = 'none';
             document.querySelector('.spinner').style.display = 'none';
-            document.removeEventListener("click",handler);
+            document.removeEventListener("click",this.handler);
           alert("Your Data has been successfully uploaded!")
           window.location = "/";
         }
