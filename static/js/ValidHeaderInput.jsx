@@ -15,8 +15,8 @@ class ValidHeaderInput extends React.Component {
                 <select className={`validheaderdatatype${this.props.num}`} onChange={(e) => this.props.updateDataValue(this.props.num,e.target.options[e.target.options.selectedIndex].value)}>
                     <option value="date">Date</option>
                     <option value="int">Integer</option>
-                    <option value="double">Float(Decimal Points</option>
-                    <option value="string">String (Text)</option>
+                    <option value="float">Float(Decimal Points</option>
+                    <option value="text">String (Text)</option>
                 </select>
             </div>
         )
