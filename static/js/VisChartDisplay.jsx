@@ -14,7 +14,8 @@ export default class VisChartDisplay extends React.Component {
         </div>
         {this.props.plotlyType ? (
           this.props.data ? (
-            <Visual
+            (Object.keys(this.props.data).length != 0) ? (
+              <Visual
               plotlyType={this.props.plotlyType}
               mode={this.props.mode}
               x={this.props.data.xaxis}
@@ -22,7 +23,8 @@ export default class VisChartDisplay extends React.Component {
               xtitle={this.props.xaxis}
               ytitle={this.props.yaxis}
               aggregate={this.props.aggregate}
-            />
+              />
+            ) : <div style={{ textAlign: "center", fontStyle: "italic", color: "gray" }}>No data fulfills the specified filter conditions</div>
           ) : null
         ) : null}
       </div>

@@ -54,12 +54,9 @@ export default class VisChartSidebar extends React.Component {
       var tempList = []
       for(let i = 0; i < this.props.headers.length; i++){
         if (!this.props.selectedDatasetEntities.includes(this.props.headers[i])) {
-          console.log("inside")
           tempList.push(this.props.headers[i])
         }
       }
-      console.log("tempList: ")
-      console.log(tempList)
       this.setState({nonCategoryHeaders: tempList}, () => {console.log("done update")})
     }
     return (

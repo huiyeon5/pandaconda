@@ -31,7 +31,7 @@ export default class VisualisationContent extends React.Component {
       chartTypes: [
         {
           id: "scatter",
-          mode: "lines",
+          mode: "lines+markers",
           name: "Line Chart"
         },
         {
@@ -199,11 +199,13 @@ export default class VisualisationContent extends React.Component {
     if(this.state.hasGroup) {
         if(localStorage.getItem('viz') !== null) {
             return (
-                <VisChart
-                  handler={this.navPageHandler}
-                  dataset={this.state.selectedDataset}
-                  chart={this.state.selectedChartType}
-                />
+              <VisChart
+                handler={this.navPageHandler}
+                dataset={this.state.selectedDataset}
+                chart={this.state.selectedChartType}
+                selectedDatasetEntities={this.state.selectedDatasetEntities}
+                selectDatasetHandler = {this.selectDatasetHandler}
+              />
             );
         }
         /* Go to selection page */

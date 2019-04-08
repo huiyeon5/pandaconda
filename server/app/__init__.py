@@ -417,7 +417,7 @@ def create_app(config_name):
             for row in returnSQL:
                 returnDict["xaxis"].append(str(row[0]))
                 returnDict["yaxis"].append(float(row[1]))
-            
+
             if len(returnDict["xaxis"]) == 0 or len(returnDict["yaxis"]) == 0:
                 return jsonify({'status':400, 'error': "Filters Invalid"})
             return jsonify({'data': returnDict, 'status': 200})
