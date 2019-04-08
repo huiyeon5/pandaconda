@@ -19,7 +19,7 @@ class Visual extends React.Component {
         layout={{
           xaxis: { 
               type: "category",
-              title: this.props.xtitle
+              title: (this.props.xtitle != "ActivityDate") ? this.props.xtitle : null
           },
           yaxis: {
             title: this.props.aggregate + "(" + this.props.ytitle + ")"
