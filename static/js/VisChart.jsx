@@ -98,9 +98,20 @@ export default class VisChart extends React.Component {
     this.setState(
       {xaxis: selectedXAxis, yaxis: selectedYAxis, aggregate: selectedAggregate},
       () => {
+        // ========== CHECK WHETHER ALL FILTERS HAVE BEEN SELECTED ==========
+        var all_filter_selected = true;
+        for (var i = 0; i < this.state.filter.length; i++) {
+          if (this.state.filter[i]["column"] && this.state.filter[i]["condition"] && this.state.filter[i]["value"]) {
+            continue;
+          }else {
+            all_filter_selected = false;
+            break;
+          }
+        }
+
         // ========== NO LOCAL STORAGE ==========
         if(localStorage.getItem('viz') === null) {
-          if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
+          if (this.state.xaxis && this.state.yaxis && this.state.aggregate && all_filter_selected) {
             var queryObj = {
               selectedData: this.props.dataset,
               headers: [this.state.xaxis, this.state.yaxis],
@@ -123,7 +134,7 @@ export default class VisChart extends React.Component {
           // ========== HAVE LOCAL STORAGE ==========
           var item = localStorage.getItem("viz")
           var obj = JSON.parse(item)[1]
-          if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
+          if (this.state.xaxis && this.state.yaxis && this.state.aggregate && all_filter_selected) {
             var queryObj = {
             selectedData: obj.selectedData,
             headers: [this.state.xaxis, this.state.yaxis],
