@@ -98,6 +98,7 @@ export default class VisChart extends React.Component {
     this.setState(
       {xaxis: selectedXAxis, yaxis: selectedYAxis, aggregate: selectedAggregate},
       () => {
+        // ========== NO LOCAL STORAGE ==========
         if(localStorage.getItem('viz') === null) {
           if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
             var queryObj = {
@@ -109,12 +110,17 @@ export default class VisChart extends React.Component {
               topKLimit: this.state.topKLimit
             };
             this.postData("/viz_filter_api", queryObj).then(res => {
-              this.setState({ data: res.data });
+              if (res.status == 200) {
+                this.setState({ data: res.data });
+              }else {
+                this.setState({ data: {} });
+              }
             });
           } else {
             alert("Please make all the necessary Selections to run the charts!");
           }
         } else {
+          // ========== HAVE LOCAL STORAGE ==========
           var item = localStorage.getItem("viz")
           var obj = JSON.parse(item)[1]
           if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
@@ -128,7 +134,12 @@ export default class VisChart extends React.Component {
             };
             // localStorage.removeItem("viz")
             this.postData("/viz_filter_api", queryObj).then(res => {
-            this.setState({ data: res.data });
+              if (res.status == 200) {
+                this.setState({ data: res.data });
+              }else {
+                this.setState({ data: {} });
+              }
+            
             });
           } else {
               alert("Please make all the necessary Selections to run the charts!");

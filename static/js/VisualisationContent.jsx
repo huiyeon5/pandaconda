@@ -197,6 +197,7 @@ export default class VisualisationContent extends React.Component {
 
   render() {
     if(this.state.hasGroup) {
+        // ========== HAVE LOCAL STORAGE ==========
         if(localStorage.getItem('viz') !== null) {
             return (
               <VisChart
@@ -208,6 +209,7 @@ export default class VisualisationContent extends React.Component {
               />
             );
         }
+        // ========== NO LOCAL STORAGE ==========
         /* Go to selection page */
         if (this.state.currentPage === "selection") {
           return (
