@@ -38,6 +38,7 @@ def suggest_headers(path, valid_headers, header_types, filename):
     df.columns = df.columns.str.replace(' ', '_')
     df = df.applymap(str)
     columns = list(df.columns) #columns -> list of headers of the uploaded csv
+    valid_headers = [x.lower() for x in valid_headers]
 
     # print("Done converting to string the df")
 
@@ -153,6 +154,7 @@ def suggest_headers(path, valid_headers, header_types, filename):
         #loop through remaining headers
         for i in range(1, len(columns)):
             column = columns[i]
+            column = column.lower()
 
             #if header is part of the valid list which is obtained from the database
             if column in valid_headers:
@@ -238,6 +240,7 @@ def suggest_headers(path, valid_headers, header_types, filename):
         return_header_types = {}
         for i in range(len(columns)):
             column = columns[i]
+            column = column.lower()
             #if header is part of the valid list
             if column in valid_headers:
                 imported_as = [column]
