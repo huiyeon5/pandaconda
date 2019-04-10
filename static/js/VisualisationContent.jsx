@@ -31,18 +31,13 @@ export default class VisualisationContent extends React.Component {
       chartTypes: [
         {
           id: "scatter",
-          mode: "lines",
+          mode: "lines+markers",
           name: "Line Chart"
         },
         {
           id: "bar",
           mode: "",
           name: "Bar Chart & Top K Analysis"
-        },
-        {
-          id: "scatter-chart",
-          mode: "markers",
-          name: "Scatter Plot"
         }
       ],
       
@@ -202,15 +197,19 @@ export default class VisualisationContent extends React.Component {
 
   render() {
     if(this.state.hasGroup) {
+        // ========== HAVE LOCAL STORAGE ==========
         if(localStorage.getItem('viz') !== null) {
             return (
-                <VisChart
-                  handler={this.navPageHandler}
-                  dataset={this.state.selectedDataset}
-                  chart={this.state.selectedChartType}
-                />
+              <VisChart
+                handler={this.navPageHandler}
+                dataset={this.state.selectedDataset}
+                chart={this.state.selectedChartType}
+                selectedDatasetEntities={this.state.selectedDatasetEntities}
+                selectDatasetHandler = {this.selectDatasetHandler}
+              />
             );
         }
+        // ========== NO LOCAL STORAGE ==========
         /* Go to selection page */
         if (this.state.currentPage === "selection") {
           return (
@@ -243,6 +242,7 @@ export default class VisualisationContent extends React.Component {
               handler={this.navPageHandler}
               dataset={this.state.selectedDataset}
               chart={this.state.selectedChartType}
+              selectedDatasetEntities={this.state.selectedDatasetEntities}
             />
           );
         /* Go to rec page */

@@ -356,20 +356,43 @@ def create_app(config_name):
             filters = req['filter']
             
             conditions = ""
+
+            adjusted_filters = {}
+            
+            for f in filters:
+                filter_key = f['column'] + f['condition']
+                if f['condition'] == "=" and (filter_key in adjusted_filters):
+                    adjusted_filters[filter_key]['value'].append(f['value'])
+                else:
+                    f['value'] = [f['value']]
+                    adjusted_filters[filter_key] = f
+            
             if len(filters) > 0:
                 conditions = "WHERE "
-                for f in filters:
-                    if header_types[f['column']] == 'date':
-                        val = fixDate(f['value'])
-                        # # print(val)
-                        conditions += f['column'] + " " + f['condition'] + " '" + str(val) + "' AND "
+                for key, f in adjusted_filters.items():
+                    print(f)
+                    if len(f['value']) == 1:
+                        condition_value = f['value'][0]
+                        if header_types[f['column']] == 'date':
+                            condition_date_value = fixDate(condition_value)
+                            conditions += f['column'] + " " + f['condition'] + " '" + str(condition_date_value) + "' AND "
+                        else:
+                            conditions += f['column'] + " " + f['condition'] + " '" + str(condition_value) + "' AND "
                     else:
-                        conditions += f['column'] + " " + f['condition'] + " '" + f['value'] + "' AND "
+                        or_condition_group = "("
+                        for condition_value in f['value']:
+                            if header_types[f['column']] == 'date':
+                                condition_date_value = fixDate(condition_value)
+                                or_condition_group += f['column'] + " " + f['condition'] + " '" + str(condition_date_value) + "' OR "
+                            else:
+                                or_condition_group += f['column'] + " " + f['condition'] + " '" + str(condition_value) + "' OR "
+                        or_condition_group = or_condition_group[0: len(or_condition_group) - 3]
+                        or_condition_group = or_condition_group + ") AND "
+                        conditions += or_condition_group
                 conditions = conditions[0: len(conditions) - 4]
             else:
                 conditions = ""
-
-
+            
             orderBy = ""
             if (req['topKSort'] is not None):
                 topKSort = sortConvert(req['topKSort'])
@@ -394,7 +417,7 @@ def create_app(config_name):
             for row in returnSQL:
                 returnDict["xaxis"].append(str(row[0]))
                 returnDict["yaxis"].append(float(row[1]))
-            
+
             if len(returnDict["xaxis"]) == 0 or len(returnDict["yaxis"]) == 0:
                 return jsonify({'status':400, 'error': "Filters Invalid"})
             return jsonify({'data': returnDict, 'status': 200})

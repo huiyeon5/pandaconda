@@ -23,12 +23,9 @@ export default class VisChart extends React.Component {
       alreadyUpdate: false,
       showSaveName:false
     };
-    this.updateSelectedAggregate = this.updateSelectedAggregate.bind(this);
     this.updateSelectedFilter = this.updateSelectedFilter.bind(this);
     this.addFilterObject = this.addFilterObject.bind(this);
-    this.updateSpecificFilterObject = this.updateSpecificFilterObject.bind(
-      this
-    );
+    this.updateSpecificFilterObject = this.updateSpecificFilterObject.bind(this);
     this.toggleTopK = this.toggleTopK.bind(this);
     this.updateTopKSort = this.updateTopKSort.bind(this);
     this.updateTopKLimit = this.updateTopKLimit.bind(this);
@@ -97,12 +94,24 @@ export default class VisChart extends React.Component {
     return body;
   }
 
-  runQuery(selectedXAxis, selectedYAxis) {
+  runQuery(selectedXAxis, selectedYAxis, selectedAggregate) {
     this.setState(
-      {xaxis: selectedXAxis, yaxis: selectedYAxis},
+      {xaxis: selectedXAxis, yaxis: selectedYAxis, aggregate: selectedAggregate},
       () => {
+        // ========== CHECK WHETHER ALL FILTERS HAVE BEEN SELECTED ==========
+        var all_filter_selected = true;
+        for (var i = 0; i < this.state.filter.length; i++) {
+          if (this.state.filter[i]["column"] && this.state.filter[i]["condition"] && this.state.filter[i]["value"]) {
+            continue;
+          }else {
+            all_filter_selected = false;
+            break;
+          }
+        }
+
+        // ========== NO LOCAL STORAGE ==========
         if(localStorage.getItem('viz') === null) {
-          if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
+          if (this.state.xaxis && this.state.yaxis && this.state.aggregate && all_filter_selected) {
             var queryObj = {
               selectedData: this.props.dataset,
               headers: [this.state.xaxis, this.state.yaxis],
@@ -112,15 +121,20 @@ export default class VisChart extends React.Component {
               topKLimit: this.state.topKLimit
             };
             this.postData("/viz_filter_api", queryObj).then(res => {
-              this.setState({ data: res.data });
+              if (res.status == 200) {
+                this.setState({ data: res.data });
+              }else {
+                this.setState({ data: {} });
+              }
             });
           } else {
             alert("Please make all the necessary Selections to run the charts!");
           }
         } else {
+          // ========== HAVE LOCAL STORAGE ==========
           var item = localStorage.getItem("viz")
           var obj = JSON.parse(item)[1]
-          if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
+          if (this.state.xaxis && this.state.yaxis && this.state.aggregate && all_filter_selected) {
             var queryObj = {
             selectedData: obj.selectedData,
             headers: [this.state.xaxis, this.state.yaxis],
@@ -131,7 +145,12 @@ export default class VisChart extends React.Component {
             };
             // localStorage.removeItem("viz")
             this.postData("/viz_filter_api", queryObj).then(res => {
-            this.setState({ data: res.data });
+              if (res.status == 200) {
+                this.setState({ data: res.data });
+              }else {
+                this.setState({ data: {} });
+              }
+            
             });
           } else {
               alert("Please make all the necessary Selections to run the charts!");
@@ -218,10 +237,6 @@ export default class VisChart extends React.Component {
     }   else {
         alert("Please add the name!")
     }
-  }
-
-  updateSelectedAggregate(value) {
-    this.setState({ aggregate: value });
   }
 
   updateSelectedFilter(value) {
@@ -344,12 +359,11 @@ export default class VisChart extends React.Component {
             <div className="vis-display-container" style={{ position: `relative` }}>
                 <VisChartSidebar
                     dataset={obj.selectedData}
-                    updateSelectedAggregate={this.updateSelectedAggregate}
-                    //   updateSelectedFilter={this.updateSelectedFilter}
                     uniqueValues={this.state.headersUniqueValues}
                     updateSpecificFilterObject={this.updateSpecificFilterObject}
                     addFilterObject={this.addFilterObject}
                     headers={this.state.headers}
+                    selectedDatasetEntities={this.props.selectedDatasetEntities}
                     runQuery={this.runQuery}
                     topKTog={this.state.topKTog}
                     plotlyType={obj.plotlyType}
@@ -377,8 +391,6 @@ export default class VisChart extends React.Component {
         <VisChartSidebar
           dataset={this.props.dataset}
           chart={this.props.chart}
-          updateSelectedAggregate={this.updateSelectedAggregate}
-          //   updateSelectedFilter={this.updateSelectedFilter}
           uniqueValues={this.state.headersUniqueValues}
           updateSpecificFilterObject={this.updateSpecificFilterObject}
           addFilterObject={this.addFilterObject}
@@ -390,9 +402,11 @@ export default class VisChart extends React.Component {
           updateTopKSort={this.updateTopKSort}
           updateTopKLimit={this.updateTopKLimit}
           removeFilterObjects={this.removeFilterObjects}
+          selectedDatasetEntities={this.props.selectedDatasetEntities}
         />
         <VisChartDisplay
           dataset={this.props.dataset}
+          aggregate={this.state.aggregate}
           plotlyType={this.props.chart.id}
           chartTitle={this.props.chart.chartName}
           mode={this.props.chart.mode}
@@ -401,7 +415,6 @@ export default class VisChart extends React.Component {
           yaxis={this.state.yaxis}
         />
         <VisNavBackButton handler={this.props.handler} />
-        {/* <VisNavNextButton handler={this.props.handler} /> */}
         <VisSaveButton onClick={this.showSaveViz} />
         {this.state.showSaveName ? (
             <div style={{position:`fixed`, top:`30%`, left:`50%`, transform:`translate(-50%, -50%)`, boxShadow:`0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)`, background:`white`, width: 500, height:250, padding:`10px 10px 0px`, borderRadius:20}}>
