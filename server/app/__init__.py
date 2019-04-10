@@ -649,7 +649,7 @@ def create_app(config_name):
         datas = req['data']
         for data in datas:
             head = data['header']
-            if head.lower() == 'site_name' or head.lower() == 'product_name' or head.lower() == 'customer':
+            if head.lower() == 'site_name' or head.lower() == 'product_name' or head.lower() == 'customer' or head.lower() == 'activitydate' or head.lower() == 'date':
                 vh = GroupValidHeaders(group_id = g_id.id, header_name = data['header'], data_type = data['type'], isCategory=1)
             else:
                 vh = GroupValidHeaders(group_id = g_id.id, header_name = data['header'], data_type = data['type'], isCategory=0)
@@ -773,7 +773,29 @@ def create_app(config_name):
 
         return jsonify({'headers': values, 'values':data})
         
+    @app.route('/add_new_valid_header', methods=["POST"])
+    def add_new_valid_header():
 
+        datas = request.get_json()
+        headers = datas['data']
+        valid = GroupValidHeaders.query.filter_by(group_id=current_user.group_id).all()
+        valid_headers = set([row.header_name for row in valid])
+        print(valid_headers)
+        for h in headers:
+            if h['header'] in valid_headers:
+                return jsonify({'status':400, 'header':h['header']})
+
+        for data in headers:
+            head = data['header']
+            if head.lower() == 'site_name' or head.lower() == 'product_name' or head.lower() == 'customer' or head.lower() == 'activitydate' or head.lower() == 'date':
+                vh = GroupValidHeaders(group_id = current_user.group_id, header_name = data['header'], data_type = data['type'], isCategory=1)
+            else:
+                vh = GroupValidHeaders(group_id = current_user.group_id, header_name = data['header'], data_type = data['type'], isCategory=0)
+
+            db.session.add(vh)
+            db.session.commit()
+
+        return jsonify({'status':200})
         
 
     
