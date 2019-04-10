@@ -34,11 +34,11 @@ export default class VisRecAnalysis extends React.Component {
     console.log(visRecAnalysisComponents)
     return (
       <div style={{display: `flex`, flexDirection:`column`}}>
-        <div style={{display: `flex`, justifyContent: `flex-start`}}>
-          <button style={{marginLeft: `15px`}} onClick={() => this.props.handler("selection")}>
+        <div style={{display: `flex`, justifyContent: `center`}}>
+          <button style={{marginLeft: `15px`, position:`absolute`, left:`0%`}} onClick={() => this.props.handler("selection")}>
             Back
           </button>
-          <div style={{marginLeft: `370px`, fontSize: `25px`, fontWeight: `bolder`, color: `#ff7f50`}}>RECOMMENDED ANALYSIS</div>
+          <div style={{fontSize:`30px`, fontWeight:`900`, textShadow:`rgb(255, 127, 80) 0.5px 1px 0.5px`, textTransform:`uppercase`, color: `#ff7f50`}}>RECOMMENDED ANALYSIS</div>
         </div>
         <div className="container-fluid">
           <div className="row">

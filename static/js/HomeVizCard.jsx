@@ -4,8 +4,8 @@ const HomeVizCard = ({ title, list,selectViz }) => (
   <div
     style={{
       background: `white`,
-      maxWidth: 600,
-      height: 300,
+      maxWidth: `50%`,
+      height: 600,
       overflowY: `scroll`,
       padding: 10,
       borderRadius: `5px`,
@@ -21,7 +21,8 @@ const HomeVizCard = ({ title, list,selectViz }) => (
         fontWeight: 900,
         textAlign: `center`,
         textTransform: `uppercase`,
-        textShadow: `1px 2px 1px rgba(128, 128, 128, 0.3)`
+        textShadow: `1px 2px 1px rgba(128, 128, 128, 0.3)`,
+        marginTop: `20px`,
       }}
     >
       {title}

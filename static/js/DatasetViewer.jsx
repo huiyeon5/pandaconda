@@ -40,7 +40,7 @@ class DatasetViewer extends React.Component {
         if(this.props.select) {
             return (
                 <div style={{background:`white`, maxWidth:`100%`, height:`100%`, overflowY:`scroll`, padding:10, borderRadius:`5px`, boxShadow:`0 4px 4px -2px gray`,gridColumn:`1/5`, zIndex:1000, gridRow:`2/3`}}>
-                    <h2 style={{marginBottom:0}}>{this.props.title}</h2>
+                    <h2 style={{marginBottom:0, fontSize:`25px`, fontWeight:`900`, textTransform:`uppercase`, color: `#ff7f50`}}>{this.props.title}</h2>
                     {this.props.select ? <h4 style={{fontSize:11, fontStyle:`italic`, marginTop:0}}>(Click on the dataset to push to group level)</h4> :null}
                     <div>
                         {this.props.data.map((d, i) => {
@@ -54,7 +54,7 @@ class DatasetViewer extends React.Component {
         } else {
             return (
                 <div style={{background:`white`, maxWidth:`100%`, height:`100%`, overflowY:`scroll`, padding:10, borderRadius:`5px`, boxShadow:`0 4px 4px -2px gray`, zIndex:1000, gridRow:`1/2`, gridColumn:`3/5`}}>
-                    <h2 style={{marginBottom:0}}>{this.props.title}</h2>
+                    <h2 style={{marginBottom:0, fontSize:`25px`, fontWeight:`900`, textTransform:`uppercase`, color: `#ff7f50`}}>{this.props.title}</h2>
                     <div>
                         {this.props.data.map((d, i) => {
                             return (

@@ -9,7 +9,7 @@ export default class VisSaveButton extends React.Component {
   render() {
     return (
       <button
-        style={{width: `175px`, position:`absolute`, top:`95%`, left:`65%`, transform:`translate(-50%, -50%)`, display:`flex`, justifyContent:`center`, alignItems:`center`}}
+        style={{width: `350px`, position:`absolute`, top:`95%`, left:`65%`, transform:`translate(-50%, -50%)`, display:`flex`, justifyContent:`center`, alignItems:`center`}}
         onClick={this.props.onClick}
       >
         Save Visualisation

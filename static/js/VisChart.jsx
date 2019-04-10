@@ -402,14 +402,14 @@ export default class VisChart extends React.Component {
                 <VisSaveButton onClick={this.showSaveViz} />
                 {this.state.showSaveName ? (
                     <div style={{position:`fixed`, top:`30%`, left:`50%`, transform:`translate(-50%, -50%)`, boxShadow:`0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)`, background:`white`, width: 500, height:250, padding:`10px 10px 0px`, borderRadius:20}}>
-                        <h3>Save Visualization</h3>
-                        <div style={{position:`absolute`, top:`50%`, left:`50%`, transform:`translate(-50%, -50%)`, width:`60%`}}>
+                        <h3 style={{textAlign: `center`, marginTop:`27px`, fontSize:`25px`, fontWeight:`900`, textShadow:`1px 2px 1px rgba(128, 128, 128, 0.3)`, textTransform:`uppercase`, marginRight:`35px`}}>Save Visualization</h3>
+                        <div style={{position:`absolute`, top:`45%`, left:`50%`, transform:`translate(-50%, -50%)`, width:`60%`}}>
                             <label htmlFor="savevizname">Enter the Name of the Visualization: </label>
                             <input type="text" name="savevizname" id="savevizname" onChange={(e) => this.handleSaveVizName(e.target.value)}/>
                         </div>
-                        <div style={{position:`absolute`, bottom:10, right:10}}>
-                            <button style={{backgroundColor:`lightgreen`}} onClick={this.saveViz}>Save</button>
-                            <button style={{backgroundColor:`red`}} onClick={this.closeSaveViz}>Cancel</button>
+                        <div style={{position:`absolute`, bottom:`44px`, right:`140px`}}>
+                            <button style={{backgroundColor:`#fecb2f`, textAlign:`center`}} onClick={this.saveViz}>Save</button>
+                            <button style={{backgroundColor:`lightgray`, textAlign:`center`}} onClick={this.closeSaveViz}>Cancel</button>
                         </div>
                     </div>
                 ): null}
@@ -448,14 +448,14 @@ export default class VisChart extends React.Component {
         <VisSaveButton onClick={this.showSaveViz} />
         {this.state.showSaveName ? (
             <div style={{position:`fixed`, top:`30%`, left:`50%`, transform:`translate(-50%, -50%)`, boxShadow:`0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)`, background:`white`, width: 500, height:250, padding:`10px 10px 0px`, borderRadius:20}}>
-                <h3>Save Visualization</h3>
-                <div style={{position:`absolute`, top:`50%`, left:`50%`, transform:`translate(-50%, -50%)`, width:`60%`}}>
+                <h3 style={{textAlign: `center`, marginTop:`27px`, fontSize:`25px`, fontWeight:`900`, textShadow:`1px 2px 1px rgba(128, 128, 128, 0.3)`, textTransform:`uppercase`, marginRight:`35px`}}>Save Visualization</h3>
+                <div style={{position:`absolute`, top:`45%`, left:`50%`, transform:`translate(-50%, -50%)`, width:`60%`}}>
                     <label htmlFor="savevizname">Enter the Name of the Visualization: </label>
                     <input type="text" name="savevizname" id="savevizname" onChange={(e) => this.handleSaveVizName(e.target.value)}/>
                 </div>
-                <div style={{position:`absolute`, bottom:10, right:10}}>
-                    <button style={{backgroundColor:`lightgreen`}} onClick={this.saveViz}>Save</button>
-                    <button style={{backgroundColor:`red`}} onClick={this.closeSaveViz}>Cancel</button>
+                <div style={{position:`absolute`, bottom:`44px`, right:`140px`}}>
+                    <button style={{backgroundColor:`#fecb2f`, textAlign:`center`}} onClick={this.saveViz}>Save</button>
+                    <button style={{backgroundColor:`lightgray`, textAlign:`center`}} onClick={this.closeSaveViz}>Cancel</button>
                 </div>
             </div>
         ): null}

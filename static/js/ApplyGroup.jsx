@@ -64,11 +64,11 @@ class ApplyGroup extends React.Component{
 
     render() {
         return (
-            <div>
-                <h1>Apply for Group</h1>    
-                <div style={{width:300, height:300, background:`white`, padding:20, display:`flex`, flexDirection:`column`, justifyContent:`space-around`, alignItems:`center`}}>
+            <div style={{display:`grid`}}>
+                <h1 style={{fontSize:`25px`, fontWeight:`900`, textShadow:`rgb(255, 127, 80) 0.5px 1px 0.5px`, textTransform:`uppercase`, color: `#ff7f50`, textAlign:`center`}}>Apply for Group</h1>    
+                <div style={{width:`60%`, height:300, background:`white`, padding:20, display:`flex`, flexDirection:`column`, justifyContent:`space-around`, alignItems:`center`, justifySelf:`center`}}>
                     <div style={{display:`flex`, flexDirection:`column`, justifyContent:`center`, alignItems:`center`}}>
-                        <div>Apply for Group ID:</div>
+                        <div style={{fontWeight:`bold`}}>Apply for Group ID:</div>
                         <select style={{margin:`auto`, marginTop:10}} onChange={e => this.update(e)}>
                             <option selected disabled hidden style={{ color: `gray` }}>-</option>
                             {this.state.groupList.map(function(value, i) {
