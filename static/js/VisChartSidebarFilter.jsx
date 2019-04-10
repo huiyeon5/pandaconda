@@ -62,16 +62,19 @@ export default class VisChartSidebarFilter extends React.Component {
           selectionTitle="Column: "
           dropdownValues={this.props.columns}
           update={this.updateColumn}
-        />
+          defaultValue={this.props.prevFilter ? this.props.prevFilter['column'] : null}
+          />
         <VisChartSidebarSelection
           selectionTitle="Condition: "
           dropdownValues={["=", ">", "<", ">=", "<="]}
           update={this.updateCondition}
-        />
+          defaultValue={this.props.prevFilter ? this.props.prevFilter['condition'] : null}
+          />
         <VisChartSidebarSelection
           selectionTitle="Value: "
           dropdownValues={this.state.column ? this.props.uniqueValues[this.state.column] : []}
           update={this.updateValue}
+          defaultValue={this.props.prevFilter ? this.props.prevFilter['value'] : null}
         />
       </div>
     );

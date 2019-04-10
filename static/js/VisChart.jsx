@@ -43,7 +43,6 @@ export default class VisChart extends React.Component {
   }
 
   componentDidMount() {
-      console.log("mount")
     if (this.props.dataset) {
       this.postData("/get_headers_api", { selectedData: this.props.dataset })
         .then(res => {
@@ -318,12 +317,27 @@ export default class VisChart extends React.Component {
     var item = localStorage.getItem("viz")
     if(item !== null ) {
         var obj = JSON.parse(item)[1]
+        console.log(obj)
         if(!this.state.alreadyUpdate) {
             this.postData("/viz_filter_api", obj).then(res => {
-                this.setState({ data: res.data },
-                () => {
-                    this.reRender(obj);
-                });
+                if(obj["topKTog"] === true) {
+                    this.setState({ 
+                        data: res.data,
+                        topKLimit: obj['topKLimit'],
+                        topKSort: obj['topKSort'],
+                        topKTog: true
+                    },
+                    () => {
+                        this.reRender(obj);
+                    });
+                } else {
+                    this.setState({ 
+                        data: res.data
+                    },
+                    () => {
+                        this.reRender(obj);
+                    });
+                }
             });
         }
         return (
@@ -342,6 +356,12 @@ export default class VisChart extends React.Component {
                     toggleTopK={this.toggleTopK}
                     updateTopKSort={this.updateTopKSort}
                     updateTopKLimit={this.updateTopKLimit}
+                    prevXAxis={obj['headers'][0]}
+                    prevYAxis={obj['headers'][1]}
+                    prevAggregate={obj['aggregate']}
+                    prevFilters={obj['filters']}
+                    prevTopKSort={obj['topKSort']}
+                    prevTopKLimit={obj['topKLimit']}
                 />
                 <VisChartDisplay
                     dataset={obj.selectedData}

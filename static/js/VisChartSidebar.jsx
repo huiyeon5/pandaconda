@@ -17,6 +17,29 @@ export default class VisChartSidebar extends React.Component {
     this.updateSelectedYAxis = this.updateSelectedYAxis.bind(this);
   }
 
+  componentDidMount() {
+    var filters = this.props.prevFilters;
+    var list = []
+    if(filters) {
+        filters.forEach(filter => {
+            var f = <VisChartSidebarFilter 
+                        columns={this.props.headers} 
+                        updateSpecificFilterObject={this.props.updateSpecificFilterObject}
+                        key={list.length}
+                        filterIndex={list.length}
+                        uniqueValues={this.props.uniqueValues}
+                        prevFilter={filter}
+                    />
+            
+            list.push(f);
+        })
+
+        this.setState({
+            filterChildren:list
+        })
+    }
+  }
+
   appendFilter() {
     this.props.addFilterObject();
     this.setState((prevState, props) => ({
@@ -57,16 +80,19 @@ export default class VisChartSidebar extends React.Component {
             selectionTitle="X-Axis: "
             dropdownValues={this.props.headers}
             update={this.updateSelectedXAxis}
-          />
+            defaultValue={this.props.prevXAxis ? this.props.prevXAxis : null}
+            />
           <VisChartSidebarSelection
             selectionTitle="Y-Axis: "
             dropdownValues={this.props.headers}
             update={this.updateSelectedYAxis}
-          />
+            defaultValue={this.props.prevYAxis ? this.props.prevYAxis : null}
+            />
           <VisChartSidebarSelection
             selectionTitle="Aggregate Method: "
             dropdownValues={["SUM", "AVG", "COUNT"]}
             update={this.props.updateSelectedAggregate}
+            defaultValue={this.props.prevAggregate ? this.props.prevAggregate : null}
           />
         </div>
         <div
@@ -82,6 +108,8 @@ export default class VisChartSidebar extends React.Component {
             toggleTopK={this.props.toggleTopK}
             updateTopKSort={this.props.updateTopKSort}
             updateTopKLimit={this.props.updateTopKLimit}
+            prevTopKSort={this.props.prevTopKSort ? this.props.prevTopKSort : null}
+            prevTopKLimit={this.props.prevTopKLimit ? this.props.prevTopKLimit :null}
           />
           <div
             style={{

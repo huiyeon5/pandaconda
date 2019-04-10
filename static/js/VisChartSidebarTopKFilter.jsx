@@ -15,11 +15,13 @@ export default class VisChartSidebarTopKFilter extends React.Component {
             selectionTitle="Sort: "
             dropdownValues={["ascending", "descending"]}
             update={this.props.updateTopKSort}
+            defaultValue={this.props.prevTopKSort ? this.props.prevTopKSort : null}
           />
           <VisChartSidebarSelection
             selectionTitle="Limit: "
             dropdownValues={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
             update={this.props.updateTopKLimit}
+            defaultValue={this.props.prevTopKLimit ? this.props.prevTopKLimit : null}
           />
         </div>
       );

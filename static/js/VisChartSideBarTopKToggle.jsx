@@ -29,6 +29,8 @@ export default class VisChartSidebarTopKToggle extends React.Component {
             topKTog={this.props.topKTog}
             updateTopKSort={this.props.updateTopKSort}
             updateTopKLimit={this.props.updateTopKLimit}
+            prevTopKSort={this.props.prevTopKSort ? this.props.prevTopKSort : null}
+            prevTopKLimit={this.props.prevTopKLimit ? this.props.prevTopKLimit :null}
           />
         </div>
       );
