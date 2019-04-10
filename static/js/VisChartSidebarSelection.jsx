@@ -13,7 +13,7 @@ class VisChartSidebarSelection extends React.Component {
             {this.props.selectionTitle}
             <select onChange={e => this.props.update(e.target.value)}>
               {this.props.dropdownValues.map(function(value, i) {
-                if(value === self.props.defaultValue) {
+                if(value == self.props.defaultValue) {
                     return (
                         <option key={i} value={value} selected>
                             {value}

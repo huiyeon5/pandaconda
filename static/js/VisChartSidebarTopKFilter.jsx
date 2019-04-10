@@ -21,7 +21,7 @@ export default class VisChartSidebarTopKFilter extends React.Component {
             selectionTitle="Limit: "
             dropdownValues={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
             update={this.props.updateTopKLimit}
-            defaultValue={this.props.prevTopKLimit ? this.props.prevTopKLimit : null}
+            defaultValue={this.props.prevTopKLimit ? parseInt(this.props.prevTopKLimit) : null}
           />
         </div>
       );

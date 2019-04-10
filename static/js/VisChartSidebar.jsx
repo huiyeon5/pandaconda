@@ -13,6 +13,7 @@ export default class VisChartSidebar extends React.Component {
       xaxis: null,
       yaxis: null,
       aggregate: null,
+      alreadyUpdated: false
     };
     this.appendFilter = this.appendFilter.bind(this);
     this.updateSelectedXAxis = this.updateSelectedXAxis.bind(this);
@@ -20,28 +21,6 @@ export default class VisChartSidebar extends React.Component {
     this.updateSelectedAggregate = this.updateSelectedAggregate.bind(this);
   }
 
-  componentDidMount() {
-    var filters = this.props.prevFilters;
-    var list = []
-    if(filters) {
-        filters.forEach(filter => {
-            var f = <VisChartSidebarFilter 
-                        columns={this.props.headers} 
-                        updateSpecificFilterObject={this.props.updateSpecificFilterObject}
-                        key={list.length}
-                        filterIndex={list.length}
-                        uniqueValues={this.props.uniqueValues}
-                        prevFilter={filter}
-                    />
-            
-            list.push(f);
-        })
-
-        this.setState({
-            filterChildren:list
-        })
-    }
-  }
 
   appendFilter() {
     this.props.addFilterObject();
@@ -73,6 +52,42 @@ export default class VisChartSidebar extends React.Component {
   updateSelectedAggregate(value) { this.setState({ aggregate: value }); }
 
   render() {
+    if(!this.state.alreadyUpdated) {
+        var filters = this.props.prevFilters;
+        var list = []
+        if(filters && filters.length > 0) {
+            if(this.props.headers.length > 0 && Object.keys(this.props.uniqueValues).length > 0) {
+                filters.forEach(filter => {
+                    this.props.addFilterObject();
+                    var f = <VisChartSidebarFilter 
+                                columns={this.props.headers} 
+                                updateSpecificFilterObject={this.props.updateSpecificFilterObject}
+                                key={list.length}
+                                filterIndex={list.length}
+                                uniqueValues={this.props.uniqueValues}
+                                prevFilter={filter}
+                            />
+                    
+                    list.push(f);
+                })
+
+                this.setState({
+                    filterChildren:list,
+                    alreadyUpdated:true,
+                    xaxis: this.props.prevXAxis,
+                    yaxis: this.props.prevYAxis,
+                    aggregate: this.props.prevAggregate
+                })
+            }
+        } else {
+            this.setState({
+                alreadyUpdated:true,
+                xaxis: this.props.prevXAxis,
+                yaxis: this.props.prevYAxis,
+                aggregate: this.props.prevAggregate
+            })
+        }
+    }
     if (this.state.nonCategoryHeaders.length == 0 && this.props.headers.length != 0) {
       var tempList = []
       for(let i = 0; i < this.props.headers.length; i++){
@@ -101,7 +116,7 @@ export default class VisChartSidebar extends React.Component {
           <VisChartSidebarSelection
             selectionTitle="Aggregate Method: "
             dropdownValues={["SUM", "AVG", "COUNT"]}
-            update={this.props.updateSelectedAggregate}
+            update={this.updateSelectedAggregate}
             defaultValue={this.props.prevAggregate ? this.props.prevAggregate : null}
           />
         </div>

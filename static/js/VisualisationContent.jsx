@@ -199,13 +199,12 @@ export default class VisualisationContent extends React.Component {
     if(this.state.hasGroup) {
         // ========== HAVE LOCAL STORAGE ==========
         if(localStorage.getItem('viz') !== null) {
+            var obj = JSON.parse(localStorage.getItem('viz'))[1]
             return (
               <VisChart
-                handler={this.navPageHandler}
-                dataset={this.state.selectedDataset}
-                chart={this.state.selectedChartType}
-                selectedDatasetEntities={this.state.selectedDatasetEntities}
-                selectDatasetHandler = {this.selectDatasetHandler}
+                dataset={obj['selectedData']}
+                chart={obj['chart']}
+                selectedDatasetEntities={obj['selectedDatasetEntities']}
               />
             );
         }

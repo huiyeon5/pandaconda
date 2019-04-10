@@ -183,6 +183,7 @@ export default class VisChart extends React.Component {
             if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
             var queryObj = {
                 selectedData: this.props.dataset,
+                chart:this.props.chart,
                 headers: [this.state.xaxis, this.state.yaxis],
                 aggregate: this.state.aggregate,
                 filter: this.state.filter,
@@ -191,7 +192,9 @@ export default class VisChart extends React.Component {
                 topKSort: this.state.topKSort,
                 plotlyType: this.props.chart.id,
                 chartTitle:this.props.chart.chartName,
-                vizName:this.state.saveName
+                vizName:this.state.saveName,
+                selectedDatasetEntities: this.props.selectedDatasetEntities,
+                uniqueValues: this.state.headersUniqueValues
             };
             this.postData("/save_visualization", queryObj).then(res => {
                 if (res.status === 200) {
@@ -202,15 +205,16 @@ export default class VisChart extends React.Component {
             }).catch(err => {
                 console.log(err)
             });
-            } else {
-                alert("Please make all the necessary Selections to run the charts!");
-            }
         } else {
-            if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
-            var item = localStorage.getItem("viz")
-            var obj = JSON.parse(item)[1]
+            alert("Please make all the necessary Selections to run the charts!");
+        }
+    } else {
+        if (this.state.xaxis && this.state.yaxis && this.state.aggregate) {
+                var item = localStorage.getItem("viz")
+                var obj = JSON.parse(item)[1]
             var queryObj = {
                 selectedData: obj.selectedData,
+                chart:this.props.chart,
                 headers: [this.state.xaxis, this.state.yaxis],
                 aggregate: this.state.aggregate,
                 filter: this.state.filter,
@@ -219,7 +223,9 @@ export default class VisChart extends React.Component {
                 topKSort: this.state.topKSort,
                 plotlyType: obj.plotlyType,
                 chartTitle: obj.chartTitle,
-                vizName:this.state.saveName
+                vizName:this.state.saveName,
+                selectedDatasetEntities: this.props.selectedDatasetEntities,
+                uniqueValues: this.state.headersUniqueValues
             };
             this.postData("/save_visualization", queryObj).then(res => {
                 if (res.status === 200) {
@@ -332,7 +338,6 @@ export default class VisChart extends React.Component {
     var item = localStorage.getItem("viz")
     if(item !== null ) {
         var obj = JSON.parse(item)[1]
-        console.log(obj)
         if(!this.state.alreadyUpdate) {
             this.postData("/viz_filter_api", obj).then(res => {
                 if(obj["topKTog"] === true) {
@@ -359,7 +364,7 @@ export default class VisChart extends React.Component {
             <div className="vis-display-container" style={{ position: `relative` }}>
                 <VisChartSidebar
                     dataset={obj.selectedData}
-                    uniqueValues={this.state.headersUniqueValues}
+                    uniqueValues={obj['uniqueValues']}
                     updateSpecificFilterObject={this.updateSpecificFilterObject}
                     addFilterObject={this.addFilterObject}
                     headers={this.state.headers}
@@ -370,10 +375,11 @@ export default class VisChart extends React.Component {
                     toggleTopK={this.toggleTopK}
                     updateTopKSort={this.updateTopKSort}
                     updateTopKLimit={this.updateTopKLimit}
+                    removeFilterObjects={this.removeFilterObjects}
                     prevXAxis={obj['headers'][0]}
                     prevYAxis={obj['headers'][1]}
                     prevAggregate={obj['aggregate']}
-                    prevFilters={obj['filters']}
+                    prevFilters={obj['filter']}
                     prevTopKSort={obj['topKSort']}
                     prevTopKLimit={obj['topKLimit']}
                 />
@@ -381,7 +387,11 @@ export default class VisChart extends React.Component {
                     dataset={obj.selectedData}
                     plotlyType={obj.plotlyType}
                     chartTitle={obj.chartTitle}
+                    mode={obj['chart'].mode}
                     data={this.state.data}
+                    xaxis={this.state.xaxis ? this.state.xaxis : obj["headers"][0]}
+                    yaxis={this.state.yaxis ? this.state.yaxis : obj["headers"][1]}
+                    aggregate={this.state.aggregate ? this.state.aggregate : obj["aggregate"]}
                 />
             </div>
         )
